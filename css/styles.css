@@ -1,0 +1,185 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    display:flex;
+    background:#f4f6fb;
+}
+
+/* SIDEBAR */
+
+.sidebar{
+    width:250px;
+    height:100vh;
+    background:#0c2d69;
+    color:white;
+    padding:25px;
+    position:fixed;
+}
+
+.logo h2{
+    font-size:22px;
+}
+
+.logo p{
+    margin-top:10px;
+    color:#cdd7f0;
+}
+
+.sidebar ul{
+    list-style:none;
+    margin-top:40px;
+}
+
+.sidebar ul li{
+    margin-bottom:15px;
+}
+
+.sidebar ul li a{
+    text-decoration:none;
+    color:white;
+    display:block;
+    padding:15px;
+    border-radius:10px;
+}
+
+.sidebar ul li a:hover,
+.active a{
+    background:#173f8a;
+}
+
+/* MAIN */
+
+.main-content{
+    margin-left:250px;
+    width:100%;
+    padding:40px;
+}
+
+/* HERO */
+
+.hero{
+    background:white;
+    border-radius:20px;
+    padding:40px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+}
+
+.hero-text{
+    width:55%;
+}
+
+.hero-text h1{
+    font-size:55px;
+    color:#0c2d69;
+    margin-bottom:20px;
+}
+
+.hero-text p{
+    font-size:18px;
+    color:#555;
+    line-height:1.7;
+}
+
+.buttons{
+    margin-top:25px;
+}
+
+button{
+    padding:15px 25px;
+    border:none;
+    border-radius:10px;
+    background:#0c2d69;
+    color:white;
+    cursor:pointer;
+    margin-right:15px;
+    font-size:16px;
+}
+
+.secondary{
+    background:#e9edf7;
+    color:#0c2d69;
+}
+
+.hero-image img{
+    width:400px;
+}
+
+/* CARDS */
+
+.cards{
+    margin-top:30px;
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.card{
+    background:white;
+    padding:30px;
+    border-radius:20px;
+}
+
+.card h3{
+    color:#0c2d69;
+    margin-bottom:15px;
+}
+
+/* MODULES */
+
+.modules{
+    margin-top:40px;
+}
+
+.modules h2{
+    margin-bottom:25px;
+    color:#0c2d69;
+}
+
+.module-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:20px;
+}
+
+.module-card{
+    background:white;
+    padding:25px;
+    border-radius:20px;
+}
+
+.module-card span{
+    background:#0c2d69;
+    color:white;
+    padding:10px 15px;
+    border-radius:8px;
+    display:inline-block;
+    margin-bottom:20px;
+}
+
+.module-card h3{
+    margin-bottom:15px;
+    color:#0c2d69;
+}
+/* PAGE HEADER */
+
+.page-header{
+    margin-bottom:30px;
+}
+
+.page-header h1{
+    color:#0c2d69;
+    margin-bottom:10px;
+    font-size:40px;
+}
+
+.page-header p{
+    color:#555;
+    font-size:18px;
+}
