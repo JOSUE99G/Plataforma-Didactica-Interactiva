@@ -183,3 +183,51 @@ button{
     color:#555;
     font-size:18px;
 }
+/* PAGE HEADER */
+
+.page-header{
+    margin-bottom:30px;
+}
+
+.page-header h1{
+    color:#0c2d69;
+    margin-bottom:10px;
+    font-size:40px;
+}
+
+.page-header p{
+    color:#555;
+    font-size:18px;
+}
+
+/* BOTÓN DESCARGA */
+
+.download-btn{
+    display:inline-block;
+    background:#0c2d69;
+    color:white;
+    padding:12px 20px;
+    border-radius:10px;
+    text-decoration:none;
+    margin-top:15px;
+}
+
+.download-btn:hover{
+    background:#173f8a;
+}
+
+/* VISOR PDF */
+
+.pdf-viewer{
+    margin-top:40px;
+}
+
+.pdf-viewer h2{
+    margin-bottom:20px;
+    color:#0c2d69;
+}
+
+.pdf-viewer iframe{
+    border:none;
+    border-radius:15px;
+}

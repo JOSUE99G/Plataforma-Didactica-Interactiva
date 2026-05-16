@@ -6,10 +6,11 @@
     <title>Recursos</title>
 
     <link rel="stylesheet" href="css/styles.css">
-
 </head>
+
 <body>
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
@@ -18,88 +19,62 @@
         </div>
 
         <nav>
-
             <ul>
-
-                <li>
-                    <a href="index.html">Inicio</a>
-                </li>
-
-                <li>
-                    <a href="modulos.html">Módulos</a>
-                </li>
-
-                <li>
-                    <a href="practicas.html">Prácticas</a>
-                </li>
-
-                <li class="active">
-                    <a href="recursos.html">Recursos</a>
-                </li>
-
-                <li>
-                    <a href="evaluaciones.html">Evaluaciones</a>
-                </li>
-
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="modulos.html">Módulos</a></li>
+                <li><a href="practicas.html">Prácticas</a></li>
+                <li class="active"><a href="recursos.html">Recursos</a></li>
+                <li><a href="evaluaciones.html">Evaluaciones</a></li>
             </ul>
-
         </nav>
 
     </aside>
 
+    <!-- CONTENIDO -->
     <main class="main-content">
 
         <section class="page-header">
-
             <h1>Recursos Didácticos</h1>
-
             <p>
-                Manuales, guías y documentación técnica.
+                Manuales y documentación para el uso del brazo robótico.
             </p>
-
         </section>
 
+        <!-- TARJETA DEL PDF -->
         <section class="cards">
 
             <div class="card">
 
-                <h3>Manual del Dobot</h3>
+                <h3>Manual de Uso del Dobot</h3>
 
                 <p>
-                    Guía oficial de funcionamiento.
+                    Documento técnico con instrucciones de operación,
+                    seguridad y configuración del brazo robótico.
                 </p>
+
+                <!-- BOTÓN DESCARGA -->
+                <a class="download-btn"
+                   href="assets/pdf/Manual%20de%20Uso.pdf"
+                   download>
+
+                   Descargar Manual
+
+                </a>
 
             </div>
 
-            <div class="card">
+        </section>
 
-                <h3>Guía de Cinemática</h3>
+        <!-- VISOR DEL PDF -->
+        <section class="pdf-viewer">
 
-                <p>
-                    Sistemas de coordenadas y control.
-                </p>
+            <h2>Vista previa del manual</h2>
 
-            </div>
-
-            <div class="card">
-
-                <h3>Programación Básica</h3>
-
-                <p>
-                    Comandos y secuencias.
-                </p>
-
-            </div>
-
-            <div class="card">
-
-                <h3>Videos Tutoriales</h3>
-
-                <p>
-                    Material audiovisual de apoyo.
-                </p>
-
-            </div>
+            <iframe
+                src="assets/pdf/Manual%20de%20Uso.pdf"
+                width="100%"
+                height="600">
+            </iframe>
 
         </section>
 
