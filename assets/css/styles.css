@@ -277,18 +277,26 @@ button{
     color:#0c2d69;
 }
 
-/* BOTÓN */
+/* 🔴 BOTONES DE CERRAR SESIÓN */
 
-#logoutBtn{
-    background:#d9534f;
-    color:white;
-    border:none;
-    padding:8px 14px;
-    border-radius:6px;
-    cursor:pointer;
-    font-size:13px;
+.logout-btn{
+    background-color: #d9534f; /* rojo principal */
+    color: white;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
-#logoutBtn:hover{
-    background:#c9302c;
+/* 🔥 HOVER (cuando pasas el mouse) */
+.logout-btn:hover{
+    background-color: #c9302c;
+    transform: scale(1.05);
+}
+
+/* 🔽 CLICK (efecto al presionar) */
+.logout-btn:active{
+    transform: scale(0.95);
 }
