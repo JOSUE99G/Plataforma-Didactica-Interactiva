@@ -63,3 +63,13 @@
         });
     }
 })();
+// 🔐 PROTEGER DASHBOARD
+firebase.auth().onAuthStateChanged((user) => {
+
+    const estaEnDashboard = window.location.pathname.includes("dashboard.html");
+
+    if (!user && estaEnDashboard) {
+        window.location.href = "index.html";
+    }
+
+});

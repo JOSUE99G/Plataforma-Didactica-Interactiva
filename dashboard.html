@@ -6,25 +6,19 @@
     <title>Plataforma Didáctica</title>
 
     <link rel="stylesheet" href="assets/css/styles.css">
-
 </head>
 <body>
 
     <!-- SIDEBAR -->
-
     <aside class="sidebar">
 
         <div class="logo">
-
             <h2>PLATAFORMA DIDÁCTICA</h2>
             <p>Laboratorio de Robótica</p>
-
         </div>
 
         <nav>
-
             <ul>
-
                 <li class="active">
                     <a href="dashboard.html">Inicio</a>
                 </li>
@@ -44,23 +38,37 @@
                 <li>
                     <a href="evaluaciones.html">Evaluaciones</a>
                 </li>
-
             </ul>
-
         </nav>
+
+        <!-- 🔥 BOTÓN CORRECTAMENTE UBICADO -->
+        <div style="padding:20px;">
+            <button id="logoutBtn">Cerrar sesión</button>
+        </div>
 
     </aside>
 
     <!-- CONTENIDO -->
-
     <main class="main-content">
 
-        <!-- HERO -->
+        <div class="topbar">
 
+        <div class="user-info">
+
+            <span class="user-icon">👤</span>
+
+            <span id="userName">Usuario</span>
+
+             <button id="logoutSidebar">Cerrar sesión</button>
+
+    </div>
+
+    </div>
+
+        <!-- HERO -->
         <section class="hero">
 
             <div class="hero-text">
-
                 <h1>
                     APRENDE. EXPERIMENTA.
                     CONSTRUYE EL FUTURO.
@@ -73,75 +81,45 @@
                 </p>
 
                 <div class="buttons">
-
                     <button>Explorar módulos</button>
                     <button class="secondary">
                         Ver prácticas
                     </button>
-
                 </div>
-
             </div>
 
             <div class="hero-image">
-
-                <img src="assets/img/dobot-magician-lite.jpg"
-                alt="Brazo robótico">
-
+                <img src="assets/img/dobot-magician-lite.jpg" alt="Brazo robótico">
             </div>
 
         </section>
 
         <!-- TARJETAS -->
-
         <section class="cards">
 
             <div class="card">
-
                 <h3>MÓDULOS</h3>
-
-                <p>
-                    Aprende fundamentos de robótica,
-                    control y cinemática.
-                </p>
-
+                <p>Aprende fundamentos de robótica, control y cinemática.</p>
             </div>
 
             <div class="card">
-
                 <h3>PRÁCTICAS</h3>
-
-                <p>
-                    Actividades guiadas con el brazo
-                    manipulador.
-                </p>
-
+                <p>Actividades guiadas con el brazo manipulador.</p>
             </div>
 
             <div class="card">
-
                 <h3>RECURSOS</h3>
-
-                <p>
-                    Guías, manuales y documentación.
-                </p>
-
+                <p>Guías, manuales y documentación.</p>
             </div>
 
             <div class="card">
-
                 <h3>EVALUACIONES</h3>
-
-                <p>
-                    Pon a prueba tus conocimientos.
-                </p>
-
+                <p>Pon a prueba tus conocimientos.</p>
             </div>
 
         </section>
 
         <!-- MÓDULOS -->
-
         <section class="modules">
 
             <h2>Módulos de Aprendizaje</h2>
@@ -149,51 +127,27 @@
             <div class="module-grid">
 
                 <div class="module-card">
-
                     <span>01</span>
-
                     <h3>Introducción a la Robótica</h3>
-
-                    <p>
-                        Conceptos básicos y aplicaciones.
-                    </p>
-
+                    <p>Conceptos básicos y aplicaciones.</p>
                 </div>
 
                 <div class="module-card">
-
                     <span>02</span>
-
                     <h3>Cinemática y Posicionamiento</h3>
-
-                    <p>
-                        Coordenadas y movimiento.
-                    </p>
-
+                    <p>Coordenadas y movimiento.</p>
                 </div>
 
                 <div class="module-card">
-
                     <span>03</span>
-
                     <h3>Control de Movimiento</h3>
-
-                    <p>
-                        Trayectorias y control.
-                    </p>
-
+                    <p>Trayectorias y control.</p>
                 </div>
 
                 <div class="module-card">
-
                     <span>04</span>
-
                     <h3>Integración y Aplicaciones</h3>
-
-                    <p>
-                        Aplicaciones del manipulador.
-                    </p>
-
+                    <p>Aplicaciones del manipulador.</p>
                 </div>
 
             </div>
@@ -201,6 +155,40 @@
         </section>
 
     </main>
+
+    <!-- 🔥 FIREBASE (OBLIGATORIO) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script>
+    const firebaseConfig = {
+    apiKey: "AIzaSyAFPRQMxKeYuXCAxATEM5E92CMTpHVvogk",
+    authDomain: "robotica-lab-mecatronica.firebaseapp.com",
+    projectId: "robotica-lab-mecatronica",
+    storageBucket: "robotica-lab-mecatronica.firebasestorage.app",
+    messagingSenderId: "856148247166",
+    appId: "1:856148247166:web:47902d9745e8fe272c4e2f"
+    };
+
+        firebase.initializeApp(firebaseConfig);
+    </script>
+
+    <!-- 🔥 PROTECCIÓN DE ACCESO -->
+    <script>
+        firebase.auth().onAuthStateChanged((user) => {
+
+            if (!user) {
+                window.location.href = "index.html";
+            } else {
+                document.getElementById("userName").textContent =
+                    "Bienvenido: " + user.displayName;
+            }
+
+        });
+    </script>
+
+    <!-- 🔥 LOGOUT -->
+    <script src="assets/js/logout.js"></script>
 
 </body>
 </html>
