@@ -41,6 +41,7 @@
                 <li>
                      <a href="visualizador.html">Modelo 3D</a>
                 </li>
+                
                 <li>
                      <a href="matlab.html">Simulación MATLAB</a>
                 </li>
@@ -55,46 +56,56 @@
 
     </aside>
 
-    <!-- CONTENIDO -->
     <main class="main-content">
 
     <div class="topbar">
-
         <div class="user-info">
             <span class="user-icon">👤</span>
             <span id="userName">Usuario</span>
-            <button id="logoutBtn" class="logout-btn">Salir</button>
+            <button class="logout-btn" id="logoutSidebar">Salir</button>
         </div>
-
     </div>
 
     <section style="padding:20px;">
 
-    <h1>Modelo 3D del Brazo Robótico</h1>
+        <h1>Simulación con MATLAB</h1>
 
-    <div class="sketchfab-embed-wrapper" style="width:100%; height:500px;">
+        <p>
+            En esta sección aprenderás a simular el movimiento del brazo robótico antes de ejecutarlo físicamente.
+        </p>
 
-        <iframe 
-            title="3-cable Spi Rob"
-            src="https://sketchfab.com/models/10d49cf06c2f4fe1b4e2f940d4c3fd9b/embed"
-            style="width:100%; height:100%; border:none;"
-            allowfullscreen
-            allow="autoplay; fullscreen; xr-spatial-tracking">
-        </iframe>
+        <!-- 🎥 VIDEO EXPLICATIVO -->
+        <h2>Video demostrativo</h2>
 
-    </div>
+        <video controls width="500">
+            <source src="assets/videos/matlab-demo.mp4" type="video/mp4">
+        </video>
 
-    <p style="margin-top:15px;">
-        Usa el mouse para interactuar con el modelo:
-    </p>
+        <!-- 📄 GUÍA PDF -->
+        <h2>Guía de práctica</h2>
 
-    <ul>
-        <li>Click + arrastrar → rotar</li>
-        <li>Scroll → zoom</li>
-        <li>Click derecho → mover</li>
-    </ul>
+        <a href="assets/pdf/guia_matlab.pdf" target="_blank">
+            Ver guía MATLAB
+        </a>
 
-</section>
+        <!-- 💻 CÓDIGO -->
+        <h2>Código MATLAB</h2>
+
+        <pre>
+% Ejemplo básico
+x = 10;
+y = 5;
+z = 3;
+
+disp("Posición del robot:");
+disp([x y z]);
+        </pre>
+
+        <a href="assets/matlab/codigo.m" download>
+            Descargar código MATLAB
+        </a>
+
+    </section>
 
 </main>
 
@@ -130,11 +141,6 @@
     </script>
 
     <!-- 🔥 LOGOUT -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-    <script src="assets/js/firebase-config.js"></script>
-
     <script src="assets/js/logout.js"></script>
 
 </body>

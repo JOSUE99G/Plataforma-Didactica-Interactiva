@@ -38,13 +38,18 @@
                 <li>
                     <a href="evaluaciones.html">Evaluaciones</a>
                 </li>
+
                 <li>
                      <a href="visualizador.html">Modelo 3D</a>
                 </li>
+
                 <li>
                      <a href="matlab.html">Simulación MATLAB</a>
                 </li>
-            </ul>
+                
+                <li>
+                     <a href="cinematica.html">Cinemática</a>
+                </li>
             </ul>
         </nav>
 
@@ -55,46 +60,51 @@
 
     </aside>
 
-    <!-- CONTENIDO -->
     <main class="main-content">
 
     <div class="topbar">
-
         <div class="user-info">
             <span class="user-icon">👤</span>
-            <span id="userName">Usuario</span>
-            <button id="logoutBtn" class="logout-btn">Salir</button>
+            <span id="userName"></span>
+            <button class="logout-btn">Salir</button>
         </div>
-
     </div>
 
     <section style="padding:20px;">
 
-    <h1>Modelo 3D del Brazo Robótico</h1>
+        <h1>Cinemática Geométrica</h1>
 
-    <div class="sketchfab-embed-wrapper" style="width:100%; height:500px;">
+        <p>
+            La cinemática permite determinar los ángulos de las articulaciones
+            del robot a partir de una posición en el espacio.
+        </p>
 
-        <iframe 
-            title="3-cable Spi Rob"
-            src="https://sketchfab.com/models/10d49cf06c2f4fe1b4e2f940d4c3fd9b/embed"
-            style="width:100%; height:100%; border:none;"
-            allowfullscreen
-            allow="autoplay; fullscreen; xr-spatial-tracking">
-        </iframe>
+        <h2>Concepto básico</h2>
 
-    </div>
+        <p>
+            Se definen coordenadas X, Y, Z y se calculan los ángulos del robot.
+        </p>
 
-    <p style="margin-top:15px;">
-        Usa el mouse para interactuar con el modelo:
-    </p>
+        <h2>Ejemplo</h2>
 
-    <ul>
-        <li>Click + arrastrar → rotar</li>
-        <li>Scroll → zoom</li>
-        <li>Click derecho → mover</li>
-    </ul>
+        <pre>
+x = 10;
+y = 5;
+z = 3;
 
-</section>
+theta1 = atan2(y, x);
+        </pre>
+
+        <h2>Relación con el robot</h2>
+
+        <ul>
+            <li>θ1 → rotación base</li>
+            <li>θ2 → brazo</li>
+            <li>θ3 → antebrazo</li>
+            <li>θ4 → pinza</li>
+        </ul>
+
+    </section>
 
 </main>
 
@@ -130,11 +140,6 @@
     </script>
 
     <!-- 🔥 LOGOUT -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-    <script src="assets/js/firebase-config.js"></script>
-
     <script src="assets/js/logout.js"></script>
 
 </body>
