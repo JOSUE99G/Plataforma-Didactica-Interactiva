@@ -1,4 +1,4 @@
-document.getElementById("quizForm").addEventListener("submit", function(e){
+document.getElementById("quizForm").addEventListener("submit", async function(e){
 
     e.preventDefault();
 
@@ -30,23 +30,45 @@ document.getElementById("quizForm").addEventListener("submit", function(e){
 
 if(user){
 
-    db.collection("usuarios")
-      .doc(user.uid)
-      .collection("evaluaciones")
-      .doc("quiz1")
-      .set({
+    try{
 
-        nota: nota,
+        // Obtener documento del Quiz
+        const quizRef = db.collection("usuarios")
+            .doc(user.uid)
+            .collection("evaluaciones")
+            .doc("quiz1");
 
-        correctas: respuestasCorrectas,
+        // Leer si ya existe
+        const doc = await quizRef.get();
 
-        total: totalPreguntas,
+        let intentos = 1;
 
-        aprobado: nota >= 70,
+        if(doc.exists){
+            intentos = doc.data().intentos + 1;
+        }
 
-        fecha: firebase.firestore.FieldValue.serverTimestamp()
+        // Guardar información
+        await quizRef.set({
 
-      });
+            nota: nota,
+            correctas: respuestasCorrectas,
+            total: totalPreguntas,
+            aprobado: nota >= 70,
+            intentos: intentos,
+            fecha: firebase.firestore.FieldValue.serverTimestamp()
+
+        });
+
+        console.log("✅ Resultado guardado correctamente.");
+
+    }
+    catch(error){
+
+        console.error(error);
+
+        alert("No se pudo guardar la evaluación.");
+
+    }
 
 }
 
