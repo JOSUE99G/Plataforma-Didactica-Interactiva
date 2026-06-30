@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Prácticas Guiadas</title>
+    <title>Plataforma Didáctica</title>
 
     <link rel="stylesheet" href="assets/css/styles.css">
-
 </head>
 <body>
 
+    <!-- SIDEBAR -->
     <aside class="sidebar">
 
         <div class="logo">
@@ -18,10 +18,8 @@
         </div>
 
         <nav>
-
             <ul>
-
-                <li>
+                <li class="active">
                     <a href="dashboard.html">Inicio</a>
                 </li>
 
@@ -29,7 +27,7 @@
                     <a href="modulos.html">Módulos</a>
                 </li>
 
-                <li class="active">
+                <li>
                     <a href="practicas.html">Prácticas</a>
                 </li>
 
@@ -40,23 +38,32 @@
                 <li>
                     <a href="evaluaciones.html">Evaluaciones</a>
                 </li>
+
                 <li>
                      <a href="visualizador.html">Modelo 3D</a>
                 </li>
+
                 <li>
                      <a href="matlab.html">Simulación MATLAB</a>
+                </li>
+                
+                <li>
+                     <a href="cinematica.html">Cinemática</a>
                 </li>
                 <li>
                      <a href="progreso.html">Mi progreso</a>
                 </li>
             </ul>
-
-            </ul>
-
         </nav>
+
+        <!-- 🔥 BOTÓN CORRECTAMENTE UBICADO -->
+        <div style="padding:20px;">
+            <button id="logoutBtn">Cerrar sesión</button>
+        </div>
 
     </aside>
 
+    
     <main class="main-content">
 
         <section class="page-header">
@@ -114,6 +121,37 @@
         </section>
 
     </main>
+
+
+    <!-- 🔥 FIREBASE (OBLIGATORIO) -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script src="assets/js/firebase-config.js"></script>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+   
+
+    <!-- 🔥 PROTECCIÓN DE ACCESO -->
+    <script>
+        firebase.auth().onAuthStateChanged((user) => {
+
+            if (!user) {
+                window.location.href = "index.html";
+            } else {
+                document.getElementById("userName").textContent =
+                    "Bienvenido: " + user.displayName;
+            }
+
+        });
+    </script>
+
+    <!-- 🔥 LOGOUT -->
+    <script src="assets/js/logout.js"></script>
 
 </body>
 </html>
