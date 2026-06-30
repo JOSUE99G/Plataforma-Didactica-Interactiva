@@ -64,11 +64,16 @@ if(user){
     }
     catch(error){
 
-        console.error(error);
+    console.error(error);
 
-        alert("No se pudo guardar la evaluación.");
+    alert(
+        "Error al guardar:\n\n" +
+        error.code +
+        "\n\n" +
+        error.message
+    );
 
-    }
+}
 
 }
 
