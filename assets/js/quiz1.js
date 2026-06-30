@@ -26,6 +26,30 @@ document.getElementById("quizForm").addEventListener("submit", function(e){
     // Calcular nota sobre 100
     let nota = Math.round((respuestasCorrectas / totalPreguntas) * 100);
 
+    const user = firebase.auth().currentUser;
+
+if(user){
+
+    db.collection("usuarios")
+      .doc(user.uid)
+      .collection("evaluaciones")
+      .doc("quiz1")
+      .set({
+
+        nota: nota,
+
+        correctas: respuestasCorrectas,
+
+        total: totalPreguntas,
+
+        aprobado: nota >= 70,
+
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+
+      });
+
+}
+
     // Mostrar resultado
     let resultado = document.getElementById("resultado");
 
