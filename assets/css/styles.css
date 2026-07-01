@@ -466,3 +466,14 @@ background:#28a745;
 transition:.8s;
 
 }
+#barraCurso{
+
+    height:100%;
+
+    width:0%;
+
+    background:#1e88e5;
+
+    transition:.8s;
+
+}

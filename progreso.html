@@ -126,30 +126,23 @@ Consulta tus calificaciones y el avance dentro del aula virtual.
 
 </div>
 
+<div class="progress-card">
+
+    <h2>Avance del Curso</h2>
+
+    <div class="barra">
+
+        <div id="barraCurso"></div>
+
+    </div>
+
+    <h1 id="avanceCurso">0%</h1>
+
+</div>
+
 </main>
 
-
-
-    <!-- 🔥 PROTECCIÓN DE ACCESO -->
-    <script>
-        firebase.auth().onAuthStateChanged((user) => {
-
-            if (!user) {
-                window.location.href = "index.html";
-            } else {
-                document.getElementById("userName").textContent =
-                    "Bienvenido: " + user.displayName;
-            }
-
-        });
-    </script>
-
     <!-- 🔥 LOGOUT -->
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-    <script src="assets/js/firebase-config.js"></script>
-
     <script src="assets/js/logout.js"></script>
 
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
@@ -159,6 +152,10 @@ Consulta tus calificaciones y el avance dentro del aula virtual.
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script src="assets/js/firebase-config.js"></script>
+
+<script src="assets/js/logout.js"></script>
+
+<script src="assets/js/progreso.js"></script>
 
 </body>
 </html>
