@@ -54,6 +54,10 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
     let evaluacionesCompletadas = 0;
 
+    let nombresEvaluaciones=[];
+
+    let notasEvaluaciones=[];
+
     try{
 
         const snapshot = await db
@@ -80,6 +84,10 @@ evaluaciones.forEach(evaluacion => {
         evaluacionesCompletadas++;
 
         sumaNotas += datos.nota;
+
+        nombresEvaluaciones.push(evaluacion.nombre);
+
+        notasEvaluaciones.push(datos.nota);
         
 
         tabla.innerHTML += `
@@ -147,6 +155,59 @@ avance + "%";
 document.getElementById("barraCurso").style.width =
 
 avance + "%";   
+
+const ctx=document.getElementById("graficoNotas");
+
+new Chart(ctx,{
+
+type:"bar",
+
+data:{
+
+labels:nombresEvaluaciones,
+
+datasets:[{
+
+label:"Calificación",
+
+data:notasEvaluaciones,
+
+borderWidth:1
+
+}]
+
+},
+
+options:{
+
+responsive:true,
+
+plugins:{
+
+legend:{
+
+display:false
+
+}
+
+},
+
+scales:{
+
+y:{
+
+beginAtZero:true,
+
+max:100
+
+}
+
+}
+
+}
+
+});
+
     }
 
     catch(error){
