@@ -1,40 +1,39 @@
-// ===============================
-// IMPORTAR THREE.JS
-// ===============================
+import * as THREE from 'https://unpkg.com/three@0.167.1/build/three.module.js';
 
-import * as THREE from "https://unpkg.com/three@0.165.0/build/three.module.js";
+import { OrbitControls } from 'https://unpkg.com/three@0.167.1/examples/jsm/controls/OrbitControls.js';
 
-import { OrbitControls } from "https://unpkg.com/three@0.165.0/examples/jsm/controls/OrbitControls.js";
-
-// ===============================
+import { STLLoader } from 'https://unpkg.com/three@0.167.1/examples/jsm/loaders/STLLoader.js';
+//==============================
 // ESCENA
-// ===============================
+//==============================
 
 const scene = new THREE.Scene();
 
-scene.background = new THREE.Color(0xf5f5f5);
+scene.background = new THREE.Color(0xf3f5f8);
 
-// ===============================
+
+//==============================
 // CÁMARA
-// ===============================
+//==============================
 
 const camera = new THREE.PerspectiveCamera(
 
 45,
 
-window.innerWidth / 650,
+window.innerWidth/window.innerHeight,
 
 0.1,
 
-1000
+5000
 
 );
 
-camera.position.set(250,180,250);
+camera.position.set(300,250,300);
 
-// ===============================
+
+//==============================
 // RENDER
-// ===============================
+//==============================
 
 const renderer = new THREE.WebGLRenderer({
 
@@ -42,23 +41,26 @@ antialias:true
 
 });
 
+const viewer=document.getElementById("viewer3D");
+
 renderer.setSize(
 
-document.getElementById("viewer3D").clientWidth,
+viewer.clientWidth,
 
-650
+viewer.clientHeight
 
 );
 
-renderer.shadowMap.enabled=true;
+renderer.setPixelRatio(window.devicePixelRatio);
 
-document.getElementById("viewer3D").appendChild(renderer.domElement);
+viewer.appendChild(renderer.domElement);
 
-// ===============================
+
+//==============================
 // CONTROLES
-// ===============================
+//==============================
 
-const controls = new OrbitControls(
+const controls=new OrbitControls(
 
 camera,
 
@@ -70,21 +72,12 @@ controls.enableDamping=true;
 
 controls.dampingFactor=0.05;
 
-// ===============================
+
+//==============================
 // LUCES
-// ===============================
+//==============================
 
-const ambientLight = new THREE.AmbientLight(
-
-0xffffff,
-
-1.8
-
-);
-
-scene.add(ambientLight);
-
-const directionalLight = new THREE.DirectionalLight(
+const ambient=new THREE.AmbientLight(
 
 0xffffff,
 
@@ -92,23 +85,32 @@ const directionalLight = new THREE.DirectionalLight(
 
 );
 
-directionalLight.position.set(150,300,150);
+scene.add(ambient);
 
-directionalLight.castShadow=true;
+const dir=new THREE.DirectionalLight(
 
-scene.add(directionalLight);
+0xffffff,
 
-// ===============================
+2
+
+);
+
+dir.position.set(100,200,100);
+
+scene.add(dir);
+
+
+//==============================
 // CUADRÍCULA
-// ===============================
+//==============================
 
-const grid = new THREE.GridHelper(
+const grid=new THREE.GridHelper(
 
 500,
 
-25,
+50,
 
-0x444444,
+0x555555,
 
 0x999999
 
@@ -116,11 +118,12 @@ const grid = new THREE.GridHelper(
 
 scene.add(grid);
 
-// ===============================
-// EJES XYZ
-// ===============================
 
-const axes = new THREE.AxesHelper(
+//==============================
+// EJES
+//==============================
+
+const axes=new THREE.AxesHelper(
 
 120
 
@@ -128,31 +131,155 @@ const axes = new THREE.AxesHelper(
 
 scene.add(axes);
 
-// ===============================
-// PISO
-// ===============================
 
-const floor = new THREE.Mesh(
+//==============================
+// MATERIAL
+//==============================
 
-new THREE.PlaneGeometry(500,500),
+const material=new THREE.MeshStandardMaterial({
 
-new THREE.MeshStandardMaterial({
+color:0x1976d2,
 
-color:0xffffff
+metalness:0.2,
 
-})
+roughness:0.5
+
+});
+
+
+//==============================
+// CARGAR STL
+//==============================
+
+let robot;
+
+const loader=new STLLoader();
+
+loader.load(
+
+"assets/models/MagicianLite.stl",
+
+function(geometry){
+
+robot=new THREE.Mesh(
+
+geometry,
+
+material
 
 );
 
-floor.rotation.x=-Math.PI/2;
+//centrar
 
-floor.receiveShadow=true;
+geometry.computeBoundingBox();
 
-scene.add(floor);
+geometry.center();
 
-// ===============================
+robot.rotation.x=-Math.PI/2;
+
+scene.add(robot);
+
+},
+
+undefined,
+
+function(error){
+
+console.error(error);
+
+alert("No se pudo cargar el archivo STL");
+
+}
+
+);
+
+
+//==============================
+// BOTONES
+//==============================
+
+document.getElementById("frontView").onclick=()=>{
+
+camera.position.set(0,0,300);
+
+};
+
+document.getElementById("topView").onclick=()=>{
+
+camera.position.set(0,300,0);
+
+};
+
+document.getElementById("sideView").onclick=()=>{
+
+camera.position.set(300,0,0);
+
+};
+
+document.getElementById("isoView").onclick=()=>{
+
+camera.position.set(300,250,300);
+
+};
+
+
+//==============================
+// CHECKBOX
+//==============================
+
+document.getElementById("gridCheck").onchange=(e)=>{
+
+grid.visible=e.target.checked;
+
+};
+
+document.getElementById("axisCheck").onchange=(e)=>{
+
+axes.visible=e.target.checked;
+
+};
+
+document.getElementById("wireframeCheck").onchange=(e)=>{
+
+material.wireframe=e.target.checked;
+
+};
+
+document.getElementById("transparentCheck").onchange=(e)=>{
+
+material.transparent=e.target.checked;
+
+material.opacity=e.target.checked?0.4:1;
+
+};
+
+
+//==============================
+// REDIMENSIONAR
+//==============================
+
+window.addEventListener("resize",()=>{
+
+camera.aspect=
+
+viewer.clientWidth/viewer.clientHeight;
+
+camera.updateProjectionMatrix();
+
+renderer.setSize(
+
+viewer.clientWidth,
+
+viewer.clientHeight
+
+);
+
+});
+
+
+//==============================
 // ANIMACIÓN
-// ===============================
+//==============================
 
 function animate(){
 
@@ -165,25 +292,3 @@ renderer.render(scene,camera);
 }
 
 animate();
-
-// ===============================
-// RESPONSIVE
-// ===============================
-
-window.addEventListener("resize",()=>{
-
-camera.aspect=
-
-document.getElementById("viewer3D").clientWidth/650;
-
-camera.updateProjectionMatrix();
-
-renderer.setSize(
-
-document.getElementById("viewer3D").clientWidth,
-
-650
-
-);
-
-});
