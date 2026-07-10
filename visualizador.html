@@ -1,186 +1,142 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Plataforma Didáctica</title>
 
-    <link rel="stylesheet" href="assets/css/styles.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Visualizador 3D</title>
+
+<link rel="stylesheet" href="assets/css/styles.css">
+<link rel="stylesheet" href="assets/css/viewer.css">
+
 </head>
+
 <body>
 
-    <!-- SIDEBAR -->
-    <aside class="sidebar">
+<!-- SIDEBAR -->
 
-        <div class="logo">
-            <h2>PLATAFORMA DIDÁCTICA</h2>
-            <p>Laboratorio de Robótica</p>
-        </div>
+<aside class="sidebar">
 
-        <nav>
-            <ul>
-                <li class="active">
-                    <a href="dashboard.html">Inicio</a>
-                </li>
+<div class="logo">
 
-                <li>
-                    <a href="modulos.html">Módulos</a>
-                </li>
+<h2>PLATAFORMA DIDÁCTICA</h2>
 
-                <li>
-                    <a href="practicas.html">Prácticas</a>
-                </li>
+<p>Laboratorio de Robótica</p>
 
-                <li>
-                    <a href="recursos.html">Recursos</a>
-                </li>
+</div>
 
-                <li>
-                    <a href="evaluaciones.html">Evaluaciones</a>
-                </li>
-                <li>
-                     <a href="visualizador.html">Modelo 3D</a>
-                </li>
-                <li>
-                     <a href="matlab.html">Simulación MATLAB</a>
-                </li>
-                <li>
-                     <a href="progreso.html">Mi progreso</a>
-                </li>
-            </ul>
-            </ul>
-        </nav>
+<nav>
 
-        <!-- 🔥 BOTÓN CORRECTAMENTE UBICADO -->
-        <div style="padding:20px;">
-            <button id="logoutBtn">Cerrar sesión</button>
-        </div>
+<ul>
 
-    </aside>
+<li><a href="dashboard.html">Inicio</a></li>
 
-    <!-- CONTENIDO -->
-    <main class="main-content">
+<li><a href="modulos.html">Módulos</a></li>
 
-    <div class="topbar">
+<li><a href="practicas.html">Prácticas</a></li>
 
-        <div class="user-info">
-            <span class="user-icon">👤</span>
-            <span id="userName">Usuario</span>
-            <button id="logoutTop" class="logout-btn">Salir</button>
-        </div>
+<li><a href="recursos.html">Recursos</a></li>
 
-    </div>
+<li><a href="evaluaciones.html">Evaluaciones</a></li>
 
-    <section class="viewer-section">
+<li class="active"><a href="visualizador.html">Modelo 3D</a></li>
 
-    <div class="viewer-header">
+<li><a href="matlab.html">Simulación MATLAB</a></li>
 
-        <h1>Visualizador 3D</h1>
+<li><a href="progreso.html">Mi progreso</a></li>
 
-        <p>
+</ul>
 
-            Manipule el modelo CAD del Dobot Magician Lite
-            directamente desde la plataforma.
+</nav>
 
-        </p>
+<div style="padding:20px">
 
-    </div>
+<button id="logoutBtn">
 
-    <div class="viewer-layout">
+Cerrar sesión
 
-        <div class="viewer-panel">
+</button>
 
-            <div id="viewer3D"></div>
+</div>
 
-        </div>
+</aside>
 
-        <div class="tools-panel">
+<!-- CONTENIDO -->
 
-            <h3>Herramientas</h3>
+<main class="main-content">
 
-            <button id="frontView">Vista frontal</button>
+<div class="topbar">
 
-            <button id="topView">Vista superior</button>
+<div class="user-info">
 
-            <button id="sideView">Vista lateral</button>
+<span class="user-icon">👤</span>
 
-            <button id="isoView">Vista isométrica</button>
+<span id="userName">Usuario</span>
 
-            <hr>
+</div>
 
-            <label>
+</div>
 
-                <input type="checkbox" id="gridCheck" checked>
+<section class="viewer-section">
 
-                Mostrar cuadrícula
+<div class="viewer-header">
 
-            </label>
+<h1>Visualizador 3D</h1>
 
-            <label>
+<p>
 
-                <input type="checkbox" id="axisCheck" checked>
+Manipule el modelo CAD del Dobot Magician Lite directamente desde la plataforma.
 
-                Mostrar ejes XYZ
+</p>
 
-            </label>
+</div>
 
-            <label>
+<div class="viewer-layout">
 
-                <input type="checkbox" id="wireframeCheck">
+<div class="viewer-panel">
 
-                Modo Wireframe
+<div id="viewer3D"></div>
 
-            </label>
+</div>
 
-            <label>
+<div class="tools-panel">
 
-                <input type="checkbox" id="transparentCheck">
+<h3>Herramientas</h3>
 
-                Transparencia
+<button id="frontView">Vista frontal</button>
 
-            </label>
+<button id="topView">Vista superior</button>
 
-        </div>
+<button id="sideView">Vista lateral</button>
 
-    </div>
+<button id="isoView">Vista isométrica</button>
+
+<hr>
+
+<label><input type="checkbox" id="gridCheck" checked> Mostrar cuadrícula</label>
+
+<label><input type="checkbox" id="axisCheck" checked> Mostrar ejes XYZ</label>
+
+<label><input type="checkbox" id="wireframeCheck"> Wireframe</label>
+
+<label><input type="checkbox" id="transparentCheck"> Transparencia</label>
+
+</div>
+
+</div>
 
 </section>
 
 </main>
 
-    
+<!-- Firebase -->
 
-    <!-- 🔥 LOGOUT -->
-     <script>
 
-        firebase.auth().onAuthStateChanged((user)=>{
 
-            if(!user){
 
-                window.location.href="index.html";
-
-            }else{
-
-        document.getElementById("userName").textContent=
-        "Bienvenido: "+user.displayName;
-
-         }
-
-        });
-
-        </script>
-   
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-    <script src="assets/js/firebase-config.js"></script>
-
-    <script src="assets/js/logout.js"></script>
-
-    <script type="module" src="assets/js/visor3d.js"></script>
+<script type="module" src="assets/js/visor3d.js"></script>
 
 </body>
+
 </html>

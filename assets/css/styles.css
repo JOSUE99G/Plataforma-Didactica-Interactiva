@@ -501,15 +501,7 @@ VISUALIZADOR 3D
 
     overflow:hidden;
 
-    box-shadow:0 5px 15px rgba(0,0,0,.15);
-
-}
-
-#viewer3D{
-
-    width:100%;
-
-    height:650px;
+    min-height:650px;
 
 }
 
@@ -562,14 +554,10 @@ VISUALIZADOR 3D
 }
 #viewer3D{
 
-width:100%;
+    width:100%;
 
-height:650px;
+    height:650px;
 
-border-radius:12px;
-
-background:#eef2f7;
-
-overflow:hidden;
+    display:block;
 
 }

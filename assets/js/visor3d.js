@@ -1,26 +1,51 @@
-import * as THREE from 'https://unpkg.com/three@0.167.1/build/three.module.js';
+//======================================================
+// IMPORTAR THREE.JS
+//======================================================
 
-import { OrbitControls } from 'https://unpkg.com/three@0.167.1/examples/jsm/controls/OrbitControls.js';
+import * as THREE from "../three/build/three.module.js";
 
-import { STLLoader } from 'https://unpkg.com/three@0.167.1/examples/jsm/loaders/STLLoader.js';
-//==============================
+import { OrbitControls } from "../three/examples/jsm/controls/OrbitControls.js";
+
+import { STLLoader } from "../three/examples/jsm/loaders/STLLoader.js";
+console.log("========== VISOR 3D ==========");
+
+//======================================================
+// CONTENEDOR
+//======================================================
+
+const viewer = document.getElementById("viewer3D");
+
+if (!viewer) {
+
+    console.error("No existe el div #viewer3D");
+
+    throw new Error("viewer3D no encontrado");
+
+}
+
+console.log("Viewer encontrado");
+
+console.log("Ancho:", viewer.clientWidth);
+
+console.log("Alto:", viewer.clientHeight);
+
+//======================================================
 // ESCENA
-//==============================
+//======================================================
 
 const scene = new THREE.Scene();
 
-scene.background = new THREE.Color(0xf3f5f8);
+scene.background = new THREE.Color(0xf2f5fa);
 
-
-//==============================
-// CÁMARA
-//==============================
+//======================================================
+// CAMARA
+//======================================================
 
 const camera = new THREE.PerspectiveCamera(
 
 45,
 
-window.innerWidth/window.innerHeight,
+viewer.clientWidth / viewer.clientHeight,
 
 0.1,
 
@@ -30,18 +55,15 @@ window.innerWidth/window.innerHeight,
 
 camera.position.set(300,250,300);
 
-
-//==============================
+//======================================================
 // RENDER
-//==============================
+//======================================================
 
 const renderer = new THREE.WebGLRenderer({
 
 antialias:true
 
 });
-
-const viewer=document.getElementById("viewer3D");
 
 renderer.setSize(
 
@@ -55,12 +77,11 @@ renderer.setPixelRatio(window.devicePixelRatio);
 
 viewer.appendChild(renderer.domElement);
 
-
-//==============================
+//======================================================
 // CONTROLES
-//==============================
+//======================================================
 
-const controls=new OrbitControls(
+const controls = new OrbitControls(
 
 camera,
 
@@ -68,16 +89,15 @@ renderer.domElement
 
 );
 
-controls.enableDamping=true;
+controls.enableDamping = true;
 
-controls.dampingFactor=0.05;
+controls.dampingFactor = 0.05;
 
-
-//==============================
+//======================================================
 // LUCES
-//==============================
+//======================================================
 
-const ambient=new THREE.AmbientLight(
+const ambient = new THREE.AmbientLight(
 
 0xffffff,
 
@@ -87,7 +107,7 @@ const ambient=new THREE.AmbientLight(
 
 scene.add(ambient);
 
-const dir=new THREE.DirectionalLight(
+const directional = new THREE.DirectionalLight(
 
 0xffffff,
 
@@ -95,35 +115,28 @@ const dir=new THREE.DirectionalLight(
 
 );
 
-dir.position.set(100,200,100);
+directional.position.set(200,300,200);
 
-scene.add(dir);
+scene.add(directional);
 
+//======================================================
+// CUADRICULA
+//======================================================
 
-//==============================
-// CUADRÍCULA
-//==============================
-
-const grid=new THREE.GridHelper(
-
-500,
-
-50,
-
-0x555555,
-
-0x999999
-
+const grid = new THREE.GridHelper(
+    150,
+    30,
+    0x555555,
+    0x999999
 );
 
 scene.add(grid);
 
-
-//==============================
+//======================================================
 // EJES
-//==============================
+//======================================================
 
-const axes=new THREE.AxesHelper(
+const axes = new THREE.AxesHelper(
 
 120
 
@@ -131,12 +144,11 @@ const axes=new THREE.AxesHelper(
 
 scene.add(axes);
 
-
-//==============================
+//======================================================
 // MATERIAL
-//==============================
+//======================================================
 
-const material=new THREE.MeshStandardMaterial({
+const material = new THREE.MeshStandardMaterial({
 
 color:0x1976d2,
 
@@ -146,148 +158,166 @@ roughness:0.5
 
 });
 
-
-//==============================
+//======================================================
 // CARGAR STL
-//==============================
+//======================================================
 
-let robot;
+let robot = null;
 
-const loader=new STLLoader();
+const loader = new STLLoader();
 
 loader.load(
 
-"assets/models/MagicianLite.stl",
+    "assets/models/MagicianLite.stl",
 
-function(geometry){
+    function (geometry) {
 
-robot=new THREE.Mesh(
+        console.log("STL cargado correctamente");
 
-geometry,
+        geometry.computeBoundingBox();
 
-material
+        console.log(geometry.boundingBox);
 
-);
+        geometry.center();
 
-//centrar
+        robot = new THREE.Mesh(geometry, material);
 
-geometry.computeBoundingBox();
+        robot.rotation.x = -Math.PI / 2;
 
-geometry.center();
+        // Escala temporal
+        robot.scale.set(100,100,100);
 
-robot.rotation.x=-Math.PI/2;
+        scene.add(robot);
 
-scene.add(robot);
+        const box = new THREE.BoxHelper(robot, 0xff0000);
+
+        scene.add(box);
+
+        camera.position.set(120,120,120);
+
+        camera.lookAt(0,0,0);
+
+        controls.target.set(0,0,0);
+
+        controls.update();
+
+        console.log(robot);
+
+    },
+
+function(xhr){
+
+    console.log(
+
+        "Cargando STL:",
+
+        (xhr.loaded / xhr.total * 100).toFixed(0),
+
+        "%"
+
+    );
 
 },
 
-undefined,
-
 function(error){
 
-console.error(error);
+    console.error(error);
 
-alert("No se pudo cargar el archivo STL");
+    alert("No se pudo cargar MagicianLite.stl");
 
 }
 
 );
 
-
-//==============================
+//======================================================
 // BOTONES
-//==============================
+//======================================================
 
-document.getElementById("frontView").onclick=()=>{
+document.getElementById("frontView").onclick = ()=>{
 
-camera.position.set(0,0,300);
-
-};
-
-document.getElementById("topView").onclick=()=>{
-
-camera.position.set(0,300,0);
+    camera.position.set(0,0,300);
 
 };
 
-document.getElementById("sideView").onclick=()=>{
+document.getElementById("topView").onclick = ()=>{
 
-camera.position.set(300,0,0);
-
-};
-
-document.getElementById("isoView").onclick=()=>{
-
-camera.position.set(300,250,300);
+    camera.position.set(0,300,0);
 
 };
 
+document.getElementById("sideView").onclick = ()=>{
 
-//==============================
-// CHECKBOX
-//==============================
-
-document.getElementById("gridCheck").onchange=(e)=>{
-
-grid.visible=e.target.checked;
+    camera.position.set(300,0,0);
 
 };
 
-document.getElementById("axisCheck").onchange=(e)=>{
+document.getElementById("isoView").onclick = ()=>{
 
-axes.visible=e.target.checked;
-
-};
-
-document.getElementById("wireframeCheck").onchange=(e)=>{
-
-material.wireframe=e.target.checked;
+    camera.position.set(300,250,300);
 
 };
 
-document.getElementById("transparentCheck").onchange=(e)=>{
+//======================================================
+// CHECKBOXES
+//======================================================
 
-material.transparent=e.target.checked;
+document.getElementById("gridCheck").addEventListener("change",(e)=>{
 
-material.opacity=e.target.checked?0.4:1;
-
-};
-
-
-//==============================
-// REDIMENSIONAR
-//==============================
-
-window.addEventListener("resize",()=>{
-
-camera.aspect=
-
-viewer.clientWidth/viewer.clientHeight;
-
-camera.updateProjectionMatrix();
-
-renderer.setSize(
-
-viewer.clientWidth,
-
-viewer.clientHeight
-
-);
+    grid.visible = e.target.checked;
 
 });
 
+document.getElementById("axisCheck").addEventListener("change",(e)=>{
 
-//==============================
-// ANIMACIÓN
-//==============================
+    axes.visible = e.target.checked;
+
+});
+
+document.getElementById("wireframeCheck").addEventListener("change",(e)=>{
+
+    material.wireframe = e.target.checked;
+
+});
+
+document.getElementById("transparentCheck").addEventListener("change",(e)=>{
+
+    material.transparent = e.target.checked;
+
+    material.opacity = e.target.checked ? 0.35 : 1;
+
+});
+
+//======================================================
+// REDIMENSIONAR
+//======================================================
+
+window.addEventListener("resize",()=>{
+
+    camera.aspect = viewer.clientWidth / viewer.clientHeight;
+
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(
+
+        viewer.clientWidth,
+
+        viewer.clientHeight
+
+    );
+
+});
+
+//======================================================
+// ANIMACION
+//======================================================
 
 function animate(){
 
-requestAnimationFrame(animate);
+    requestAnimationFrame(animate);
 
-controls.update();
+    controls.update();
 
-renderer.render(scene,camera);
+    renderer.render(scene,camera);
 
 }
 
