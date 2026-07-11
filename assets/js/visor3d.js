@@ -9,6 +9,8 @@ import { OrbitControls } from "../three/examples/jsm/controls/OrbitControls.js";
 import { STLLoader } from "../three/examples/jsm/loaders/STLLoader.js";
 console.log("========== VISOR 3D ==========");
 
+import { TransformControls } from "../three/examples/jsm/controls/TransformControls.js";
+
 //======================================================
 // CONTENEDOR
 //======================================================
@@ -53,7 +55,13 @@ viewer.clientWidth / viewer.clientHeight,
 
 );
 
-camera.position.set(300,250,300);
+camera.position.set(
+350,
+250,
+350
+);
+
+camera.lookAt(0,0,0);
 
 //======================================================
 // RENDER
@@ -65,11 +73,16 @@ antialias:true
 
 });
 
+renderer.shadowMap.enabled = true;
+
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
 renderer.setSize(
 
 viewer.clientWidth,
 
 viewer.clientHeight
+
 
 );
 
@@ -91,43 +104,134 @@ renderer.domElement
 
 controls.enableDamping = true;
 
+//========================================
+// CONTROLES DE TRANSFORMACIÓN
+//========================================
+
+const transform = new TransformControls(
+    camera,
+    renderer.domElement
+);
+
+scene.add(transform);
+
+controls.minDistance = 20;
+
+controls.maxDistance = 3000;
+
+controls.maxPolarAngle = Math.PI;
+
+controls.screenSpacePanning = true;
+
 controls.dampingFactor = 0.05;
 
-//======================================================
+//========================================
 // LUCES
-//======================================================
+//========================================
 
+// Luz ambiente
 const ambient = new THREE.AmbientLight(
-
-0xffffff,
-
-2
-
+    0xffffff,
+    1
 );
 
 scene.add(ambient);
 
-const directional = new THREE.DirectionalLight(
 
-0xffffff,
+// Luz principal
+const sun = new THREE.DirectionalLight(
+    0xffffff,
+    2.5
+);
 
-2
+sun.position.set(250,300,200);
+
+// ← AQUÍ VAN ESTAS LÍNEAS
+
+sun.castShadow = true;
+
+sun.shadow.mapSize.width = 4096;
+
+sun.shadow.mapSize.height = 4096;
+
+sun.shadow.camera.left = -800;
+
+sun.shadow.camera.right = 800;
+
+sun.shadow.camera.top = 800;
+
+sun.shadow.camera.bottom = -800;
+
+sun.shadow.bias = -0.0001;
+
+scene.add(sun);
+
+
+// Luz de relleno
+const fill = new THREE.DirectionalLight(
+    0xffffff,
+    1
+);
+
+fill.position.set(-200,100,-150);
+
+scene.add(fill);
+
+
+// Luz trasera
+const back = new THREE.DirectionalLight(
+    0xffffff,
+    0.6
+);
+
+back.position.set(0,150,-250);
+
+scene.add(back);
+
+//========================================
+// SUELO
+//========================================
+
+const floorGeometry = new THREE.PlaneGeometry(
+    5000,
+    5000
+);
+
+const floorMaterial = new THREE.ShadowMaterial({
+
+    opacity:0.28
+
+});
+
+const floor = new THREE.Mesh(
+
+    floorGeometry,
+
+    floorMaterial
 
 );
 
-directional.position.set(200,300,200);
+floor.rotation.x = -Math.PI/2;
 
-scene.add(directional);
+floor.receiveShadow = true;
 
-//======================================================
-// CUADRICULA
-//======================================================
+scene.add(floor);
+
+
+//========================================
+// CUADRÍCULA
+//========================================
 
 const grid = new THREE.GridHelper(
-    150,
-    30,
+
+    5000,
+
+    100,
+
     0x555555,
+
     0x999999
+
 );
 
 scene.add(grid);
@@ -148,13 +252,17 @@ scene.add(axes);
 // MATERIAL
 //======================================================
 
-const material = new THREE.MeshStandardMaterial({
+const material = new THREE.MeshPhysicalMaterial({
 
-color:0x1976d2,
+    color:0x3f8cff,
 
-metalness:0.2,
+    metalness:0.15,
 
-roughness:0.5
+    roughness:0.28,
+
+    clearcoat:0.4,
+
+    clearcoatRoughness:0.2
 
 });
 
@@ -184,20 +292,42 @@ loader.load(
 
         robot.rotation.x = -Math.PI / 2;
 
-        // Escala temporal
-        robot.scale.set(100,100,100);
+        // Activar sombras
+        robot.castShadow = true;
+        robot.receiveShadow = true;
 
         scene.add(robot);
 
-        const box = new THREE.BoxHelper(robot, 0xff0000);
+        transform.attach(robot);
 
-        scene.add(box);
+        transform.addEventListener("dragging-changed", function(event){
 
-        camera.position.set(120,120,120);
+        controls.enabled = !event.value;
 
-        camera.lookAt(0,0,0);
+        });
 
-        controls.target.set(0,0,0);
+        const box = new THREE.Box3().setFromObject(robot);
+
+        const size = box.getSize(new THREE.Vector3());
+
+        const center = box.getCenter(new THREE.Vector3());
+
+        console.log("Tamaño:", size);
+
+        console.log("Centro:", center);
+
+        // Obtener la dimensión mayor
+        const maxDimension = Math.max(size.x, size.y, size.z);
+
+        // Distancia automática
+        const distance = maxDimension * 2.2;
+
+        // Posicionar la cámara
+        camera.position.set(distance, distance * 0.8, distance);
+
+        camera.lookAt(center);
+
+        controls.target.copy(center);
 
         controls.update();
 
@@ -230,12 +360,63 @@ function(error){
 );
 
 //======================================================
+// VARIABLES DEL VISOR
+//======================================================
+
+let modo = "camara";
+
+let rotando = false;
+
+let mouseAnterior = {
+
+    x:0,
+
+    y:0
+
+};
+
+//======================================================
+// FUNCIONES
+//======================================================
+
+function activarModoCamara(){
+
+    modo="camara";
+
+    controls.enabled=true;
+
+    console.log("Modo Cámara");
+
+}
+
+function activarModoModelo(){
+
+    modo="modelo";
+
+    controls.enabled=false;
+
+    console.log("Modo Modelo");
+
+}
+
+//======================================================
 // BOTONES
 //======================================================
+document.getElementById("cameraMode").onclick=()=>{
+
+    activarModoCamara();
+
+};
+
+document.getElementById("modelMode").onclick=()=>{
+
+    activarModoModelo();
+
+};
 
 document.getElementById("frontView").onclick = ()=>{
 
-    camera.position.set(0,0,300);
+    camera.position.set(0,0,350);
 
 };
 
@@ -256,6 +437,54 @@ document.getElementById("isoView").onclick = ()=>{
     camera.position.set(300,250,300);
 
 };
+
+//======================================================
+// ROTAR MODELO
+//======================================================
+
+renderer.domElement.addEventListener("mousedown",(event)=>{
+
+    if(modo!="modelo") return;
+
+    rotando=true;
+
+    mouseAnterior.x=event.clientX;
+
+    mouseAnterior.y=event.clientY;
+
+});
+
+renderer.domElement.addEventListener("mouseup",()=>{
+
+    rotando=false;
+
+});
+
+renderer.domElement.addEventListener("mouseleave",()=>{
+
+    rotando=false;
+
+});
+
+renderer.domElement.addEventListener("mousemove",(event)=>{
+
+    if(!rotando) return;
+
+    if(!robot) return;
+
+    const dx=event.clientX-mouseAnterior.x;
+
+    const dy=event.clientY-mouseAnterior.y;
+
+    robot.rotation.y+=dx*0.01;
+
+    robot.rotation.x+=dy*0.01;
+
+    mouseAnterior.x=event.clientX;
+
+    mouseAnterior.y=event.clientY;
+
+});
 
 //======================================================
 // CHECKBOXES

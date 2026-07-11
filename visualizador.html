@@ -104,38 +104,98 @@ Manipule el modelo CAD del Dobot Magician Lite directamente desde la plataforma.
 
 <h3>Herramientas</h3>
 
-<button id="frontView">Vista frontal</button>
+<hr>
 
-<button id="topView">Vista superior</button>
-
-<button id="sideView">Vista lateral</button>
-
-<button id="isoView">Vista isométrica</button>
+<h4>Modo</h4>
 
 <hr>
 
-<label><input type="checkbox" id="gridCheck" checked> Mostrar cuadrícula</label>
+<h4>Transformación</h4>
 
-<label><input type="checkbox" id="axisCheck" checked> Mostrar ejes XYZ</label>
+<button id="moveTool">
+Mover
+</button>
 
-<label><input type="checkbox" id="wireframeCheck"> Wireframe</label>
+<button id="rotateTool">
+Rotar
+</button>
 
-<label><input type="checkbox" id="transparentCheck"> Transparencia</label>
+<button id="scaleTool">
+Escalar
+</button>
 
-</div>
+<button id="cameraMode">
+📷 Cámara
+</button>
 
-</div>
+<button id="modelMode">
+📦 Modelo
+</button>
 
-</section>
+<hr>
+
+<h4>Vistas</h4>
+
+<button id="frontView">Frontal</button>
+
+<button id="topView">Superior</button>
+
+<button id="sideView">Lateral</button>
+
+<button id="isoView">Isométrica</button>
+
+<button id="resetView">
+Reiniciar Vista
+</button>
+
+<hr>
+
+<h4>Visualización</h4>
+
+<label>
+
+<input type="checkbox" id="gridCheck" checked>
+
+Cuadrícula
+
+</label>
+
+<label>
+
+<input type="checkbox" id="axisCheck" checked>
+
+Ejes XYZ
+
+</label>
+
+<label>
+
+<input type="checkbox" id="shadowCheck" checked>
+
+Sombras
+
+</label>
+
+<label>
+
+<input type="checkbox" id="wireframeCheck">
+
+Wireframe
+
+</label>
+
+<label>
+
+<input type="checkbox" id="transparentCheck">
+
+Transparencia
+
+</label>
 
 </main>
 
-<!-- Firebase -->
-
-
-
-
-<script type="module" src="assets/js/visor3d.js"></script>
+<!--<script type="module" src="assets/js/visor3d.js"></script> -->
+<script type="module" src="assets/js/viewer/main.js"></script>
 
 </body>
 
