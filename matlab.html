@@ -6,6 +6,7 @@
     <title>Plataforma Didáctica</title>
 
     <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/matlab.css">
 </head>
 <body>
 
@@ -69,46 +70,133 @@
         </div>
     </div>
 
-    <section style="padding:20px;">
+    <section class="matlab-container">
 
-        <h1>Simulación con MATLAB</h1>
+    <!-- Barra superior -->
 
-        <p>
-            En esta sección aprenderás a simular el movimiento del brazo robótico antes de ejecutarlo físicamente.
-        </p>
+    <div id="matlabRibbon" class="matlab-ribbon">
 
-        <!-- 🎥 VIDEO EXPLICATIVO -->
-        <h2>Video demostrativo</h2>
+        <button id="btnNuevo">Nuevo</button>
 
-        <video controls width="500">
-            <source src="assets/videos/matlab-demo.mp4" type="video/mp4">
-        </video>
+        <button id="btnAbrir">Abrir</button>
 
-        <!-- 📄 GUÍA PDF -->
-        <h2>Guía de práctica</h2>
+        <button id="btnGuardar">Guardar</button>
 
-        <a href="assets/pdf/guia_matlab.pdf" target="_blank">
-            Ver guía MATLAB
-        </a>
+        <button id="btnEjecutar">▶ Ejecutar</button>
 
-        <!-- 💻 CÓDIGO -->
-        <h2>Código MATLAB</h2>
+        <button id="btnDetener">■ Detener</button>
 
-        <pre>
-% Ejemplo básico
-x = 10;
-y = 5;
-z = 3;
+    </div>
 
-disp("Posición del robot:");
-disp([x y z]);
-        </pre>
+    <!-- Área de trabajo -->
 
-        <a href="assets/matlab/codigo.m" download>
-            Descargar código MATLAB
-        </a>
+    <div class="matlab-workspace">
 
-    </section>
+        <!-- Explorador -->
+
+        <aside class="matlab-files">
+
+            <h3>Archivos</h3>
+
+            <button id="btnSubirArchivo">
+
+                + Subir archivo .m
+
+            </button>
+
+            <input
+                type="file"
+                id="matlabFileInput"
+                accept=".m"
+                hidden>
+
+            <ul id="matlabFileList">
+
+            </ul>
+
+        </aside>
+
+        <!-- Editor -->
+
+        <section class="matlab-editor">
+
+            <div class="editor-title">
+
+                Control_de_posicion.m
+
+            </div>
+
+            <textarea id="matlabEditor"></textarea>
+
+        </section>
+
+        <!-- Panel derecho -->
+
+        <aside class="matlab-side">
+
+            <div class="simulation-box">
+
+                <h3>Simulación</h3>
+
+                <div id="matlabRobotViewer">
+
+                    Simulación 3D
+
+                </div>
+
+            </div>
+
+            <div class="workspace-box">
+
+                <h3>Workspace</h3>
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Variable</th>
+
+                            <th>Valor</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="workspaceTable">
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </aside>
+
+    </div>
+
+    <!-- Consola -->
+
+    <div class="matlab-console">
+
+        <div class="console-title">
+
+            Consola MATLAB
+
+        </div>
+
+        <div id="matlabConsole">
+
+>>
+
+Bienvenido al entorno de simulación.
+
+        </div>
+
+    </div>
+
+</section>
 
 </main>
 
@@ -152,6 +240,10 @@ disp([x y z]);
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
 <script src="assets/js/firebase-config.js"></script>
+
+<script src="assets/js/matlab.js"></script>
+
+<script type="module" src="assets/js/matlab/matlab-app.js"></script>
 
 </body>
 </html>
