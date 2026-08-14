@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Dobot Python Lab</title>
+
+    <link rel="stylesheet" href="assets/css/dobot-lab.css">
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="lab-header">
+
+        <div class="lab-brand">
+            <div class="brand-icon">⚙</div>
+
+            <div>
+                <h1>Dobot Python Lab</h1>
+                <span>Laboratorio de programación robótica</span>
+            </div>
+        </div>
+
+        <div class="connection-status">
+
+            <span id="connectionIndicator"
+                  class="status-indicator offline">
+            </span>
+
+            <span id="connectionText">
+                Robot no conectado
+            </span>
+
+            <button id="connectRobotBtn" class="btn-connect">
+                Conectar robot
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <!-- CONTENEDOR PRINCIPAL -->
+    <main class="lab-container">
+
+
+        <!-- PANEL IZQUIERDO -->
+        <aside class="commands-panel">
+
+            <div class="panel-title">
+                <h2>Comandos</h2>
+                <span>Python</span>
+            </div>
+
+
+            <div class="command-section">
+
+                <h3>Movimiento</h3>
+
+                <button class="command-btn"
+                        data-command="ptp">
+                    <span>▣</span>
+                    Movimiento PTP
+                </button>
+
+                <button class="command-btn"
+                        data-command="linear">
+                    <span>↝</span>
+                    Movimiento lineal
+                </button>
+
+                <button class="command-btn"
+                        data-command="home">
+                    <span>⌂</span>
+                    Posición inicial
+                </button>
+
+            </div>
+
+
+            <div class="command-section">
+
+                <h3>Herramienta</h3>
+
+                <button class="command-btn"
+                        data-command="gripper">
+                    <span>✥</span>
+                    Pinza
+                </button>
+
+                <button class="command-btn"
+                        data-command="suction">
+                    <span>◉</span>
+                    Succión
+                </button>
+
+            </div>
+
+
+            <div class="command-section">
+
+                <h3>Control</h3>
+
+                <button class="command-btn"
+                        data-command="delay">
+                    <span>◷</span>
+                    Esperar
+                </button>
+
+                <button class="command-btn"
+                        data-command="stop">
+                    <span>■</span>
+                    Detener
+                </button>
+
+            </div>
+
+        </aside>
+
+
+
+        <!-- EDITOR CENTRAL -->
+        <section class="editor-panel">
+
+            <div class="editor-toolbar">
+
+                <div class="file-name">
+                    <span>🐍</span>
+                    practica_robot.py
+                </div>
+
+                <div class="editor-actions">
+
+                    <button id="newCodeBtn">
+                        Nuevo
+                    </button>
+
+                    <button id="generateCodeBtn">
+                        Generar código
+                    </button>
+
+                    <button id="copyCodeBtn">
+                        Copiar
+                    </button>
+
+                    <button id="executeCodeBtn"
+                            class="execute-btn">
+                        ▶ Ejecutar
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="editor-wrapper">
+
+                <div class="line-numbers" id="lineNumbers">
+                    1
+                </div>
+
+                <textarea
+                    id="pythonEditor"
+                    spellcheck="false"
+                    autocomplete="off"
+                    autocorrect="off"
+                    autocapitalize="off"
+                ># Programa de movimiento del Magician Lite
+
+from DobotEDU import *
+
+# Movimiento punto a punto
+magician.ptp(mode=0, x=250, y=0, z=50, r=0)</textarea>
+
+            </div>
+
+
+            <!-- CONSOLA -->
+            <div class="console-panel">
+
+                <div class="console-header">
+
+                    <span>Consola</span>
+
+                    <button id="clearConsoleBtn">
+                        Limpiar
+                    </button>
+
+                </div>
+
+                <div id="consoleOutput"
+                     class="console-output">
+
+                    <div class="console-line">
+                        <span class="console-prefix">&gt;</span>
+                        Sistema preparado.
+                    </div>
+
+                    <div class="console-line">
+                        <span class="console-prefix">&gt;</span>
+                        Esperando conexión con el robot...
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- PANEL DERECHO -->
+        <aside class="control-panel">
+
+            <div class="panel-title">
+
+                <h2>Control del brazo</h2>
+
+                <span>Magician Lite</span>
+
+            </div>
+
+
+            <!-- VELOCIDAD -->
+            <section class="control-section">
+
+                <div class="section-header">
+
+                    <h3>Velocidad</h3>
+
+                    <strong id="speedValue">
+                        50%
+                    </strong>
+
+                </div>
+
+                <input
+                    type="range"
+                    id="speedSlider"
+                    min="1"
+                    max="100"
+                    value="50"
+                >
+
+            </section>
+
+
+
+            <!-- COORDENADAS -->
+            <section class="control-section">
+
+                <div class="section-header">
+
+                    <h3>Coordenadas</h3>
+
+                    <span>XYZR</span>
+
+                </div>
+
+
+                <div class="coordinate-grid">
+
+                    <label>
+                        <span>X</span>
+
+                        <input
+                            type="number"
+                            id="coordX"
+                            value="250"
+                        >
+                    </label>
+
+
+                    <label>
+                        <span>Y</span>
+
+                        <input
+                            type="number"
+                            id="coordY"
+                            value="0"
+                        >
+                    </label>
+
+
+                    <label>
+                        <span>Z</span>
+
+                        <input
+                            type="number"
+                            id="coordZ"
+                            value="50"
+                        >
+                    </label>
+
+
+                    <label>
+                        <span>R</span>
+
+                        <input
+                            type="number"
+                            id="coordR"
+                            value="0"
+                        >
+                    </label>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- ARTICULACIONES -->
+            <section class="control-section">
+
+                <div class="section-header">
+
+                    <h3>Articulaciones</h3>
+
+                    <span>4 GDL</span>
+
+                </div>
+
+
+                <div class="joint-grid">
+
+                    <label>
+                        <span>J1</span>
+
+                        <input
+                            type="number"
+                            id="joint1"
+                            value="0"
+                        >
+                    </label>
+
+
+                    <label>
+                        <span>J2</span>
+
+                        <input
+                            type="number"
+                            id="joint2"
+                            value="0"
+                        >
+                    </label>
+
+
+                    <label>
+                        <span>J3</span>
+
+                        <input
+                            type="number"
+                            id="joint3"
+                            value="0"
+                        >
+                    </label>
+
+
+                    <label>
+                        <span>J4</span>
+
+                        <input
+                            type="number"
+                            id="joint4"
+                            value="0"
+                        >
+                    </label>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- MOVIMIENTO MANUAL -->
+            <section class="control-section">
+
+                <div class="section-header">
+
+                    <h3>Movimiento manual</h3>
+
+                </div>
+
+
+                <div class="jog-controls">
+
+                    <button data-axis="x"
+                            data-direction="positive">
+                        X+
+                    </button>
+
+                    <button data-axis="x"
+                            data-direction="negative">
+                        X-
+                    </button>
+
+                    <button data-axis="y"
+                            data-direction="positive">
+                        Y+
+                    </button>
+
+                    <button data-axis="y"
+                            data-direction="negative">
+                        Y-
+                    </button>
+
+                    <button data-axis="z"
+                            data-direction="positive">
+                        Z+
+                    </button>
+
+                    <button data-axis="z"
+                            data-direction="negative">
+                        Z-
+                    </button>
+
+                </div>
+
+            </section>
+
+
+
+            <!-- HERRAMIENTA -->
+            <section class="control-section">
+
+                <div class="section-header">
+
+                    <h3>Herramienta</h3>
+
+                </div>
+
+
+                <div class="tool-buttons">
+
+                    <button
+                        class="tool-btn active"
+                        data-tool="gripper">
+
+                        Pinza
+
+                    </button>
+
+
+                    <button
+                        class="tool-btn"
+                        data-tool="suction">
+
+                        Succión
+
+                    </button>
+
+                </div>
+
+
+                <div class="tool-actions">
+
+                    <button id="toolOpenBtn">
+                        Abrir
+                    </button>
+
+                    <button id="toolCloseBtn">
+                        Cerrar
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- POSICIÓN -->
+            <section class="control-section position-section">
+
+                <h3>Posición actual</h3>
+
+                <div class="current-position">
+
+                    <div>
+                        <span>X</span>
+                        <strong id="currentX">250</strong>
+                    </div>
+
+                    <div>
+                        <span>Y</span>
+                        <strong id="currentY">0</strong>
+                    </div>
+
+                    <div>
+                        <span>Z</span>
+                        <strong id="currentZ">50</strong>
+                    </div>
+
+                    <div>
+                        <span>R</span>
+                        <strong id="currentR">0</strong>
+                    </div>
+
+                </div>
+
+            </section>
+
+
+        </aside>
+
+    </main>
+
+
+    <script src="assets/js/dobot-lab-ui.js"></script>
+
+</body>
+</html>

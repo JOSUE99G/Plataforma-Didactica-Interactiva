@@ -1,0 +1,736 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #1d2329;
+    color: #e8edf2;
+    height: 100vh;
+    overflow: hidden;
+}
+
+
+/* ================================
+   CABECERA
+================================ */
+
+.lab-header {
+    height: 68px;
+
+    background: #252c33;
+
+    border-bottom: 1px solid #3b444d;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 22px;
+}
+
+
+.lab-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.brand-icon {
+    width: 38px;
+    height: 38px;
+
+    background: #1687e8;
+
+    border-radius: 8px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+}
+
+
+.lab-brand h1 {
+    font-size: 18px;
+    font-weight: 600;
+}
+
+
+.lab-brand span {
+    font-size: 11px;
+    color: #8f9ba6;
+}
+
+
+.connection-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    font-size: 13px;
+}
+
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+}
+
+
+.status-indicator.offline {
+    background: #d04a4a;
+}
+
+
+.status-indicator.online {
+    background: #39bd75;
+}
+
+
+.btn-connect {
+    margin-left: 12px;
+
+    border: none;
+
+    padding: 9px 16px;
+
+    border-radius: 6px;
+
+    background: #167bd4;
+
+    color: white;
+
+    cursor: pointer;
+
+    font-weight: 600;
+}
+
+
+.btn-connect:hover {
+    background: #1c91ef;
+}
+
+
+
+/* ================================
+   CONTENEDOR
+================================ */
+
+.lab-container {
+    height: calc(100vh - 68px);
+
+    display: grid;
+
+    grid-template-columns:
+        235px
+        minmax(450px, 1fr)
+        330px;
+}
+
+
+
+/* ================================
+   PANELES
+================================ */
+
+.commands-panel,
+.control-panel {
+    background: #252c33;
+
+    border-right: 1px solid #3b444d;
+
+    overflow-y: auto;
+}
+
+
+.control-panel {
+    border-right: none;
+
+    border-left: 1px solid #3b444d;
+}
+
+
+.panel-title {
+    padding: 18px;
+
+    border-bottom: 1px solid #3b444d;
+}
+
+
+.panel-title h2 {
+    font-size: 15px;
+}
+
+
+.panel-title span {
+    display: block;
+
+    margin-top: 5px;
+
+    color: #7f8b96;
+
+    font-size: 11px;
+}
+
+
+
+/* ================================
+   COMANDOS
+================================ */
+
+.command-section {
+    padding: 14px;
+}
+
+
+.command-section h3 {
+    color: #8d99a5;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    margin-bottom: 8px;
+}
+
+
+.command-btn {
+    width: 100%;
+
+    border: none;
+
+    background: transparent;
+
+    color: #d9e0e6;
+
+    text-align: left;
+
+    padding: 11px 10px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    margin-bottom: 3px;
+
+    font-size: 13px;
+}
+
+
+.command-btn span {
+    width: 25px;
+
+    display: inline-block;
+
+    color: #4aa9ef;
+}
+
+
+.command-btn:hover {
+    background: #303a43;
+}
+
+
+
+/* ================================
+   EDITOR
+================================ */
+
+.editor-panel {
+    background: #1d2329;
+
+    display: flex;
+
+    flex-direction: column;
+
+    min-width: 0;
+}
+
+
+.editor-toolbar {
+    height: 48px;
+
+    background: #252c33;
+
+    border-bottom: 1px solid #3b444d;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 12px;
+}
+
+
+.file-name {
+    font-size: 13px;
+
+    color: #cbd4dc;
+}
+
+
+.editor-actions {
+    display: flex;
+
+    gap: 7px;
+}
+
+
+.editor-actions button {
+    border: 1px solid #46515b;
+
+    background: #303941;
+
+    color: #dbe2e8;
+
+    padding: 7px 11px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+
+    font-size: 12px;
+}
+
+
+.editor-actions button:hover {
+    background: #3b4751;
+}
+
+
+.editor-actions .execute-btn {
+    background: #1687e8;
+
+    border-color: #1687e8;
+
+    color: white;
+}
+
+
+.editor-wrapper {
+    flex: 1;
+
+    display: flex;
+
+    overflow: hidden;
+
+    background: #171c21;
+}
+
+
+.line-numbers {
+    width: 45px;
+
+    padding: 15px 8px;
+
+    color: #59646f;
+
+    background: #171c21;
+
+    text-align: right;
+
+    font-family: Consolas, monospace;
+
+    font-size: 14px;
+
+    line-height: 22px;
+
+    user-select: none;
+
+    overflow: hidden;
+}
+
+
+#pythonEditor {
+    flex: 1;
+
+    resize: none;
+
+    border: none;
+
+    outline: none;
+
+    background: #171c21;
+
+    color: #dce5ed;
+
+    padding: 15px;
+
+    font-family: Consolas, "Courier New", monospace;
+
+    font-size: 14px;
+
+    line-height: 22px;
+
+    tab-size: 4;
+}
+
+
+
+/* ================================
+   CONSOLA
+================================ */
+
+.console-panel {
+    height: 150px;
+
+    border-top: 1px solid #3b444d;
+
+    background: #151a1f;
+}
+
+
+.console-header {
+    height: 35px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    padding: 0 12px;
+
+    border-bottom: 1px solid #303840;
+
+    font-size: 12px;
+}
+
+
+.console-header button {
+    background: transparent;
+
+    border: none;
+
+    color: #84919d;
+
+    cursor: pointer;
+}
+
+
+.console-output {
+    height: calc(100% - 35px);
+
+    overflow-y: auto;
+
+    padding: 10px 14px;
+
+    font-family: Consolas, monospace;
+
+    font-size: 12px;
+
+    color: #9caab6;
+}
+
+
+.console-line {
+    margin-bottom: 5px;
+}
+
+
+.console-prefix {
+    color: #3da5ed;
+
+    margin-right: 6px;
+}
+
+
+
+/* ================================
+   CONTROLES
+================================ */
+
+.control-section {
+    padding: 15px;
+
+    border-bottom: 1px solid #343d46;
+}
+
+
+.section-header {
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    margin-bottom: 12px;
+}
+
+
+.section-header h3,
+.control-section > h3 {
+    font-size: 13px;
+
+    font-weight: 500;
+}
+
+
+.section-header span,
+.section-header strong {
+    font-size: 11px;
+
+    color: #7f8b96;
+}
+
+
+
+/* ================================
+   VELOCIDAD
+================================ */
+
+#speedSlider {
+    width: 100%;
+}
+
+
+
+/* ================================
+   COORDENADAS
+================================ */
+
+.coordinate-grid,
+.joint-grid {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+
+.coordinate-grid label,
+.joint-grid label {
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    color: #8c99a5;
+
+    font-size: 12px;
+}
+
+
+.coordinate-grid input,
+.joint-grid input {
+    width: 100%;
+
+    background: #1b2127;
+
+    border: 1px solid #3a444e;
+
+    color: #e1e8ee;
+
+    padding: 7px;
+
+    border-radius: 4px;
+
+    outline: none;
+}
+
+
+.coordinate-grid input:focus,
+.joint-grid input:focus {
+    border-color: #1687e8;
+}
+
+
+
+/* ================================
+   JOG
+================================ */
+
+.jog-controls {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 7px;
+}
+
+
+.jog-controls button {
+    border: 1px solid #3c4751;
+
+    background: #303940;
+
+    color: #dbe3e9;
+
+    padding: 9px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+
+.jog-controls button:hover {
+    background: #3a4752;
+}
+
+
+
+/* ================================
+   HERRAMIENTAS
+================================ */
+
+.tool-buttons {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 6px;
+}
+
+
+.tool-btn {
+    background: #303940;
+
+    border: 1px solid #3d4852;
+
+    color: #cdd6de;
+
+    padding: 8px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+
+.tool-btn.active {
+    border-color: #1687e8;
+
+    background: #193b58;
+}
+
+
+.tool-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 6px;
+
+    margin-top: 8px;
+}
+
+
+.tool-actions button {
+    background: #252c33;
+
+    border: 1px solid #3d4852;
+
+    color: #ccd5dc;
+
+    padding: 7px;
+
+    border-radius: 5px;
+
+    cursor: pointer;
+}
+
+
+
+/* ================================
+   POSICIÓN
+================================ */
+
+.current-position {
+    display: grid;
+
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 5px;
+
+    margin-top: 10px;
+}
+
+
+.current-position div {
+    background: #1a2026;
+
+    padding: 8px 4px;
+
+    text-align: center;
+
+    border-radius: 4px;
+}
+
+
+.current-position span {
+    display: block;
+
+    color: #7f8b96;
+
+    font-size: 10px;
+}
+
+
+.current-position strong {
+    display: block;
+
+    margin-top: 3px;
+
+    font-size: 12px;
+
+    color: #dbe4eb;
+}
+
+
+
+/* ================================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 1100px) {
+
+    .lab-container {
+        grid-template-columns:
+            190px
+            minmax(400px, 1fr)
+            290px;
+    }
+
+}
+
+
+@media (max-width: 850px) {
+
+    body {
+        overflow: auto;
+    }
+
+    .lab-container {
+        height: auto;
+
+        display: block;
+    }
+
+    .commands-panel,
+    .control-panel {
+        display: none;
+    }
+
+    .editor-panel {
+        min-height: calc(100vh - 68px);
+    }
+
+}
