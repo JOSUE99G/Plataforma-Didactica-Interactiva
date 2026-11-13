@@ -7,6 +7,17 @@ import { Interprete } from "./matlab-interprete.js";
 
 import { RobotVirtual } from "./matlab-robot-api.js";
 
+import {
+  esperarSesion,
+  listarArchivos,
+  crearArchivo,
+  guardarArchivo,
+  abrirArchivo,
+  nombreArchivoActual,
+  importarArchivo,
+  eliminarArchivo,
+} from "./matlab-archivos.js";
+
 /* ============================================================
    REFERENCIAS DOM
    ============================================================ */
@@ -26,6 +37,23 @@ const btnDetener = document.getElementById("btnDetener");
    ============================================================ */
 
 const robot = new RobotVirtual();
+
+// Puente hacia el visor 3D embebido (iframe):
+// cada pose calculada por el RobotVirtual se reenvía al iframe.
+robot.onPose = (pose) => {
+
+  const frame = document.getElementById("robot3DFrame");
+
+  if (frame && frame.contentWindow) {
+
+    frame.contentWindow.postMessage(
+      { tipo: "robotPose", pose },
+      window.location.origin
+    );
+
+  }
+
+};
 
 let interprete = null;
 
@@ -162,6 +190,88 @@ async function ejecutar() {
 }
 
 /* ============================================================
+   LISTA DE ARCHIVOS DEL ESTUDIANTE (panel izquierdo)
+   ============================================================ */
+
+function actualizarTituloEditor(nombre) {
+
+  const titulo = document.querySelector(".editor-title");
+
+  if (titulo) titulo.textContent = nombre;
+
+}
+
+async function refrescarListaArchivos() {
+
+  const lista = document.getElementById("matlabFileList");
+
+  if (!lista) return;
+
+  const archivos = await listarArchivos();
+
+  lista.innerHTML = "";
+
+  if (archivos.length === 0) {
+
+    const li = document.createElement("li");
+
+    li.textContent = "— sin archivos —";
+
+    li.style.color = "#999";
+
+    lista.appendChild(li);
+
+    return;
+
+  }
+
+  archivos.forEach((archivo) => {
+
+    const li = document.createElement("li");
+
+    li.textContent = "📄 " + archivo.nombre;
+
+    li.style.cursor = "pointer";
+
+    // Abrir al hacer clic
+    li.addEventListener("click", () => {
+
+      const abierto = abrirArchivo(archivo.id);
+
+      if (abierto && editor) {
+
+        editor.value = abierto.contenido;
+
+        actualizarTituloEditor(abierto.nombre);
+
+        log(`📂 Abierto: ${abierto.nombre}`);
+
+      }
+
+    });
+
+    // Botón eliminar (click derecho o doble clic en la ✕)
+    li.addEventListener("contextmenu", async (e) => {
+
+      e.preventDefault();
+
+      if (!confirm(`¿Eliminar ${archivo.nombre}?`)) return;
+
+      const ok = await eliminarArchivo(archivo.id);
+
+      log(ok ? `🗑 Eliminado: ${archivo.nombre}` : "⚠ No se pudo eliminar.");
+
+      await refrescarListaArchivos();
+
+    });
+
+    lista.appendChild(li);
+
+  });
+
+}
+
+/* ============================================================
    RIBBON
    ============================================================ */
 
@@ -205,6 +315,103 @@ function conectarRibbon() {
     btnEjemplo.addEventListener("click", () => {
       if (editor) editor.value = CODIGO_EJEMPLO;
     });
+
+  /* --- ARCHIVOS: Nuevo / Guardar / Abrir / Subir --- */
+
+  const btnNuevo = document.getElementById("btnNuevo");
+
+  if (btnNuevo)
+    btnNuevo.addEventListener("click", async () => {
+
+      const nombre = prompt("Nombre del nuevo archivo:", "nuevo_script.m");
+
+      if (!nombre) return;
+
+      const creado = await crearArchivo(nombre, "% Nuevo script\n\n");
+
+      if (creado) {
+
+        if (editor) editor.value = creado.contenido;
+
+        actualizarTituloEditor(creado.nombre);
+
+        await refrescarListaArchivos();
+
+        log(`📄 Archivo creado: ${creado.nombre}`);
+
+      } else {
+
+        log("⚠ No se pudo crear el archivo (¿sesión expirada?).");
+
+      }
+
+    });
+
+  const btnGuardar = document.getElementById("btnGuardar");
+
+  if (btnGuardar)
+    btnGuardar.addEventListener("click", async () => {
+
+      if (!editor) return;
+
+      const ok = await guardarArchivo(editor.value);
+
+      log(ok ? "💾 Script guardado en tu cuenta." : "⚠ Error al guardar.");
+
+    });
+
+  const btnAbrir = document.getElementById("btnAbrir");
+
+  if (btnAbrir)
+    btnAbrir.addEventListener("click", async () => {
+
+      await refrescarListaArchivos();
+
+      log("📂 Revisa tu lista de archivos en el panel izquierdo.");
+
+    });
+
+  const btnSubir = document.getElementById("btnSubirArchivo");
+
+  const inputArchivo = document.getElementById("matlabFileInput");
+
+  if (btnSubir && inputArchivo) {
+
+    btnSubir.addEventListener("click", () => inputArchivo.click());
+
+    inputArchivo.addEventListener("change", async () => {
+
+      const file = inputArchivo.files[0];
+
+      if (!file) return;
+
+      try {
+
+        const importado = await importarArchivo(file);
+
+        if (importado) {
+
+          if (editor) editor.value = importado.contenido;
+
+          actualizarTituloEditor(importado.nombre);
+
+          await refrescarListaArchivos();
+
+          log(`📥 Archivo importado: ${importado.nombre}`);
+
+        }
+
+      } catch (error) {
+
+        log("⚠ " + error.message);
+
+      }
+
+      inputArchivo.value = ""; // permitir volver a subir el mismo archivo
+
+    });
+
+  }
 
   // Toggle visor 3D: amplia el editor cuando está oculto
   const btnToggle = document.getElementById("btnToggleViewer");
@@ -254,12 +461,27 @@ magician.home()`;
    INICIO
    ============================================================ */
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
   limpiarConsola();
 
   conectarRibbon();
 
   actualizarWorkspace([]);
+
+  // Esperar sesión y cargar los archivos del estudiante
+  const uid = await esperarSesion();
+
+  if (uid) {
+
+    await refrescarListaArchivos();
+
+    log("📚 Tus archivos .m se cargaron desde tu cuenta.");
+
+  } else {
+
+    log("⚠ Sin sesión: los archivos no se guardarán.");
+
+  }
 
   log("💡 Sugerencia: pulsa 'Ejemplo' para cargar un script de prueba.");
 

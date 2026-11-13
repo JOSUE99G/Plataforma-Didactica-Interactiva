@@ -63,6 +63,54 @@
         });
     }
 })();
+// 🔐 INICIO DE SESIÓN CON GOOGLE
+function iniciarConGoogle(boton) {
+
+    if (!boton) return;
+
+    boton.addEventListener("click", async () => {
+
+        try {
+
+            const provider = new firebase.auth.GoogleAuthProvider();
+
+            const cred = await firebase.auth().signInWithPopup(provider);
+
+            const user = cred.user;
+
+            // Registrar en Firestore si es la primera vez
+            const ref = db.collection("usuarios").doc(user.uid);
+
+            const doc = await ref.get();
+
+            if (!doc.exists) {
+
+                await ref.set({
+                    nombre: user.displayName || "Estudiante",
+                    correo: user.email,
+                    uid: user.uid,
+                    proveedor: "google",
+                    creadoEn: firebase.firestore.FieldValue.serverTimestamp()
+                });
+
+            }
+
+            window.location.href = "dashboard.html";
+
+        } catch (error) {
+
+            alert("❌ Error con Google: " + error.message);
+
+        }
+
+    });
+
+}
+
+iniciarConGoogle(document.getElementById("btnGoogle"));
+
+iniciarConGoogle(document.getElementById("btnGoogleLogin"));
+
 // 🔐 PROTEGER DASHBOARD: solo actúa si estamos realmente en el dashboard
 // y Firebase está disponible (evita redirecciones innecesarias y errores).
 if (typeof firebase !== "undefined" && window.location.pathname.includes("dashboard.html")) {

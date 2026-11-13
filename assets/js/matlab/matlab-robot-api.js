@@ -134,6 +134,7 @@ export class RobotVirtual {
       this.rigAPI.aplicarAngulos(this.pos);
     }
 
+    // Avisar a la UI (y al iframe del visor, vía matlab-app) de la nueva pose
     if (this.onPose) {
       this.onPose(this.pos);
     }

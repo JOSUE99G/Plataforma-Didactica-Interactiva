@@ -1,0 +1,48 @@
+{
+  "_ayuda": "Configuración de la cadena cinemática del Dobot Magician Lite. Cada eslabón es un STL exportado desde Fusion 360 con su ORIGEN en el eje de la articulación. Ajusta los valores 'origen' (en mm) según tu modelo real.",
+
+  "efector": "muneca",
+
+  "eslabones": [
+    {
+      "id": "base",
+      "stl": "assets/models/piezas/base.stl",
+      "padre": null,
+      "eje": "y",
+      "rango": [-135, 135],
+      "origen": { "x": 0, "y": 0, "z": 0 }
+    },
+    {
+      "id": "hombro",
+      "stl": "assets/models/piezas/hombro.stl",
+      "padre": "base",
+      "eje": "z",
+      "rango": [-15, 85],
+      "origen": { "x": 0, "y": 63, "z": 0 }
+    },
+    {
+      "id": "codo",
+      "stl": "assets/models/piezas/codo.stl",
+      "padre": "hombro",
+      "eje": "z",
+      "rango": [-95, 0],
+      "origen": { "x": 85, "y": 0, "z": 0 }
+    },
+    {
+      "id": "muneca",
+      "stl": "assets/models/piezas/muneca.stl",
+      "padre": "codo",
+      "eje": "z",
+      "rango": [-105, 105],
+      "origen": { "x": 70, "y": 0, "z": 0 }
+    },
+    {
+      "id": "garra",
+      "stl": "assets/models/piezas/garra.stl",
+      "padre": "muneca",
+      "eje": "z",
+      "rango": [0, 100],
+      "origen": { "x": 30, "y": 0, "z": 0 }
+    }
+  ]
+}

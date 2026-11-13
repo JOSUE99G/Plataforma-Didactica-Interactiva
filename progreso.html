@@ -64,20 +64,80 @@
 
 <section class="page-header">
 
-<h1>Mi progreso</h1>
+<h1><i class="fa-solid fa-chart-line"></i> Mi progreso</h1>
 
 <p>
-Consulta tus calificaciones y el avance dentro del aula virtual.
+Tu camino de aprendizaje: avances, notas y logros en la plataforma.
 </p>
 
 </section>
 
+<!-- 📊 RESUMEN VISUAL RÁPIDO -->
+<div class="docente-stats">
+
+    <div class="doc-stat">
+
+        <span class="doc-num" id="statPromedioAlumno">—</span>
+
+        <span class="doc-label">Promedio</span>
+
+    </div>
+
+    <div class="doc-stat">
+
+        <span class="doc-num" id="statAvanceAlumno">—</span>
+
+        <span class="doc-label">Avance</span>
+
+    </div>
+
+    <div class="doc-stat">
+
+        <span class="doc-num" id="statAprobadasAlumno">—</span>
+
+        <span class="doc-label">Aprobadas</span>
+
+    </div>
+
+    <div class="doc-stat">
+
+        <span class="doc-num" id="statLogrosAlumno">—</span>
+
+        <span class="doc-label">Logros</span>
+
+    </div>
+
+</div>
 
 <div class="progress-card">
 
-<h2 id="nombreAlumno">Cargando...</h2>
+<h2 id="nombreAlumno" style="display:flex;align-items:center;gap:10px">
+
+    <span class="hero-stat-avatar"><i class="fa-solid fa-user-graduate"></i></span>
+
+    <span id="nombreAlumnoTexto">Cargando...</span>
+
+</h2>
 
 <p id="correoAlumno"></p>
+
+</div>
+
+
+<!-- 🗺️ RUTA DE APRENDIZAJE SECUENCIAL -->
+<div class="progress-card">
+
+<h2><i class="fa-solid fa-route"></i> Ruta de aprendizaje</h2>
+
+<p class="ruta-descripcion">
+Avanza en orden: cada etapa se desbloquea al aprobar la anterior (nota ≥ 70).
+</p>
+
+<div class="roadmap" id="roadmap">
+
+    <!-- Los pasos se generan en progreso.js -->
+
+</div>
 
 </div>
 
@@ -149,6 +209,29 @@ Consulta tus calificaciones y el avance dentro del aula virtual.
 
 </div>
 
+<!-- 🏅 INSIGNIAS -->
+<div class="progress-card">
+
+<h2><i class="fa-solid fa-medal"></i> Logros</h2>
+
+<div class="insignias" id="insignias">
+
+    <!-- Se generan en progreso.js -->
+
+</div>
+
+<div style="margin-top:20px">
+
+    <button id="btnExportarPDF" class="mod-btn" style="width:auto;padding:12px 22px">
+
+        <i class="fa-solid fa-file-arrow-down"></i> Descargar reporte PDF
+
+    </button>
+
+</div>
+
+</div>
+
 </main>
 
     <!-- 🔥 FIREBASE -->
@@ -163,6 +246,9 @@ Consulta tus calificaciones y el avance dentro del aula virtual.
     <script src="assets/js/logout.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<!-- jsPDF para exportar el reporte -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
 <script src="assets/js/progreso.js"></script>
 

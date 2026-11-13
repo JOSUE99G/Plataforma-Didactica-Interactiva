@@ -236,3 +236,54 @@ body {
 .container.active .toggle-right {
     transform: translateX(200%); /* Desplaza el panel derecho fuera de vista */
 }
+
+
+/* Estilos para el botón de Google */
+.btn-google {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #dadce0;
+    background: white;
+    color: #3c4043;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-google:hover {
+    background: #f8f9fa;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-google i {
+    color: #ea4335;
+    font-size: 16px;
+}
+
+/* Separador "o" entre métodos de login */
+.login-separador {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 14px 0;
+    color: #9aa0a6;
+    font-size: 12px;
+}
+
+.login-separador::before,
+.login-separador::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #dadce0;
+}
+
+.login-separador span {
+    padding: 0 12px;
+}

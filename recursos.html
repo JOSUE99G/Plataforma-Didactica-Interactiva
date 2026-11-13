@@ -74,28 +74,182 @@
             </p>
         </section>
 
-        <!-- TARJETA DEL PDF -->
-        <section class="cards">
+        <!-- ACCESOS RÁPIDOS -->
+        <section class="recursos-quick">
 
-            <div class="card">
+            <a class="quick-card" href="recursos.html#manuales">
+                <i class="fa-solid fa-book"></i>
+                <span>Manuales</span>
+            </a>
 
-                <h3>Manual de Uso del Dobot</h3>
+            <a class="quick-card" href="recursos.html#guia">
+                <i class="fa-solid fa-lightbulb"></i>
+                <span>Guías rápidas</span>
+            </a>
 
-                <p>
-                    Documento técnico con instrucciones de operación,
-                    seguridad y configuración del brazo robótico.
-                </p>
+            <a class="quick-card" href="recursos.html#enlaces">
+                <i class="fa-solid fa-link"></i>
+                <span>Enlaces externos</span>
+            </a>
 
-                <!-- BOTÓN DESCARGA -->
-                <a class="download-btn"
-                   href="assets/pdf/Manual%20de%20Uso.pdf"
-                   download>
+            <a class="quick-card" href="progreso.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Mi progreso</span>
+            </a>
 
-                   Descargar Manual
+        </section>
 
-                </a>
+        <!-- MANUALES -->
+        <section class="pdf-viewer" id="manuales">
 
-            </div>
+            <h2><i class="fa-solid fa-book"></i> Manuales y documentación</h2>
+
+            <section class="cards recursos-grid">
+
+                <div class="card recurso-card">
+
+                    <div class="recurso-icon pdf"><i class="fa-solid fa-file-pdf"></i></div>
+
+                    <h3>Manual de Uso del Dobot</h3>
+
+                    <p>
+                        Documento técnico con instrucciones de operación,
+                        seguridad y configuración del brazo robótico.
+                    </p>
+
+                    <div class="recurso-meta">
+                        <span><i class="fa-solid fa-file-lines"></i> PDF · Oficial</span>
+                        <span><i class="fa-solid fa-tag"></i> Referencia</span>
+                    </div>
+
+                    <div class="recurso-acciones">
+                        <a class="mod-btn" href="assets/pdf/Manual%20de%20Uso.pdf" target="_blank">Ver en línea</a>
+                        <a class="mod-btn secundario" href="assets/pdf/Manual%20de%20Uso.pdf" download>Descargar</a>
+                    </div>
+
+                </div>
+
+                <div class="card recurso-card">
+
+                    <div class="recurso-icon video"><i class="fa-solid fa-video"></i></div>
+
+                    <h3>Simulador 3D del brazo</h3>
+
+                    <p>
+                        Explora el modelo interactivo del Magician Lite:
+                        escala, vistas y articulaciones en tiempo real.
+                    </p>
+
+                    <div class="recurso-meta">
+                        <span><i class="fa-solid fa-cube"></i> Interactivo</span>
+                        <span><i class="fa-solid fa-tag"></i> Práctica</span>
+                    </div>
+
+                    <div class="recurso-acciones">
+                        <a class="mod-btn" href="visualizador.html">Abrir visor 3D</a>
+                    </div>
+
+                </div>
+
+                <div class="card recurso-card">
+
+                    <div class="recurso-icon code"><i class="fa-solid fa-terminal"></i></div>
+
+                    <h3>Laboratorio MATLAB virtual</h3>
+
+                    <p>
+                        Programación didáctica del robot: escribe scripts
+                        con comandos magician y observa la simulación.
+                    </p>
+
+                    <div class="recurso-meta">
+                        <span><i class="fa-solid fa-code"></i> Interactivo</span>
+                        <span><i class="fa-solid fa-tag"></i> Programación</span>
+                    </div>
+
+                    <div class="recurso-acciones">
+                        <a class="mod-btn" href="matlab.html">Abrir laboratorio</a>
+                    </div>
+
+                </div>
+
+            </section>
+
+        </section>
+
+        <!-- GUÍAS RÁPIDAS -->
+        <section class="pdf-viewer" id="guia">
+
+            <h2><i class="fa-solid fa-lightbulb"></i> Guías rápidas</h2>
+
+            <section class="cards recursos-grid">
+
+                <div class="card guia-card">
+
+                    <h4>¿Cómo hacer homing?</h4>
+
+                    <p>
+                        1. Conecta el robot · 2. Limpia el área ·
+                        3. Ejecuta <code>magician.home()</code> ·
+                        4. Verifica la pose inicial.
+                    </p>
+
+                </div>
+
+                <div class="card guia-card">
+
+                    <h4>¿Cómo leer las coordenadas?</h4>
+
+                    <p>
+                        El origen (0,0,0) está en la base del brazo.
+                        X apunta al frente, Y a la izquierda y Z hacia arriba.
+                    </p>
+
+                </div>
+
+                <div class="card guia-card">
+
+                    <h4>Seguridad primero</h4>
+
+                    <p>
+                        Nunca introduzcas las manos en el radio de acción
+                        mientras el robot ejecuta un programa.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </section>
+
+        <!-- ENLACES EXTERNOS -->
+        <section class="pdf-viewer" id="enlaces">
+
+            <h2><i class="fa-solid fa-link"></i> Enlaces de interés</h2>
+
+            <section class="cards recursos-grid">
+
+                <div class="card guia-card">
+
+                    <h4>Dobot Official</h4>
+
+                    <p>Firmware, software DobotStudio y soporte técnico.</p>
+
+                    <a class="mod-btn" href="https://www.dobot.cc" target="_blank" rel="noopener">Visitar sitio</a>
+
+                </div>
+
+                <div class="card guia-card">
+
+                    <h4>Robótica educativa</h4>
+
+                    <p>Material complementario sobre cinemática y manipuladores.</p>
+
+                    <a class="mod-btn secundario" href="cinematica.html">Ver en plataforma</a>
+
+                </div>
+
+            </section>
 
         </section>
 
@@ -123,7 +277,7 @@
 
     <script src="assets/js/firebase-config.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
 
    
 
@@ -135,7 +289,7 @@
                 window.location.href = "index.html";
             } else {
                 document.getElementById("userName").textContent =
-                    "Bienvenido: " + user.displayName;
+                    "Bienvenido: " + (user.displayName || "Estudiante");
             }
 
         });

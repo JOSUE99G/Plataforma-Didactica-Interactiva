@@ -77,45 +77,121 @@
 
         </section>
 
-        <section class="cards">
+        <section class="cards practicas-grid">
 
-            <div class="card">
+            <div class="card practica-card">
 
-                <h3>Práctica 1</h3>
+                <div class="practica-header">
+                    <div class="practica-icon"><i class="fa-solid fa-power-off"></i></div>
+                    <span class="badge dificultad-baja">Básica</span>
+                </div>
+
+                <h3>Práctica 1 · Encendido y Calibración</h3>
 
                 <p>
-                    Encendido y calibración del Dobot.
+                    Conecta el Dobot Magician Lite, realiza el homing
+                    y verifica los límites de cada articulación.
                 </p>
+
+                <ul class="practica-objetivos">
+                    <li><i class="fa-solid fa-check"></i> Identificar componentes</li>
+                    <li><i class="fa-solid fa-check"></i> Ejecutar homing seguro</li>
+                    <li><i class="fa-solid fa-check"></i> Registrar pose inicial</li>
+                </ul>
+
+                <div class="practica-acciones">
+                    <a class="mod-btn" href="dobot-lab.html">Abrir laboratorio</a>
+                    <a class="mod-btn secundario" href="modulos.html">Teoría</a>
+                </div>
+
+                <span class="practica-tiempo"><i class="fa-regular fa-clock"></i> 45 min</span>
 
             </div>
 
-            <div class="card">
+            <div class="card practica-card">
 
-                <h3>Práctica 2</h3>
+                <div class="practica-header">
+                    <div class="practica-icon"><i class="fa-solid fa-arrows-up-down-left-right"></i></div>
+                    <span class="badge dificultad-baja">Básica</span>
+                </div>
+
+                <h3>Práctica 2 · Coordenadas XYZ</h3>
 
                 <p>
-                    Movimiento en coordenadas XYZ.
+                    Mueve el efector a puntos específicos del plano de trabajo
+                    usando el simulador y el generador de código PTP.
                 </p>
+
+                <ul class="practica-objetivos">
+                    <li><i class="fa-solid fa-check"></i> Sistema de coordenadas</li>
+                    <li><i class="fa-solid fa-check"></i> Generar código PTP</li>
+                    <li><i class="fa-solid fa-check"></i> Verificar posición</li>
+                </ul>
+
+                <div class="practica-acciones">
+                    <a class="mod-btn" href="dobot-lab.html">Abrir laboratorio</a>
+                    <a class="mod-btn secundario" href="visualizador.html">Modelo 3D</a>
+                </div>
+
+                <span class="practica-tiempo"><i class="fa-regular fa-clock"></i> 60 min</span>
 
             </div>
 
-            <div class="card">
+            <div class="card practica-card">
 
-                <h3>Práctica 3</h3>
+                <div class="practica-header">
+                    <div class="practica-icon"><i class="fa-solid fa-draw-polygon"></i></div>
+                    <span class="badge dificultad-media">Intermedia</span>
+                </div>
+
+                <h3>Práctica 3 · Trayectorias</h3>
 
                 <p>
-                    Trayectorias lineales y circulares.
+                    Programa recorridos lineales y circulares combinando
+                    varios puntos con el entorno MATLAB virtual.
                 </p>
+
+                <ul class="practica-objetivos">
+                    <li><i class="fa-solid fa-check"></i> Secuencias PTP</li>
+                    <li><i class="fa-solid fa-check"></i> Bucles for en MATLAB</li>
+                    <li><i class="fa-solid fa-check"></i> Trazas del efector</li>
+                </ul>
+
+                <div class="practica-acciones">
+                    <a class="mod-btn" href="matlab.html">Abrir MATLAB</a>
+                    <a class="mod-btn secundario" href="quiz2.html">Cinemática</a>
+                </div>
+
+                <span class="practica-tiempo"><i class="fa-regular fa-clock"></i> 90 min</span>
 
             </div>
 
-            <div class="card">
+            <div class="card practica-card">
 
-                <h3>Práctica 4</h3>
+                <div class="practica-header">
+                    <div class="practica-icon"><i class="fa-solid fa-hand"></i></div>
+                    <span class="badge dificultad-media">Intermedia</span>
+                </div>
+
+                <h3>Práctica 4 · Pick & Place</h3>
 
                 <p>
-                    Agarre y manipulación de objetos.
+                    Integra el control de la garra con movimientos coordinados
+                    para transferir objetos entre dos zonas de trabajo.
                 </p>
+
+                <ul class="practica-objetivos">
+                    <li><i class="fa-solid fa-check"></i> Control de garra</li>
+                    <li><i class="fa-solid fa-check"></i> Secuencia pick & place</li>
+                    <li><i class="fa-solid fa-check"></i> Optimizar tiempos</li>
+                </ul>
+
+                <div class="practica-acciones">
+                    <a class="mod-btn" href="matlab.html">Abrir MATLAB</a>
+                    <a class="mod-btn secundario" href="dobot-lab.html">Laboratorio</a>
+                </div>
+
+                <span class="practica-tiempo"><i class="fa-regular fa-clock"></i> 90 min</span>
 
             </div>
 
@@ -133,7 +209,7 @@
 
     <script src="assets/js/firebase-config.js"></script>
 
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    
 
    
 
@@ -145,7 +221,7 @@
                 window.location.href = "index.html";
             } else {
                 document.getElementById("userName").textContent =
-                    "Bienvenido: " + user.displayName;
+                    "Bienvenido: " + (user.displayName || "Estudiante");
             }
 
         });

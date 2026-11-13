@@ -85,6 +85,11 @@
         <section class="hero">
 
             <div class="hero-text">
+
+                <span class="hero-badge">
+                    <i class="fa-solid fa-graduation-cap"></i> Laboratorio de Robótica Educativa
+                </span>
+
                 <h1>
                     APRENDE. EXPERIMENTA.
                     CONSTRUYE EL FUTURO.
@@ -98,16 +103,36 @@
 
                 <div class="buttons">
 
-                     <button onclick="window.location.href='modulos.html'">
-                        Explorar módulos
-                </button>
+                    <a class="mod-btn" href="modulos.html">
+                        <i class="fa-solid fa-play"></i> Explorar módulos
+                    </a>
 
-                <button class="secondary"
-                        onclick="window.location.href='practicas.html'">
-                    Ver prácticas
-                </button>
+                    <a class="mod-btn secundario" href="practicas.html">
+                        <i class="fa-solid fa-flask"></i> Ver prácticas
+                    </a>
 
                 </div>
+
+                <!-- ESTADÍSTICAS EN VIVO -->
+                <div class="hero-stats" id="heroStats">
+
+                    <div class="hero-stat">
+                        <span class="hero-stat-num" id="statModulos">6</span>
+                        <span class="hero-stat-label">Módulos</span>
+                    </div>
+
+                    <div class="hero-stat">
+                        <span class="hero-stat-num" id="statPracticas">4</span>
+                        <span class="hero-stat-label">Prácticas</span>
+                    </div>
+
+                    <div class="hero-stat">
+                        <span class="hero-stat-num" id="statProgreso">0%</span>
+                        <span class="hero-stat-label">Mi avance</span>
+                    </div>
+
+                </div>
+
             </div>
 
             <div class="hero-image">
@@ -123,101 +148,98 @@
 
         </section>
 
+        <!-- ACCESOS RÁPIDOS -->
+        <section class="recursos-quick">
+
+            <a class="quick-card" href="visualizador.html">
+                <i class="fa-solid fa-cube"></i>
+                <span>Modelo 3D</span>
+            </a>
+
+            <a class="quick-card" href="matlab.html">
+                <i class="fa-solid fa-terminal"></i>
+                <span>Laboratorio MATLAB</span>
+            </a>
+
+            <a class="quick-card" href="cinematica.html">
+                <i class="fa-solid fa-arrows-up-down-left-right"></i>
+                <span>Cinemática</span>
+            </a>
+
+            <a class="quick-card" href="progreso.html">
+                <i class="fa-solid fa-chart-line"></i>
+                <span>Mi progreso</span>
+            </a>
+
+        </section>
+
         <!-- TARJETAS -->
         <section class="cards">
 
             <a href="modulos.html" class="card-link">
 
-    <div class="card">
+                <div class="card dash-card">
 
-        <h3>MÓDULOS</h3>
+                    <div class="mod-icon"><i class="fa-solid fa-book-open"></i></div>
 
-        <p>
-            Aprende fundamentos de robótica,
-            control y cinemática.
-        </p>
+                    <h3>MÓDULOS</h3>
 
-    </div>
+                    <p>
+                        Aprende fundamentos de robótica,
+                        control y cinemática.
+                    </p>
 
-</a>
+                </div>
+
+            </a>
 
             <a href="practicas.html" class="card-link">
 
-<div class="card">
+                <div class="card dash-card">
 
-<h3>PRÁCTICAS</h3>
+                    <div class="mod-icon"><i class="fa-solid fa-flask"></i></div>
 
-<p>
-Actividades guiadas con el brazo manipulador.
-</p>
+                    <h3>PRÁCTICAS</h3>
 
-</div>
+                    <p>
+                        Actividades guiadas con el brazo manipulador.
+                    </p>
 
-</a>
+                </div>
+
+            </a>
 
             <a href="recursos.html" class="card-link">
 
-<div class="card">
+                <div class="card dash-card">
 
-<h3>RECURSOS</h3>
+                    <div class="mod-icon"><i class="fa-solid fa-folder-open"></i></div>
 
-<p>
-Guías, manuales y documentación.
-</p>
+                    <h3>RECURSOS</h3>
 
-</div>
+                    <p>
+                        Guías, manuales y documentación.
+                    </p>
 
-</a>
+                </div>
+
+            </a>
 
             <a href="evaluaciones.html" class="card-link">
 
-<div class="card">
+                <div class="card dash-card">
 
-<h3>EVALUACIONES</h3>
+                    <div class="mod-icon"><i class="fa-solid fa-clipboard-check"></i></div>
 
-<p>
-Pon a prueba tus conocimientos.
-</p>
+                    <h3>EVALUACIONES</h3>
 
-</div>
+                    <p>
+                        Pon a prueba tus conocimientos.
+                    </p>
 
-</a>
-            
-
-        </section>
-
-        <!-- MÓDULOS -->
-        <section class="modules">
-
-            <h2>Módulos de Aprendizaje</h2>
-
-            <div class="module-grid">
-
-                <div class="module-card">
-                    <span>01</span>
-                    <h3>Introducción a la Robótica</h3>
-                    <p>Conceptos básicos y aplicaciones.</p>
                 </div>
 
-                <div class="module-card">
-                    <span>02</span>
-                    <h3>Cinemática y Posicionamiento</h3>
-                    <p>Coordenadas y movimiento.</p>
-                </div>
-
-                <div class="module-card">
-                    <span>03</span>
-                    <h3>Control de Movimiento</h3>
-                    <p>Trayectorias y control.</p>
-                </div>
-
-                <div class="module-card">
-                    <span>04</span>
-                    <h3>Integración y Aplicaciones</h3>
-                    <p>Aplicaciones del manipulador.</p>
-                </div>
-
-            </div>
+            </a>
 
         </section>
 

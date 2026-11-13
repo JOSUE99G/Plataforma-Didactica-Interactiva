@@ -56,6 +56,9 @@ loader.load(
 
         scene.add(robot);
 
+        // Exponer el mesh para módulos tardíos (listener postMessage)
+        window.__robotMesh = robot;
+
         iniciarTransform(robot);
 
         const box = new THREE.Box3().setFromObject(robot);

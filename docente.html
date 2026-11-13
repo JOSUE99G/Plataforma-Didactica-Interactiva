@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Docente</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>PLATAFORMA DIDÁCTICA</h2>
+        <p>Vista Docente</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li class="active">
+            <a href="docente.html"
+              ><i class="fa-solid fa-chalkboard-user"></i> Mis estudiantes</a
+            >
+          </li>
+          <li>
+            <a href="dashboard.html"
+              ><i class="fa-solid fa-house"></i> Modo alumno</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div style="padding: 20px">
+        <button id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+      <section class="page-header">
+        <h1>Panel Docente</h1>
+        <p>Progreso consolidado de todos los estudiantes de la clase.</p>
+      </section>
+
+      <!-- RESUMEN DE LA CLASE -->
+      <div class="progress-card">
+        <h2><i class="fa-solid fa-users"></i> Resumen de la clase</h2>
+        <div class="docente-stats" id="docenteStats">
+          <div class="doc-stat">
+            <span class="doc-num" id="statEstudiantes">—</span>
+            <span class="doc-label">Estudiantes</span>
+          </div>
+          <div class="doc-stat">
+            <span class="doc-num" id="statPromedio">—</span>
+            <span class="doc-label">Promedio clase</span>
+          </div>
+          <div class="doc-stat">
+            <span class="doc-num" id="statAprobados">—</span>
+            <span class="doc-label">Curso completado</span>
+          </div>
+          <div class="doc-stat">
+            <span class="doc-num" id="statRiesgo">—</span>
+            <span class="doc-label">En riesgo (< 50%)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLA DE ESTUDIANTES -->
+      <div class="progress-card">
+        <h2><i class="fa-solid fa-table-list"></i> Estudiantes</h2>
+
+        <table class="tablaNotas">
+          <thead>
+            <tr>
+              <th>Estudiante</th>
+              <th>Correo</th>
+              <th>Promedio</th>
+              <th>Avance</th>
+              <th>Evaluaciones</th>
+              <th>Estado</th>
+              <th>Actualizado</th>
+            </tr>
+          </thead>
+          <tbody id="tablaEstudiantes">
+            <tr>
+              <td colspan="7" style="color: #999">Cargando...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </main>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/logout.js"></script>
+
+    <script type="module" src="assets/js/docente.js"></script>
+  </body>
+</html>

@@ -2,6 +2,11 @@
 
     padding:20px;
 
+    /* Altura de la zona de trabajo: lo que cabe en pantalla menos la sidebar/topbar */
+    height:calc(100vh - 40px);
+
+    overflow:hidden;
+
 }
 
 .viewer-layout{
@@ -11,6 +16,9 @@
     grid-template-columns: 1fr 300px;
 
     gap:20px;
+
+    /* Todo el workspace cabe en pantalla: sin scroll de página */
+    height:calc(100% - 110px);
 
 }
 
@@ -24,13 +32,23 @@
 
     box-shadow:0 5px 20px rgba(0,0,0,.15);
 
+    /* El visor SIEMPRE visible (sticky dentro de su columna) */
+    position:sticky;
+
+    top:20px;
+
+    height:100%;
+
 }
 
 #viewer3D{
 
     width:100%;
 
-    height:700px;
+    /* Ocupa todo el alto de su panel */
+    height:100%;
+
+    min-height:400px;
 
 }
 
@@ -43,6 +61,31 @@
     padding:20px;
 
     box-shadow:0 5px 20px rgba(0,0,0,.15);
+
+    /* SOLO el panel de herramientas se desplaza,
+       el visor queda fijo en pantalla */
+    overflow-y:auto;
+
+    height:100%;
+
+    /* Scrollbar discreta estilo editor */
+    scrollbar-width:thin;
+
+    scrollbar-color:#c3cbdb transparent;
+
+}
+
+.tools-panel::-webkit-scrollbar{
+
+    width:6px;
+
+}
+
+.tools-panel::-webkit-scrollbar-thumb{
+
+    background:#c3cbdb;
+
+    border-radius:3px;
 
 }
 
@@ -162,13 +205,50 @@
 /* Responsive del visor */
 @media (max-width: 1100px){
 
+    /* En pantallas chicas: layout en columna, el visor arriba
+       con altura fija y las herramientas debajo con su propio scroll */
+    .viewer-section{
+
+        height:auto;
+
+        overflow:visible;
+
+    }
+
     .viewer-layout{
+
         grid-template-columns:1fr;
+
+        height:auto;
+
+    }
+
+    .viewer-panel{
+
+        position:sticky;
+
+        top:0;
+
+        z-index:5;
+
+        height:420px;
+
     }
 
     #viewer3D{
-        height:500px;
+
+        height:420px;
+
     }
+
+    .tools-panel{
+
+        height:auto;
+
+        max-height:none;
+
+    }
+
 }
 
 
@@ -202,4 +282,137 @@
     color:#555;
     text-align:right;
     font-family:Consolas, monospace;
+}
+
+/* ==========================================
+   MODO EMBEBIDO (iframe de matlab.html)
+   Solo se ve el visor: sin sidebar, topbar ni panel de tools
+   ========================================== */
+
+html.embebido body{
+    display:block;
+}
+
+html.embebido .sidebar,
+html.embebido .topbar,
+html.embebido .viewer-header,
+html.embebido .tools-panel{
+    display:none !important;
+}
+
+html.embebido .main-content{
+    margin-left:0;
+    padding:0;
+}
+
+html.embebido .viewer-layout{
+    grid-template-columns:1fr;
+    gap:0;
+}
+
+html.embebido .viewer-panel{
+    border-radius:0;
+    box-shadow:none;
+    height:100vh;
+}
+
+html.embebido #viewer3D{
+    height:100vh;
+}
+
+/* ==========================================
+   SUBIDA DE STL DEL ESTUDIANTE
+   ========================================== */
+
+.stl-upload-box{
+    border:2px dashed #b9c4d6;
+    border-radius:12px;
+    padding:22px 14px;
+    text-align:center;
+    cursor:pointer;
+    color:#7a8aa5;
+    transition:all 0.2s ease;
+    margin:10px 0;
+}
+
+.stl-upload-box i{
+    font-size:26px;
+    color:#3f8cff;
+    margin-bottom:8px;
+    display:block;
+}
+
+.stl-upload-box p{
+    margin:4px 0;
+    font-size:13.5px;
+}
+
+.stl-upload-box .stl-upload-hint{
+    font-size:11.5px;
+    color:#b0b8c9;
+}
+
+.stl-upload-box:hover,
+.stl-upload-box.arrastrando{
+    border-color:#3f8cff;
+    background:rgba(63,140,255,0.06);
+    color:#0c2d69;
+}
+
+.stl-upload-box.cargado{
+    border-style:solid;
+    border-color:#43a047;
+    background:rgba(67,160,71,0.06);
+}
+
+.stl-acciones{
+    display:flex;
+    gap:8px;
+    margin-bottom:12px;
+}
+
+/* Ficha educativa de articulación */
+.info-articulacion{
+    background:#f4f6fb;
+    border-radius:10px;
+    padding:12px 14px;
+    margin:8px 0;
+    min-height:52px;
+    transition:all 0.25s ease;
+}
+
+.info-articulacion.visible{
+    background:linear-gradient(135deg,rgba(63,140,255,0.08),rgba(12,45,105,0.04));
+    border-left:3px solid #3f8cff;
+}
+
+.info-articulacion h5{
+    color:#0c2d69;
+    font-size:14px;
+    margin-bottom:6px;
+}
+
+.info-articulacion p{
+    font-size:12.5px;
+    color:#555;
+    line-height:1.5;
+    margin-bottom:8px;
+}
+
+.info-articulacion-datos{
+    display:flex;
+    gap:12px;
+    font-size:11.5px;
+    color:#3f8cff;
+    font-weight:600;
+}
+
+.info-articulacion-datos i{
+    margin-right:4px;
+}
+
+.stl-hint{
+    font-size:12px;
+    color:#9aa7bd;
+    margin:4px 0 8px;
 }

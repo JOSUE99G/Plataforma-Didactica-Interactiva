@@ -61,74 +61,244 @@
 
         <section class="page-header">
 
-            <h1>Evaluaciones</h1>
+            <h1><i class="fa-solid fa-clipboard-check"></i> Evaluaciones</h1>
 
             <p>
-                Comprueba tus conocimientos sobre robótica.
+                Demuestra lo aprendido: cada evaluación corresponde a una etapa de la ruta de aprendizaje.
             </p>
 
         </section>
 
-        <section class="cards">
+        <!-- RESUMEN DE ESTADO -->
+        <div class="docente-stats">
+
+            <div class="doc-stat">
+                <span class="doc-num" id="evalAprobadas">—</span>
+                <span class="doc-label">Aprobadas</span>
+            </div>
+
+            <div class="doc-stat">
+                <span class="doc-num" id="evalPendientes">—</span>
+                <span class="doc-label">Pendientes</span>
+            </div>
+
+            <div class="doc-stat">
+                <span class="doc-num" id="evalMejorNota">—</span>
+                <span class="doc-label">Mejor nota</span>
+            </div>
+
+            <div class="doc-stat">
+                <span class="doc-num" id="evalPromedio">—</span>
+                <span class="doc-label">Promedio</span>
+            </div>
+
+        </div>
+
+        <section class="cards evaluaciones-grid">
 
             <a href="quiz1.html" class="card-link">
 
-            <div class="card">
+                <div class="card practica-card">
 
-                <h3>Quiz 1</h3>
+                    <div class="practica-header">
+                        <div class="practica-icon"><i class="fa-solid fa-robot"></i></div>
+                        <span class="badge dificultad-baja" id="badgeQuiz1">Etapa 1</span>
+                    </div>
+
+                    <h3>Fundamentos de Robótica</h3>
 
                     <p>
-                        Introducción a la robótica.
+                        Historia, componentes del Magician Lite
+                        y conceptos de seguridad industrial.
                     </p>
 
-            </div>
+                    <div class="quiz-estado" id="estadoQuiz1">
+                        <i class="fa-regular fa-circle"></i> Sin intentar
+                    </div>
+
+                    <div class="practica-acciones">
+                        <span class="mod-btn">Realizar quiz</span>
+                    </div>
+
+                </div>
 
             </a>
 
-            <div class="card">
+            <a href="quiz2.html" class="card-link">
 
-            <h3>Quiz 2</h3>
+                <div class="card practica-card">
 
-            <p>Cinemática y posicionamiento.</p>
+                    <div class="practica-header">
+                        <div class="practica-icon"><i class="fa-solid fa-arrows-up-down-left-right"></i></div>
+                        <span class="badge dificultad-media" id="badgeQuiz2">Etapa 2</span>
+                    </div>
 
-            <a href="quiz2.html" class="btn-card">
+                    <h3>Cinemática y Posicionamiento</h3>
 
-            Realizar Quiz
+                    <p>
+                        Coordenadas del efector, cinemática directa
+                        e inversa del brazo de 4 GDL.
+                    </p>
+
+                    <div class="quiz-estado" id="estadoQuiz2">
+                        <i class="fa-regular fa-circle"></i> Sin intentar
+                    </div>
+
+                    <div class="practica-acciones">
+                        <span class="mod-btn">Realizar quiz</span>
+                    </div>
+
+                </div>
 
             </a>
 
-            </div>
+            <a href="quiz3.html" class="card-link">
 
-            <div class="card">
+                <div class="card practica-card">
 
-                <h3>Quiz 3</h3>
+                    <div class="practica-header">
+                        <div class="practica-icon"><i class="fa-solid fa-route"></i></div>
+                        <span class="badge dificultad-media" id="badgeQuiz3">Etapa 3</span>
+                    </div>
 
-                <p>
-                    Trayectorias y control.
-                </p>
+                    <h3>Trayectorias y Control</h3>
 
-            </div>
+                    <p>
+                        Movimiento PTP, secuencias de puntos
+                        y programación de rutas.
+                    </p>
 
-            <div class="card">
+                    <div class="quiz-estado" id="estadoQuiz3">
+                        <i class="fa-regular fa-circle"></i> Sin intentar
+                    </div>
 
-                <h3>Evaluación Final</h3>
+                    <div class="practica-acciones">
+                        <span class="mod-btn">Realizar quiz</span>
+                    </div>
 
-                <p>
-                    Integración de conocimientos.
-                </p>
+                </div>
 
-            </div>
+            </a>
+
+            <a href="evaluacion-final.html" class="card-link">
+
+                <div class="card practica-card">
+
+                    <div class="practica-header">
+                        <div class="practica-icon" style="background:linear-gradient(135deg,#f5b301,#c98f00)"><i class="fa-solid fa-trophy"></i></div>
+                        <span class="badge dificultad-alta" id="badgeFinal">Etapa 4</span>
+                    </div>
+
+                    <h3>Evaluación Final</h3>
+
+                    <p>
+                        Integración de todos los módulos:
+                        teoría, cinemática y programación.
+                    </p>
+
+                    <div class="quiz-estado" id="estadoFinal">
+                        <i class="fa-regular fa-circle"></i> Sin intentar
+                    </div>
+
+                    <div class="practica-acciones">
+                        <span class="mod-btn">Realizar evaluación</span>
+                    </div>
+
+                </div>
+
+            </a>
 
         </section>
 
+        <script id="evaluacionesEstado">
+        // Estado de cada quiz leído de Firestore
+        (async () => {
+
+            try {
+
+                await new Promise(res => {
+
+                    if (typeof firebase === "undefined") return res();
+
+                    firebase.auth().onAuthStateChanged(u => res(u));
+
+                });
+
+                const user = firebase.auth().currentUser;
+
+                if (!user) return;
+
+                const snap = await db.collection("usuarios")
+                    .doc(user.uid)
+                    .collection("evaluaciones")
+                    .get();
+
+                const realizadas = {};
+
+                snap.forEach(d => realizadas[d.id] = d.data());
+
+                const mapa = {
+                    quiz1: 1, quiz2: 2, quiz3: 3, final: 4
+                };
+
+                let aprobadas = 0, mejor = 0, suma = 0, conNota = 0;
+
+                Object.entries(mapa).forEach(([id, num]) => {
+
+                    const d = realizadas[id];
+
+                    const estadoEl = document.getElementById("estado" + (id === "final" ? "Final" : id.charAt(0).toUpperCase() + id.slice(1)));
+
+                    if (!estadoEl) return;
+
+                    if (d && d.nota != null) {
+
+                        suma += d.nota; conNota++;
+
+                        if (d.nota > mejor) mejor = d.nota;
+
+                        if (d.nota >= 70) {
+
+                            aprobadas++;
+
+                            estadoEl.innerHTML = `<i class="fa-solid fa-circle-check" style="color:#43a047"></i> Aprobado · ${d.nota}/100`;
+
+                        } else {
+
+                            estadoEl.innerHTML = `<i class="fa-solid fa-circle-xmark" style="color:#e53935"></i> Reprobado · ${d.nota}/100 — reintentar`;
+                        }
+
+                    }
+
+                });
+
+                const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v; };
+
+                set("evalAprobadas", aprobadas + "/4");
+                set("evalPendientes", (4 - aprobadas));
+                set("evalMejorNota", mejor || "—");
+                set("evalPromedio", conNota ? Math.round(suma / conNota) + "%" : "—");
+
+            } catch (e) {
+
+                console.warn("No se pudo cargar el estado de evaluaciones:", e);
+
+            }
+
+        })();
+        </script>
+
     </main>
+    <!-- 🔥 FIREBASE (OBLIGATORIO) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
 
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
 
-<script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+
+    <script src="assets/js/logout.js"></script>
 
 </body>
 </html>

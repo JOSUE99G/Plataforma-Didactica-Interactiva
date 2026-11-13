@@ -260,8 +260,29 @@ export function aplicarAngulos(valores) {
 }
 
 /* ============================================================
-   CALCULAR POSE DEL EECTOR FINAL (FK simplificada)
+   ESCUCHA DE COMANDOS DEL PADRE (modo embebido en matlab.html)
+   El intérprete MATLAB envía {tipo:"robotPose", pose} y el rig
+   del visor se mueve igual que si fuera por sliders.
    ============================================================ */
+
+window.addEventListener("message", (event) => {
+
+  if (event.origin !== window.location.origin) return;
+
+  const data = event.data;
+
+  if (!data || data.tipo !== "robotPose" || !data.pose) return;
+
+  // Si el rig aún no existe, crearlo con el mesh cargado si está disponible
+  if (!robotRig && window.__robotMesh) {
+
+    construirRig(window.__robotMesh);
+
+  }
+
+  aplicarAngulos(data.pose);
+
+});
 
 /**
  * Devuelve la posición mundial del efector final (punta del rig).
