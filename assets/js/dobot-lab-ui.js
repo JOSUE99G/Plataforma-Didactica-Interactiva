@@ -21,10 +21,19 @@ document.addEventListener("DOMContentLoaded", () => {
 
         line.className = "console-line";
 
-        line.innerHTML = `
-            <span class="console-prefix">></span>
-            ${message}
-        `;
+        // Usar textContent para el mensaje: evita inyección de HTML
+        // si algún dato del robot o usuario contiene < > &.
+        line.textContent = "";
+
+        const prefix = document.createElement("span");
+
+        prefix.className = "console-prefix";
+
+        prefix.textContent = ">";
+
+        line.appendChild(prefix);
+
+        line.appendChild(document.createTextNode(message));
 
         consoleOutput.appendChild(line);
 
@@ -45,11 +54,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         for (let i = 1; i <= lines; i++) {
 
-            numbers += i + "<br>";
+            numbers += i + "\n";
 
         }
 
-        lineNumbers.innerHTML = numbers;
+        // Mantener la alineación con textContent + white-space:pre
+        // es más rápido que generar <br> y re-parsear HTML en cada tecla.
+        lineNumbers.textContent = numbers;
     }
 
 
@@ -85,18 +96,26 @@ document.addEventListener("DOMContentLoaded", () => {
         .getElementById("generateCodeBtn")
         .addEventListener("click", () => {
 
-            const x =
-                document.getElementById("coordX").value;
+            const x = document.getElementById("coordX").value;
+            const y = document.getElementById("coordY").value;
+            const z = document.getElementById("coordZ").value;
+            const r = document.getElementById("coordR").value;
 
-            const y =
-                document.getElementById("coordY").value;
+            // Validar que sean números antes de generar código Python:
+            // evita generar código inválido/inyección en el script generado.
+            const valores = [x, y, z, r].map(v => parseFloat(v));
 
-            const z =
-                document.getElementById("coordZ").value;
+            if (valores.some(v => Number.isNaN(v))) {
 
-            const r =
-                document.getElementById("coordR").value;
+                consoleMessage(
+                    "⚠ Coordenadas inválidas: X, Y, Z y R deben ser números."
+                );
 
+                return;
+
+            }
+
+            const [nx, ny, nz, nr] = valores;
 
             const code =
 `# Movimiento punto a punto
@@ -105,10 +124,10 @@ from DobotEDU import *
 
 magician.ptp(
     mode=0,
-    x=${x},
-    y=${y},
-    z=${z},
-    r=${r}
+    x=${nx},
+    y=${ny},
+    z=${nz},
+    r=${nr}
 )`;
 
 
@@ -143,8 +162,13 @@ magician.ptp(
 
             } catch (error) {
 
+                // Fallback para navegadores/file:// sin permiso de portapapeles
+                editor.select();
+                const ok = document.execCommand("copy");
+
                 consoleMessage(
-                    "No se pudo copiar el código."
+                    ok ? "Código copiado al portapapeles."
+                       : "No se pudo copiar el código."
                 );
 
             }

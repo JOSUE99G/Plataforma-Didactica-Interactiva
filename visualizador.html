@@ -106,6 +106,64 @@ Manipule el modelo CAD del Dobot Magician Lite directamente desde la plataforma.
 
 <hr>
 
+<h4>Escala del modelo</h4>
+
+<div class="scale-control">
+
+    <input type="range" id="scaleSlider" min="25" max="300" value="100" step="5">
+
+    <span id="scaleValue">100%</span>
+
+    <button id="scaleReset" class="btn-mini" title="Restablecer escala">↺</button>
+
+</div>
+
+<hr>
+
+<h4>Zoom de cámara</h4>
+
+<div class="zoom-buttons">
+
+    <button id="zoomIn" title="Acercar">＋</button>
+
+    <button id="zoomOut" title="Alejar">－</button>
+
+    <button id="fitView" title="Encuadrar modelo">⤢ Encuadrar</button>
+
+</div>
+
+<hr>
+
+<h4>Articulaciones del robot</h4>
+
+<div id="slidersArt">
+
+    <p class="info-dims">Esperando el modelo 3D...</p>
+
+</div>
+
+<hr>
+
+<h4>Pose del efector final</h4>
+
+<p id="poseEfector" class="info-dims">
+
+    —
+
+</p>
+
+<hr>
+
+<h4>Información del modelo</h4>
+
+<p id="infoDimensiones" class="info-dims">
+
+    Cargando medidas...
+
+</p>
+
+<hr>
+
 <h4>Modo</h4>
 
 <hr>
@@ -191,6 +249,8 @@ Wireframe
 Transparencia
 
 </label>
+
+</div>
 
 </main>
 

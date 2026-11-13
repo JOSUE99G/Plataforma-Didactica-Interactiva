@@ -63,13 +63,12 @@
         });
     }
 })();
-// 🔐 PROTEGER DASHBOARD
-firebase.auth().onAuthStateChanged((user) => {
-
-    const estaEnDashboard = window.location.pathname.includes("dashboard.html");
-
-    if (!user && estaEnDashboard) {
-        window.location.href = "index.html";
-    }
-
-});
+// 🔐 PROTEGER DASHBOARD: solo actúa si estamos realmente en el dashboard
+// y Firebase está disponible (evita redirecciones innecesarias y errores).
+if (typeof firebase !== "undefined" && window.location.pathname.includes("dashboard.html")) {
+    firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+            window.location.href = "index.html";
+        }
+    });
+}

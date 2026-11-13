@@ -45,11 +45,23 @@ body{
     display:block;
     padding:15px;
     border-radius:10px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    transition:background 0.2s ease, transform 0.15s ease;
+}
+
+.sidebar ul li a i{
+    width:22px;
+    text-align:center;
+    font-size:16px;
+    opacity:0.9;
 }
 
 .sidebar ul li a:hover,
 .active a{
     background:#173f8a;
+    transform:translateX(3px);
 }
 
 /* MAIN */
@@ -262,6 +274,103 @@ button{
     display:flex;
     align-items:center;
     gap:15px;
+}
+
+/* 📄 ESTADO VACÍO (sin datos en tablas/gráficos) */
+
+.empty-state{
+    text-align:center;
+    padding:60px 20px;
+    background:white;
+    border-radius:20px;
+    color:#7a8aa5;
+}
+
+.empty-state .empty-icon{
+    font-size:56px;
+    margin-bottom:15px;
+    opacity:0.6;
+}
+
+.empty-state h3{
+    color:#0c2d69;
+    margin-bottom:10px;
+}
+
+.empty-state p{
+    font-size:16px;
+}
+
+/* 📱 RESPONSIVE */
+
+@media (max-width: 1100px){
+
+    .hero-text h1{ font-size:40px; }
+    .hero-text{ width:100%; }
+    .hero-image img{ width:280px; }
+    .cards,
+    .module-grid{ grid-template-columns:repeat(2,1fr); }
+}
+
+@media (max-width: 820px){
+
+    body{ flex-direction:column; }
+
+    /* Sidebar horizontal arriba */
+    .sidebar{
+        position:static;
+        width:100%;
+        height:auto;
+        padding:15px;
+    }
+
+    .sidebar ul{
+        display:flex;
+        flex-wrap:wrap;
+        margin-top:15px;
+        gap:5px;
+    }
+
+    .sidebar ul li{
+        margin-bottom:0;
+    }
+
+    .sidebar ul li a{
+        padding:10px 14px;
+        font-size:14px;
+    }
+
+    .main-content{
+        margin-left:0;
+        padding:20px;
+    }
+
+    .hero{
+        flex-direction:column;
+        text-align:center;
+    }
+
+    .hero-image img{ width:100%; max-width:340px; }
+    .page-header h1{ font-size:28px; }
+}
+
+@media (max-width: 520px){
+
+    .cards,
+    .module-grid{ grid-template-columns:1fr; }
+
+    .topbar{ padding:10px 12px; }
+
+    #logoutBtn{
+        padding:8px 12px;
+        font-size:12px;
+    }
+
+    button{
+        width:100%;
+        margin-right:0;
+        margin-bottom:10px;
+    }
 }
 
 /* ICONO */

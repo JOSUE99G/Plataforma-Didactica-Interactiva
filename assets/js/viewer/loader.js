@@ -92,6 +92,9 @@ loader.load(
 
         console.log(size);
 
+        // Avisar al resto de la app que el modelo ya está disponible
+        window.dispatchEvent(new CustomEvent("robotCargado", { detail: robot }));
+
     },
 
     function(xhr){

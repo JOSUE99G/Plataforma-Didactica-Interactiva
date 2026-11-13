@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <!-- Metaetiqueta que define la codificación de caracteres para el documento -->
     <meta charset="UTF-8">
@@ -10,7 +10,7 @@
     <!-- Enlace al archivo de CSS externo llamado style.css donde se definen los estilos personalizados -->
     <link rel="stylesheet" href="style.css">
     <!-- Título de la página que aparecerá en la pestaña del navegador -->
-    <title>CSSyHTMLLoguin</title>
+    <title>Plataforma Didáctica — Laboratorio de Robótica Dobot</title>
 </head>
 <body>
 
@@ -23,22 +23,13 @@
                 <!-- Título del formulario de registro -->
                 <h1>Crear cuenta </h1>
                 
-                <!-- Sección de íconos sociales -->
-                <div class="social-icons">
-                    <!-- Íconos de redes sociales que permiten iniciar sesión o registrarse con cuentas externas -->
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
-                
                 <!-- Texto que indica que el usuario también puede registrarse con su correo -->
-                <span>o usa tu correo para registrarse</span>
+                <span>o usa tu correo para registrarte</span>
                 
                 <!-- Campos de entrada para el nombre, correo electrónico y contraseña -->
-                <input type="text" id="registerName" placeholder="Nombre">
+                <input type="text" id="registerName" placeholder="Nombre completo">
                 <input type="email" id="registerEmail" placeholder="ejemplo@email.com">
-                <input type="password" id="registerPassword" placeholder="Password">
+                <input type="password" id="registerPassword" placeholder="Contraseña">
                 
                 <!-- Botón para enviar el formulario de registro -->
                 <button id="registerButton">Registrarse</button>
@@ -49,23 +40,14 @@
         <div class="form-container sign-in">
             <form>
                 <!-- Título del formulario de inicio de sesión -->
-                <h1>iniciar sección</h1>
-                
-                <!-- Sección de íconos sociales para inicio de sesión -->
-                <div class="social-icons">
-                    <!-- Íconos de redes sociales para iniciar sesión con cuentas externas -->
-                    <a href="#" class="icon"><i class="fa-brands fa-google-plus-g"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-facebook-f"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-github"></i></a>
-                    <a href="#" class="icon"><i class="fa-brands fa-linkedin-in"></i></a>
-                </div>
+                <h1>Iniciar sesión</h1>
                 
                 <!-- Texto que indica que también se puede usar un correo y contraseña -->
                 <span>o usa tu correo y contraseña</span>
                 
                 <!-- Campos de entrada para el correo electrónico y la contraseña -->
-                <input type="email" id="loginEmail" placeholder="Ejemplo@email.com">
-                <input type="password" id="loginPassword" placeholder="Password">
+                <input type="email" id="loginEmail" placeholder="ejemplo@email.com">
+                <input type="password" id="loginPassword" placeholder="Contraseña">
                 
                 <!-- Enlace para recuperar la contraseña en caso de olvido -->
               <!--  <a href="forgot.html" id="forgotPassword">Olvidaste tu contraseña?</a>-->
@@ -84,20 +66,20 @@
                 <div class="toggle-panel toggle-left">
                     <!-- Título de bienvenida para el inicio de sesión -->
                     <h1>Bienvenido</h1>
-                    <!-- Descripción que invita a ingresar los detalles personales para usar el sitio -->
-                    <p>Ingresa los datos necesarios para iniciar sección</p>
+                    <!-- Descripción que invita a ingresar los datos para usar la plataforma -->
+                    <p>Ingresa tus datos para acceder a la plataforma</p>
                     <!-- Botón oculto para acceder al formulario de inicio de sesión -->
-                    <button class="hidden" id="login">Iniciar Sección</button>
+                    <button class="hidden" id="login">Iniciar Sesión</button>
                 </div>
 
                 <!-- Panel derecho (para registro) -->
                 <div class="toggle-panel toggle-right">
                     <!-- Título de bienvenida para el registro -->
                     <h1>Hola!</h1>
-                    <!-- Descripción que invita a registrarse con los detalles personales -->
-                    <p>Registra tu cuenta usando la informacion personal</p>
+                    <!-- Descripción que invita a registrarse con sus datos -->
+                    <p>Registra tu cuenta usando tu información personal</p>
                     <!-- Botón oculto para acceder al formulario de registro -->
-                    <button class="hidden" id="register">registrarse</button>
+                    <button class="hidden" id="register">Registrarse</button>
                 </div>
             </div>
         </div>

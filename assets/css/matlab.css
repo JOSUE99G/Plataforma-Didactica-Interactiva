@@ -67,7 +67,7 @@ RIBBON
 }
 
 /*======================================
-AREA PRINCIPAL
+AREA PRINCIPAL: MATLAB 50% | VISOR 3D 50%
 ======================================*/
 
 .matlab-workspace{
@@ -76,7 +76,8 @@ AREA PRINCIPAL
 
     display:grid;
 
-    grid-template-columns:250px 1fr 330px;
+    /* Explorador | Editor | Visor 3D a media pantalla */
+    grid-template-columns:220px 1fr 1fr;
 
     overflow:hidden;
 
@@ -197,7 +198,7 @@ EDITOR
 }
 
 /*======================================
-PANEL DERECHO
+PANEL DERECHO (workspace + visor 3D)
 ======================================*/
 
 .matlab-side{
@@ -212,31 +213,131 @@ PANEL DERECHO
 
 }
 
-.simulation-box{
+/* VISOR 3D A MEDIA PANTALLA */
 
-    height:55%;
+.matlab-viewer3d{
 
-    padding:15px;
+    display:flex;
 
-    border-bottom:1px solid #d8d8d8;
+    flex-direction:column;
+
+    background:#f0f2f6;
+
+    border-left:1px solid #d8d8d8;
+
+    overflow:hidden;
 
 }
 
-.workspace-box{
+.viewer3d-header{
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    padding:10px 15px;
+
+    background:#ececec;
+
+    border-bottom:1px solid #d0d0d0;
+
+}
+
+.viewer3d-header h3{
+
+    font-size:15px;
+
+    color:#0c2d69;
+
+}
+
+#btnToggleViewer{
+
+    background:white;
+
+    border:1px solid #ccc;
+
+    border-radius:6px;
+
+    padding:5px 12px;
+
+    cursor:pointer;
+
+    font-size:13px;
+
+}
+
+#btnToggleViewer:hover{
+
+    background:#e7eef9;
+
+}
+
+#robot3DFrame{
 
     flex:1;
 
-    padding:15px;
+    width:100%;
 
-    overflow:auto;
+    border:none;
 
 }
 
-#matlabRobotViewer{
+.matlab-viewer3d .info-dims{
 
-    height:100%;
+    padding:8px 15px;
 
-    background:white;
+    margin:0;
+
+    font-size:12px;
+
+}
+
+/* Modo visor oculto: el editor recupera el espacio */
+.matlab-workspace.viewer-oculto{
+
+    grid-template-columns:220px 1fr 0;
+
+}
+
+.matlab-workspace.viewer-oculto .matlab-viewer3d{
+
+    display:none;
+
+}
+
+/* Responsive: visor abajo en pantallas pequeñas */
+@media (max-width: 1100px){
+
+    .matlab-workspace{
+
+        grid-template-columns:1fr;
+
+        grid-template-rows:auto auto 400px;
+
+        overflow-y:auto;
+
+    }
+
+    .matlab-viewer3d{
+
+        border-left:none;
+
+        border-top:1px solid #d8d8d8;
+
+        min-height:400px;
+
+    }
+
+    #robot3DFrame{
+
+        min-height:340px;
+
+    }
+
+}
 
     border-radius:8px;
 
@@ -251,6 +352,17 @@ PANEL DERECHO
     color:#888;
 
     font-size:18px;
+
+}
+
+/* workspace en el panel izquierdo */
+.workspace-box{
+
+    height:100%;
+
+    padding:15px;
+
+    overflow:auto;
 
 }
 
@@ -322,4 +434,49 @@ CONSOLA
 
     white-space:pre-wrap;
 
+}
+/* ==========================================
+   CONSOLA MATLAAB DIDÁCTICA
+   ========================================== */
+
+#matlabConsole{
+    font-family:Consolas, "Courier New", monospace;
+    font-size:13px;
+    background:#1e1e2e;
+    color:#cdd6f4;
+    padding:12px;
+    border-radius:8px;
+    height:180px;
+    overflow-y:auto;
+    white-space:pre-wrap;
+}
+
+#matlabConsole .console-line{
+    padding:2px 0;
+}
+
+/* Botones extra del ribbon */
+#btnPasoAPaso,
+#btnSiguientePaso,
+#btnLimpiarConsola,
+#btnEjemplo{
+    background:#0c2d69;
+    color:white;
+    border:none;
+    padding:10px 16px;
+    border-radius:8px;
+    cursor:pointer;
+    font-size:14px;
+}
+
+#btnPasoAPaso:hover,
+#btnSiguientePaso:hover,
+#btnLimpiarConsola:hover,
+#btnEjemplo:hover{
+    background:#173f8a;
+}
+
+/* Estado activo del modo paso a paso */
+#btnPasoAPaso.activo{
+    background:#e53935;
 }

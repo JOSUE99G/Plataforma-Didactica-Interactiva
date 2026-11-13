@@ -1,10 +1,11 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Plataforma Didáctica</title>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
     <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/matlab.css">
 </head>
@@ -21,7 +22,7 @@
         <nav>
             <ul>
                 <li class="active">
-                    <a href="dashboard.html">Inicio</a>
+                    <a href="dashboard.html"><i class="fa-solid fa-house"></i> Inicio</a>
                 </li>
 
                 <li>
@@ -33,21 +34,21 @@
                 </li>
 
                 <li>
-                    <a href="recursos.html">Recursos</a>
+                    <a href="recursos.html"><i class="fa-solid fa-folder-open"></i> Recursos</a>
                 </li>
 
                 <li>
-                    <a href="evaluaciones.html">Evaluaciones</a>
+                    <a href="evaluaciones.html"><i class="fa-solid fa-clipboard-check"></i> Evaluaciones</a>
                 </li>
                 <li>
-                     <a href="visualizador.html">Modelo 3D</a>
+                     <a href="visualizador.html"><i class="fa-solid fa-cube"></i> Modelo 3D</a>
                 </li>
                 
                 <li>
                      <a href="matlab.html">Simulación MATLAB</a>
                 </li>
                 <li>
-                     <a href="progreso.html">Mi progreso</a>
+                     <a href="progreso.html"><i class="fa-solid fa-chart-line"></i> Mi progreso</a>
                 </li>
             </ul>
             </ul>
@@ -84,7 +85,15 @@
 
         <button id="btnEjecutar">▶ Ejecutar</button>
 
+        <button id="btnPasoAPaso">⏸ Paso a paso</button>
+
+        <button id="btnSiguientePaso">⏭ Siguiente</button>
+
         <button id="btnDetener">■ Detener</button>
+
+        <button id="btnLimpiarConsola">🧹 Limpiar consola</button>
+
+        <button id="btnEjemplo">📄 Ejemplo</button>
 
     </div>
 
@@ -134,18 +143,6 @@
 
         <aside class="matlab-side">
 
-            <div class="simulation-box">
-
-                <h3>Simulación</h3>
-
-                <div id="matlabRobotViewer">
-
-                    Simulación 3D
-
-                </div>
-
-            </div>
-
             <div class="workspace-box">
 
                 <h3>Workspace</h3>
@@ -171,6 +168,30 @@
                 </table>
 
             </div>
+
+        </aside>
+
+        <!-- Panel derecho: VISOR 3D A MEDIA PANTALLA -->
+
+        <aside class="matlab-viewer3d">
+
+            <div class="viewer3d-header">
+
+                <h3>🦾 Simulación 3D</h3>
+
+                <button id="btnToggleViewer" title="Mostrar/ocultar visor">◀ ▶</button>
+
+            </div>
+
+            <iframe
+                id="robot3DFrame"
+                src="visualizador.html?embebido=1"
+                title="Simulación 3D del robot">
+            </iframe>
+
+            <p class="info-dims">
+                El robot responde a cada comando magician.* de tu script.
+            </p>
 
         </aside>
 
@@ -203,19 +224,8 @@ Bienvenido al entorno de simulación.
     <!-- 🔥 FIREBASE (OBLIGATORIO) -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
     <script src="assets/js/firebase-config.js"></script>
-    <script>
-    const firebaseConfig = {
-    apiKey: "AIzaSyAFPRQMxKeYuXCAxATEM5E92CMTpHVvogk",
-    authDomain: "robotica-lab-mecatronica.firebaseapp.com",
-    projectId: "robotica-lab-mecatronica",
-    storageBucket: "robotica-lab-mecatronica.firebasestorage.app",
-    messagingSenderId: "856148247166",
-    appId: "1:856148247166:web:47902d9745e8fe272c4e2f"
-    };
-
-        firebase.initializeApp(firebaseConfig);
-    </script>
 
     <!-- 🔥 PROTECCIÓN DE ACCESO -->
     <script>
@@ -225,7 +235,7 @@ Bienvenido al entorno de simulación.
                 window.location.href = "index.html";
             } else {
                 document.getElementById("userName").textContent =
-                    "Bienvenido: " + user.displayName;
+                    "Bienvenido: " + (user.displayName || "Estudiante");
             }
 
         });
@@ -233,13 +243,6 @@ Bienvenido al entorno de simulación.
 
     <!-- 🔥 LOGOUT -->
     <script src="assets/js/logout.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
-
-<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
-
-<script src="assets/js/firebase-config.js"></script>
 
 <script src="assets/js/matlab.js"></script>
 

@@ -21,6 +21,8 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
     const tabla = document.getElementById("tablaResultados");
 
+    const tablaWrapper = tabla ? tabla.closest("table") : null;
+
     tabla.innerHTML = "";
 
     const evaluaciones = [
@@ -58,6 +60,8 @@ firebase.auth().onAuthStateChanged(async (user) => {
 
     let notasEvaluaciones=[];
 
+    let filas=[];
+
     try{
 
         const snapshot = await db
@@ -83,30 +87,29 @@ evaluaciones.forEach(evaluacion => {
 
         evaluacionesCompletadas++;
 
-        sumaNotas += datos.nota;
+        sumaNotas += datos.nota || 0;
 
         nombresEvaluaciones.push(evaluacion.nombre);
 
-        notasEvaluaciones.push(datos.nota);
-        
+        notasEvaluaciones.push(datos.nota || 0);
 
-        tabla.innerHTML += `
+        filas.push(`
             <tr>
 
                 <td>${evaluacion.nombre}</td>
 
-                <td>${datos.nota}</td>
+                <td>${datos.nota != null ? datos.nota : "—"}</td>
 
                 <td>✅ Aprobado</td>
 
-                <td>${datos.intentos}</td>
+                <td>${datos.intentos != null ? datos.intentos : 0}</td>
 
             </tr>
-        `;
+        `);
 
     }else{
 
-        tabla.innerHTML += `
+        filas.push(`
             <tr>
 
                 <td>${evaluacion.nombre}</td>
@@ -118,11 +121,43 @@ evaluaciones.forEach(evaluacion => {
                 <td>0</td>
 
             </tr>
-        `;
+        `);
 
     }
 
 });
+
+// Asignar el HTML una sola vez (evita re-parsear la tabla en cada iteración)
+tabla.innerHTML = filas.join("");
+
+// Estado vacío: si no hay ninguna evaluación realizada, mostrar mensaje amigable
+const contenedorTabla = tabla.closest(".card, .tabla-card, section") || tabla.parentElement;
+let estadoVacio = contenedorTabla.querySelector(".empty-state");
+
+if (numeroEvaluaciones === 0) {
+
+    if (!estadoVacio) {
+
+        estadoVacio = document.createElement("div");
+        estadoVacio.className = "empty-state";
+        estadoVacio.innerHTML = `
+            <div class="empty-icon">📭</div>
+            <h3>Aún no tienes evaluaciones registradas</h3>
+            <p>Realiza tu primer quiz en la sección <a href="evaluaciones.html">Evaluaciones</a> y aquí verás tu progreso.</p>
+        `;
+
+        contenedorTabla.appendChild(estadoVacio);
+
+    }
+
+    if (tablaWrapper) tablaWrapper.style.display = "none";
+
+} else {
+
+    if (estadoVacio) estadoVacio.remove();
+    if (tablaWrapper) tablaWrapper.style.display = "";
+
+}
 
         // ======================
         // Promedio
@@ -157,6 +192,9 @@ document.getElementById("barraCurso").style.width =
 avance + "%";   
 
 const ctx=document.getElementById("graficoNotas");
+
+// Solo crear el gráfico si hay evaluaciones registradas
+if(nombresEvaluaciones.length > 0){
 
 new Chart(ctx,{
 
@@ -207,6 +245,8 @@ max:100
 }
 
 });
+
+}
 
     }
 
