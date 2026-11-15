@@ -8,7 +8,9 @@ import "./lights.js";
 
 import "./controls.js";
 
-import "./loader.js";
+// loader.js ya NO se importa aquí: carga el STL por defecto al inicio y
+// causaba que los robots se superpusieran al cambiar con el selector.
+// La carga la hace ahora cargarRobot() según el robot elegido.
 
 import "./transform.js";
 
@@ -22,7 +24,9 @@ import { iniciarSlidersArt, conectarRigAlModelo } from "./panel-articulaciones.j
 
 import { cargarSTLLocal, quitarSTLLocal, mostrarInfoArticulacion } from "./stl-estudiante.js";
 
-import { cargarConfigRig, construirRigMulti, modoRig } from "./rig-multi.js";
+import { cargarRobot } from "./rig-multi.js";
+
+import { generarSlidersDesdeConfig } from "./panel-articulaciones.js";
 
 import { buildPlate, axes } from "./scene.js";
 
@@ -170,35 +174,39 @@ iniciarSlidersArt();
 
 })();
 
-// Intentar construir el RIG MULTI (piezas STL separadas con cinemática real).
-// Si los archivos no existen, el modo simple (1 STL + capas) sigue funcionando.
+// ============================================================
+// CARGA DEL ROBOT ÚNICO (Brazo Robótico del laboratorio)
+// Al terminar, genera los sliders desde su configuración
+// ============================================================
+
 (async () => {
 
-    const config = await cargarConfigRig();
+    const resultado = await cargarRobot("rig-brazo.json");
 
-    try {
+    const badge = document.getElementById("rigModoBadge");
 
-        const primera = config.eslabones[0];
+    if (badge) {
 
-        const probe = await fetch(primera.stl, { method: "HEAD" });
+        if (resultado.ok && resultado.modo === "multi") {
 
-        if (probe.ok) {
+            badge.textContent = "cinemática real · 5 piezas";
 
-            const rig = await construirRigMulti(config);
-
-            console.log("✅ RIG MULTI activo: cinemática real por eslabones.");
-
-            window.__rigMultiListo = rig;
+            badge.className = "badge dificultad-baja";
 
         } else {
 
-            console.log("ℹ Piezas STL separadas no encontradas: modo simple.");
+            badge.textContent = "⚠ sin modelo";
+
+            badge.className = "badge dificultad-alta";
 
         }
 
-    } catch (e) {
+    }
 
-        console.log("ℹ Modo simple (STL único):", e.message);
+    if (resultado.ok && resultado.modo === "multi") {
+
+        // Sliders con los rangos reales de este robot
+        generarSlidersDesdeConfig(resultado.config);
 
     }
 

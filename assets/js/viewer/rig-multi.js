@@ -115,7 +115,9 @@ function cargarPieza(eslabon, material, onListos) {
     function (geometry) {
       geometry.computeBoundingBox();
 
-      geometry.center(); // centrar la pieza en su pivote
+      // IMPORTANTE: NO se centra la geometría. Las piezas se
+      // exportan en coordenadas del ENSAMBLAJE montado y deben
+      // conservar su posición; cada pivote solo aporta el giro.
 
       const mesh = new THREE.Mesh(geometry, material);
 
@@ -157,11 +159,18 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
     scene.add(rigMulti);
 
     config.eslabones.forEach((esl) => {
-      // Crear pivote con su origen articular
+      // Crear pivote en el EJE de la articulación.
+      // Con piezas exportadas en coordenadas del ensamblaje, el pivote
+      // usa una posición INVERSA: la geometría vive en coords globales
+      // del ensamblaje, así que girar alrededor del eje articular
+      // requiere pivote en el eje y geometría compensada.
       const pivote = new THREE.Group();
 
       pivote.name = "pivote_" + esl.id;
 
+      // Posición del eje articular (coordenadas del ensamblaje).
+      // Para un eslabón con 'origen' {x,y,z}, el pivote se coloca ahí
+      // y la geometría se cuelga con offsets compensados.
       if (esl.origen) {
         pivote.position.set(
           esl.origen.x || 0,
@@ -173,29 +182,84 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
       nodos[esl.id] = pivote;
 
       // Enganchar al padre (o al raíz si es base)
-      const padre = esl.padre ? nodos[esl.padre] : rigMulti;
-
-      // Esperar a que el padre exista (carga en orden)
+      // Nota: el hijo se agrega SIN offset adicional respecto al padre:
+      // la posición relativa entre pivotes ya queda implícita en los
+      // valores 'origen' absolutos del ensamblaje, así que se resta
+      // la posición del padre para obtener el offset local correcto.
       const intentarColgar = () => {
-        const p = esl.padre ? nodos[esl.padre] : rigMulti;
+        const padrePiv = esl.padre ? nodos[esl.padre] : null;
 
-        if (p) {
-          p.add(pivote);
-        } else {
+        if (esl.padre && !padrePiv) {
           setTimeout(intentarColgar, 50);
+          return;
         }
+
+        // Offset local respecto al padre (posición relativa del eje)
+        if (padrePiv) {
+          const ox = (esl.origen ? esl.origen.x || 0 : 0) -
+                     (padrePiv.userData.origenAbs ? padrePiv.userData.origenAbs.x : 0);
+          const oy = (esl.origen ? esl.origen.y || 0 : 0) -
+                     (padrePiv.userData.origenAbs ? padrePiv.userData.origenAbs.y : 0);
+          const oz = (esl.origen ? esl.origen.z || 0 : 0) -
+                     (padrePiv.userData.origenAbs ? padrePiv.userData.origenAbs.z : 0);
+
+          pivote.position.set(ox, oy, oz);
+          pivote.userData.origenAbs = esl.origen || { x: 0, y: 0, z: 0 };
+        } else {
+          pivote.userData.origenAbs = esl.origen || { x: 0, y: 0, z: 0 };
+        }
+
+        (padrePiv || rigMulti).add(pivote);
       };
 
       intentarColgar();
 
       // Cargar pieza
       cargarPieza(esl, crearMaterial(esl.id), (mesh) => {
+        // Compensar: la geometría está en coords del ensamblaje,
+        // pero el pivote ya trasladó el marco, así que la pieza debe
+        // posicionarse relativa a su pivote.
+        const oa = pivote.userData.origenAbs || { x: 0, y: 0, z: 0 };
+
+        mesh.position.set(-oa.x, -oa.y, -oa.z);
+
         pivote.add(mesh);
 
         cargadas++;
 
         if (cargadas === total) {
           modoRig = "multi";
+
+          // Encuadrar la cámara + ASENTAR EL ROBOT EN LA CAMA
+          const box = new THREE.Box3().setFromObject(rigMulti);
+
+          const size = box.getSize(new THREE.Vector3());
+
+          const max = Math.max(size.x, size.y, size.z);
+
+          if (max > 0 && (max < 50 || max > 800)) {
+            // Normalizar a ~300mm para escala predecible
+            const factor = 300 / max;
+
+            rigMulti.scale.setScalar(factor);
+          }
+
+          // Asentar: bajar el rig hasta que su punto más bajo toque y=0
+          const boxPost = new THREE.Box3().setFromObject(rigMulti);
+
+          rigMulti.position.y -= boxPost.min.y;
+
+          const dir = new THREE.Vector3(1, 0.7, 1).normalize();
+
+          camera.position.copy(
+            orbit.target.clone().addScaledVector(dir, 620),
+          );
+
+          orbit.target.set(0, 100, 0);
+
+          orbit.update();
+
+          window.dispatchEvent(new CustomEvent("robotRigListo", { detail: rigMulti }));
 
           resolve(rigMulti);
         }
@@ -259,18 +323,153 @@ export function obtenerPoseEfectorMulti() {
  * Carga la configuración desde JSON si existe (permite ajustar
  * orígenes articulares sin tocar el código).
  */
-export async function cargarConfigRig() {
+export async function cargarConfigRig(archivo = "rig-dobot.json") {
   try {
-    const res = await fetch("assets/models/rig-dobot.json");
+    const res = await fetch(`assets/models/${archivo}`);
 
     if (res.ok) {
       configActual = await res.json();
 
-      console.log("✅ Configuración de rig cargada desde rig-dobot.json");
+      console.log(`✅ Configuración de rig cargada: ${archivo}`);
     }
   } catch (e) {
     console.log("ℹ Usando configuración de rig por defecto.");
   }
 
   return configActual;
+}
+
+/**
+ * Elimina el rig actual de la escena (para cambiar de robot).
+ */
+export function destruirRigMulti() {
+  if (rigMulti) {
+    scene.remove(rigMulti);
+
+    rigMulti.traverse((obj) => {
+      if (obj.geometry) obj.geometry.dispose();
+    });
+
+    rigMulti = null;
+    modoRig = "simple";
+  }
+
+  // También limpiar el mesh del modo simple si existe
+  const simple = scene.getObjectByName("robotSimple");
+
+  if (simple) {
+    scene.remove(simple);
+    simple.geometry.dispose();
+  }
+}
+
+/**
+ * Carga un robot completo por nombre de archivo JSON.
+ * Usado por el selector de robot del visor.
+ * Intenta modo multi (piezas); si no existen, usa modo simple (STL único).
+ * @param {string} archivoJSON - ej. "rig-brazo.json"
+ * @returns {Promise<{ok: boolean, modo: string, config: Object}>}
+ */
+export async function cargarRobot(archivoJSON) {
+  // Limpiar rig anterior
+  destruirRigMulti();
+
+  let config;
+
+  try {
+    const res = await fetch(`assets/models/${archivoJSON}`);
+
+    if (!res.ok) throw new Error(`No se encontró ${archivoJSON}`);
+
+    config = await res.json();
+  } catch (error) {
+    console.error("Error cargando robot:", error);
+
+    return { ok: false, modo: "ninguno", config: null };
+  }
+
+  configActual = config;
+
+  // Verificar si existen las piezas del primer eslabón
+  let piezasDisponibles = false;
+
+  try {
+    const probe = await fetch(config.eslabones[0].stl, { method: "HEAD" });
+
+    piezasDisponibles = probe.ok;
+  } catch (e) {
+    piezasDisponibles = false;
+  }
+
+  if (piezasDisponibles) {
+    await construirRigMulti(config);
+
+    console.log(`✅ Robot en modo MULTI: ${archivoJSON}`);
+
+    return { ok: true, modo: "multi", config };
+  }
+
+  // Fallback: STL completo en modo simple
+  const stlSimple =
+    (config.modoSimple && config.modoSimple.stl) ||
+    "assets/models/MagicianLite.stl";
+
+  try {
+    await cargarModoSimple(stlSimple);
+
+    console.log(`ℹ Robot en modo SIMPLE: ${stlSimple}`);
+
+    return { ok: true, modo: "simple", config };
+  } catch (error) {
+    console.error("No se pudo cargar ni el rig ni el STL simple:", error);
+
+    return { ok: false, modo: "ninguno", config };
+  }
+}
+
+/**
+ * Carga un STL completo (modo simple) y lo añade a la escena.
+ */
+function cargarModoSimple(rutaSTL) {
+  return new Promise((resolve, reject) => {
+    loader.load(
+      rutaSTL,
+
+      (geometry) => {
+        geometry.computeBoundingBox();
+
+        geometry.center();
+
+        const mesh = new THREE.Mesh(
+          geometry,
+          new THREE.MeshPhysicalMaterial({
+            color: 0x3f8cff,
+            metalness: 0.15,
+            roughness: 0.3,
+            clearcoat: 0.3,
+          })
+        );
+
+        mesh.rotation.x = -Math.PI / 2;
+
+        mesh.castShadow = true;
+
+        mesh.receiveShadow = true;
+
+        mesh.name = "robotSimple";
+
+        scene.add(mesh);
+
+        window.__robotMesh = mesh;
+
+        window.dispatchEvent(new CustomEvent("robotCargado", { detail: mesh }));
+
+        resolve(mesh);
+      },
+
+      undefined,
+
+      reject
+    );
+  });
 }

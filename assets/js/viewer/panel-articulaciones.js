@@ -1,51 +1,78 @@
 /* ============================================================
    UI: sliders de articulaciones + pose del efector
+   Los sliders se generan desde la CONFIGURACIÓN del rig activo
+   (rig-brazo.json), así se adaptan al robot cargado.
    ============================================================ */
 
-import {
-  construirRig,
-  aplicarAngulos,
-  obtenerPoseEfector,
-  robotRig,
-} from "./articulaciones.js";
+import { aplicarAngulosMulti, obtenerPoseEfectorMulti } from "./rig-multi.js";
 
-const DEFINICION = [
-  { id: "base", nombre: "Base", min: -135, max: 135, def: 0 },
-  { id: "hombro", nombre: "Hombro", min: -15, max: 85, def: 20 },
-  { id: "codo", nombre: "Codo", min: -95, max: 0, def: -45 },
-  { id: "muneca", nombre: "Muñeca", min: -105, max: 105, def: 0 },
-  { id: "garra", nombre: "Garra %", min: 0, max: 100, def: 50 },
-];
+import { mostrarInfoArticulacion } from "./stl-estudiante.js";
+
+/* Nombres didácticos por id de eslabón */
+const NOMBRES = {
+  base: "Base (J1)",
+  hombro: "Hombro (J2)",
+  codo: "Codo (J3)",
+  brazo1: "Brazo A",
+  brazo2: "Brazo B",
+  muneca: "Muñeca (J4)",
+  griper: "Efector",
+  garra: "Garra",
+  efector: "Efector final",
+};
 
 const valoresActuales = {};
 
+let configRig = null;
+
 /**
- * Genera los sliders dinámicamente dentro de #slidersArt
+ * Genera los sliders a partir de la configuración del robot.
+ * @param {Object} config - { eslabones: [{id, rango, ...}] }
  */
-export function iniciarSlidersArt() {
+export function generarSlidersDesdeConfig(config) {
+  configRig = config;
+
   const cont = document.getElementById("slidersArt");
 
-  if (!cont) return;
+  if (!cont || !config || !config.eslabones) return;
 
   cont.innerHTML = "";
 
-  DEFINICION.forEach((a) => {
-    valoresActuales[a.id] = a.def;
+  config.eslabones.forEach((esl) => {
+    const [min, max] = esl.rango || [-180, 180];
+
+    const def = Math.max(min, Math.min(max, 0));
+
+    valoresActuales[esl.id] = def;
+
+    const nombre = NOMBRES[esl.id] || esl.id;
 
     const fila = document.createElement("div");
 
     fila.className = "art-slider";
 
     fila.innerHTML = `
-            <label>${a.nombre}</label>
-            <input type="range" min="${a.min}" max="${a.max}" value="${a.def}" step="1" data-art="${a.id}">
-            <span class="art-value">${a.def}°</span>
-        `;
+      <label>${nombre}</label>
+      <input type="range" min="${min}" max="${max}" value="${def}" step="1" data-art="${esl.id}">
+      <span class="art-value">${def}°</span>
+    `;
 
     cont.appendChild(fila);
   });
 
-  // Un solo listener delegado
+  aplicarAngulosMulti(valoresActuales);
+
+  actualizarPose();
+}
+
+/**
+ * Listener de sliders: mueve el rig MULTI activo.
+ */
+export function iniciarSlidersArt() {
+  const cont = document.getElementById("slidersArt");
+
+  if (!cont) return;
+
   cont.addEventListener("input", (e) => {
     const slider = e.target.closest("input[data-art]");
 
@@ -61,21 +88,25 @@ export function iniciarSlidersArt() {
 
     if (salida) salida.textContent = v + "°";
 
-    aplicarAngulos(valoresActuales);
+    // Rig multi (piezas STL separadas)
+    aplicarAngulosMulti(valoresActuales);
+
+    // Ficha educativa de la articulación movida
+    mostrarInfoArticulacion(id);
 
     actualizarPose();
   });
 }
 
 /**
- * Muestra la pose del efector final en el panel
+ * Pose del efector final según el rig activo.
  */
 export function actualizarPose() {
   const el = document.getElementById("poseEfector");
 
   if (!el) return;
 
-  const pose = obtenerPoseEfector();
+  const pose = obtenerPoseEfectorMulti();
 
   if (!pose) {
     el.textContent = "—";
@@ -87,13 +118,10 @@ export function actualizarPose() {
 }
 
 /**
- * Cuando el STL termine de cargar, construir el rig
+ * Compatibilidad con llamadas antiguas (robotCargado).
+ * Con el rig multi, los sliders ya se generan desde el JSON;
+ * esta función solo refresca la pose.
  */
-export function conectarRigAlModelo(mesh) {
-  construirRig(mesh);
-
-  // Aplicar pose por defecto
-  aplicarAngulos(valoresActuales);
-
+export function conectarRigAlModelo() {
   actualizarPose();
 }

@@ -416,3 +416,47 @@ html.embebido #viewer3D{
     color:#9aa7bd;
     margin:4px 0 8px;
 }
+
+/* ==========================================
+   SELECTOR DE ROBOT
+   ========================================== */
+
+.robot-selector{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    margin-left:auto;
+}
+
+.robot-selector label{
+    font-size:13px;
+    font-weight:600;
+    color:#0c2d69;
+}
+
+.robot-selector label i{
+    margin-right:5px;
+    color:#3f8cff;
+}
+
+.robot-selector select{
+    padding:8px 12px;
+    border-radius:8px;
+    border:1px solid #c9d2e3;
+    background:white;
+    color:#0c2d69;
+    font-size:13px;
+    font-weight:600;
+    cursor:pointer;
+    outline:none;
+    transition:border-color 0.2s;
+}
+
+.robot-selector select:hover{
+    border-color:#3f8cff;
+}
+
+.robot-selector select:focus{
+    border-color:#3f8cff;
+    box-shadow:0 0 0 3px rgba(63,140,255,0.15);
+}

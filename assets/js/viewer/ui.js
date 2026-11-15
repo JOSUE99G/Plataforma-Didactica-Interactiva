@@ -1,63 +1,62 @@
+import { scene } from "./scene.js";
 import { camera } from "./camera.js";
 import { orbit } from "./controls.js";
 import { transform } from "./transform.js";
-import { robot } from "./loader.js";
+
+// Helper seguro: los elementos de modo fueron retirados del panel,
+// así que todos los accesos verifican existencia antes de usar.
+function alHacerClic(id, manejador) {
+  const el = document.getElementById(id);
+
+  if (el) el.onclick = manejador;
+}
 
 //======================
 // CAMARA
 //======================
 
-document.getElementById("cameraMode").onclick = () => {
+alHacerClic("cameraMode", () => {
+  orbit.enabled = true;
 
-    orbit.enabled = true;
-
-    if(transform){
-
-        transform.detach();
-
-        transform.visible = false;
-
-    }
-
-};
+  if (transform) {
+    transform.detach();
+    transform.visible = false;
+  }
+});
 
 //======================
 // MODELO
 //======================
 
-document.getElementById("modelMode").onclick = () => {
+alHacerClic("modelMode", () => {
+  // El robot ahora se busca por nombre (modo simple o multi)
+  const robotActual =
+    scene.getObjectByName("robotSimple") ||
+    scene.getObjectByName("robotRig") ||
+    scene.getObjectByName("rigMulti");
 
-    if(!transform || !robot) return;
+  if (!transform || !robotActual) return;
 
-    orbit.enabled = false;
-
-    transform.attach(robot);
-
-    transform.visible = true;
-
-};
+  orbit.enabled = false;
+  transform.attach(robotActual);
+  transform.visible = true;
+});
 
 //======================
 // HERRAMIENTAS
 //======================
 
-document.getElementById("moveTool").onclick = ()=>{
+alHacerClic("moveTool", () => {
+  if (transform) transform.setMode("translate");
+});
 
-    if(transform) transform.setMode("translate");
+alHacerClic("rotateTool", () => {
+  if (transform) transform.setMode("rotate");
+});
 
-};
-
-document.getElementById("rotateTool").onclick = ()=>{
-
-    if(transform) transform.setMode("rotate");
-
-};
-
-document.getElementById("scaleTool").onclick = ()=>{
-
-    if(transform) transform.setMode("scale");
-
-};
+alHacerClic("scaleTool", () => {
+  if (transform) transform.setMode("scale");
+});
 
 //======================
 // VISTAS

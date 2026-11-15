@@ -3,15 +3,11 @@
    Requiere los IDs presentes en visualizador.html
    ============================================================ */
 
-import * as THREE from "../../three/build/three.module.js";
-
 import { scene } from "./scene.js";
 
 import { camera } from "./camera.js";
 
 import { orbit } from "./controls.js";
-
-import { robot, material } from "./loader.js";
 
 /* ============================================================
    GRID / EJES / SUELO ESTILO SLICER
@@ -112,21 +108,57 @@ export function iniciarCheckboxes(plate, axes) {
 
   if (shadowCheck) {
     shadowCheck.addEventListener("change", (e) => {
-      if (robot) robot.castShadow = e.target.checked;
+      // Aplica a todos los meshes del robot (modo simple o multi)
+      const blancos = [
+        scene.getObjectByName("robotSimple"),
+        scene.getObjectByName("robotRig"),
+        scene.getObjectByName("rigMulti"),
+      ].filter(Boolean);
+
+      blancos.forEach((raiz) => {
+        raiz.traverse((obj) => {
+          if (obj.isMesh) obj.castShadow = e.target.checked;
+        });
+      });
     });
   }
 
-  if (wireframeCheck && material) {
+  if (wireframeCheck) {
     wireframeCheck.addEventListener("change", (e) => {
-      material.wireframe = e.target.checked;
+      // Aplica a todos los materiales del robot activo
+      const blancos = [
+        scene.getObjectByName("robotSimple"),
+        scene.getObjectByName("robotRig"),
+        scene.getObjectByName("rigMulti"),
+      ].filter(Boolean);
+
+      blancos.forEach((raiz) => {
+        raiz.traverse((obj) => {
+          if (obj.isMesh && obj.material) {
+            obj.material.wireframe = e.target.checked;
+          }
+        });
+      });
     });
   }
 
-  if (transparentCheck && material) {
+  if (transparentCheck) {
     transparentCheck.addEventListener("change", (e) => {
-      material.transparent = e.target.checked;
+      const blancos = [
+        scene.getObjectByName("robotSimple"),
+        scene.getObjectByName("robotRig"),
+        scene.getObjectByName("rigMulti"),
+      ].filter(Boolean);
 
-      material.opacity = e.target.checked ? 0.35 : 1;
+      blancos.forEach((raiz) => {
+        raiz.traverse((obj) => {
+          if (obj.isMesh && obj.material) {
+            obj.material.transparent = e.target.checked;
+            obj.material.opacity = e.target.checked ? 0.35 : 1;
+            obj.material.needsUpdate = true;
+          }
+        });
+      });
     });
   }
 }
