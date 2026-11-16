@@ -125,8 +125,11 @@ function cargarPieza(eslabon, material, onListos) {
 
       mesh.receiveShadow = true;
 
-      // Orientación estándar: los STL de CAD suelen venir en Z-up
-      mesh.rotation.x = -Math.PI / 2;
+      // SIN rotación individual: las piezas conservan las coordenadas
+      // globales del ensamblaje. La conversión Z-up→Y-up se aplica
+      // UNA sola vez al rig completo (ver construirRigMulti), así el
+      // offset de compensación del pivote no se distorsiona y cada
+      // eslabón gira alrededor de SU articulación.
 
       onListos(mesh);
     },
@@ -156,6 +159,12 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
 
     rigMulti.name = "rigMulti";
 
+    // Conversión Z-up (CAD) → Y-up (Three.js): UNA rotación para todo
+    // el rig, no por pieza. Así los offsets de compensación del pivote
+    // se calculan en el mismo marco que la geometría y cada eslabón
+    // gira alrededor de su articulación real.
+    rigMulti.rotation.x = -Math.PI / 2;
+
     scene.add(rigMulti);
 
     config.eslabones.forEach((esl) => {
@@ -168,16 +177,24 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
 
       pivote.name = "pivote_" + esl.id;
 
-      // Posición del eje articular (coordenadas del ensamblaje).
-      // Para un eslabón con 'origen' {x,y,z}, el pivote se coloca ahí
-      // y la geometría se cuelga con offsets compensados.
-      if (esl.origen) {
-        pivote.position.set(
-          esl.origen.x || 0,
-          esl.origen.y || 0,
-          esl.origen.z || 0,
-        );
-      }
+      // Posición del eje articular.
+      // Los 'origen' del JSON se expresan en el marco CAD del ensamblaje:
+      //   x = frente, y = lateral (izquierda), z = altura (Z-up)
+      // El rig completo ya está rotado a Y-up, así que aquí se mapea:
+      //   three.x = cad.x, three.y = cad.z (altura), three.z = -cad.y
+      const oa = esl.origen || { x: 0, y: 0, z: 0 };
+
+      const mapaCAD = {
+        x: oa.x || 0,
+        y: oa.z || 0,        // altura CAD (Z) -> Y de three
+        z: -(oa.y || 0),     // lateral CAD (Y) -> -Z de three
+      };
+
+      pivote.position.set(mapaCAD.x, mapaCAD.y, mapaCAD.z);
+
+      pivote.userData.origenAbsCAD = oa;
+
+      pivote.userData.origenMapa = mapaCAD;
 
       nodos[esl.id] = pivote;
 
@@ -194,19 +211,22 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
           return;
         }
 
-        // Offset local respecto al padre (posición relativa del eje)
+        // Offset local respecto al padre (diferencia de ejes CAD,
+        // mapeada igual que la posición: cad.x→x, cad.z→y, -cad.y→z)
         if (padrePiv) {
-          const ox = (esl.origen ? esl.origen.x || 0 : 0) -
-                     (padrePiv.userData.origenAbs ? padrePiv.userData.origenAbs.x : 0);
-          const oy = (esl.origen ? esl.origen.y || 0 : 0) -
-                     (padrePiv.userData.origenAbs ? padrePiv.userData.origenAbs.y : 0);
-          const oz = (esl.origen ? esl.origen.z || 0 : 0) -
-                     (padrePiv.userData.origenAbs ? padrePiv.userData.origenAbs.z : 0);
+          const oaPadre = padrePiv.userData.origenAbsCAD || { x: 0, y: 0, z: 0 };
 
-          pivote.position.set(ox, oy, oz);
-          pivote.userData.origenAbs = esl.origen || { x: 0, y: 0, z: 0 };
-        } else {
-          pivote.userData.origenAbs = esl.origen || { x: 0, y: 0, z: 0 };
+          const relCAD = {
+            x: oa.x - oaPadre.x,
+            y: oa.y - oaPadre.y,
+            z: oa.z - oaPadre.z,
+          };
+
+          pivote.position.set(
+            relCAD.x,
+            relCAD.z,        // altura CAD
+            -relCAD.y,       // lateral CAD
+          );
         }
 
         (padrePiv || rigMulti).add(pivote);
@@ -216,12 +236,13 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
 
       // Cargar pieza
       cargarPieza(esl, crearMaterial(esl.id), (mesh) => {
-        // Compensar: la geometría está en coords del ensamblaje,
-        // pero el pivote ya trasladó el marco, así que la pieza debe
-        // posicionarse relativa a su pivote.
-        const oa = pivote.userData.origenAbs || { x: 0, y: 0, z: 0 };
+        // Compensar: la geometría vive en coords del ensamblaje CAD
+        // (x=frente, y=lateral, z=altura). El pivote ya está colocado
+        // en el eje articular (marco three), así que la pieza se cuelga
+        // con offset NEGATIVO en coords CAD mapeadas igual que arriba.
+        const oa = esl.origen || { x: 0, y: 0, z: 0 };
 
-        mesh.position.set(-oa.x, -oa.y, -oa.z);
+        mesh.position.set(-oa.x, -oa.z, oa.y);
 
         pivote.add(mesh);
 
@@ -244,15 +265,23 @@ export function construirRigMulti(config = CONFIG_DEFECTO) {
             rigMulti.scale.setScalar(factor);
           }
 
-          // Asentar: bajar el rig hasta que su punto más bajo toque y=0
+          // Asentar: subir/bajar el rig hasta que su punto más bajo toque y=0
+          // y CENTRAR sobre la cuadrícula (el CAD tiene offset en X/Y)
           const boxPost = new THREE.Box3().setFromObject(rigMulti);
 
-          rigMulti.position.y -= boxPost.min.y;
+          rigMulti.position.y = -boxPost.min.y;
+
+          const centroXZ = boxPost.getCenter(new THREE.Vector3());
+
+          rigMulti.position.x -= centroXZ.x;
+
+          rigMulti.position.z -= centroXZ.z;
 
           const dir = new THREE.Vector3(1, 0.7, 1).normalize();
 
+          // Cámara más lejana para ver el robot completo con margen
           camera.position.copy(
-            orbit.target.clone().addScaledVector(dir, 620),
+            orbit.target.clone().addScaledVector(dir, 900),
           );
 
           orbit.target.set(0, 100, 0);
@@ -292,7 +321,14 @@ export function aplicarAngulosMulti(valores) {
 
     const v = THREE.MathUtils.clamp(valor, min, max);
 
-    pivote.rotation[esl.eje] = d2r(v);
+    // El eje del JSON está en marco CAD (Z-up). Tras la conversión
+    // del rig (rotation.x = -90°), los ejes se transforman:
+    //   CAD z (altura)  -> eje y local
+    //   CAD x (frente)  -> eje x
+    //   CAD y (lateral) -> eje z
+    const mapaEje = { x: "x", y: "z", z: "y" };
+
+    pivote.rotation[mapaEje[esl.eje] || esl.eje] = d2r(v);
   });
 }
 

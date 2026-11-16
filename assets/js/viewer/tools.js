@@ -207,24 +207,35 @@ export function iniciarZoomCamara() {
 
   const btnFit = document.getElementById("fitView");
 
-  function dolly(factor) {
-    const dir = new THREE.Vector3()
+  function dolly(signo) {
+    // Zoom proporcional a la distancia actual (como el scroll de
+    // cualquier editor 3D): multiplicar la distancia target↔cámara.
+    // La ruenda de OrbitControls usa dollyIn/dollyOut sobre este mismo
+    // factor, así los botones y el scroll quedan coherentes.
+    const offset = camera.position.clone().sub(orbit.target);
 
-      .subVectors(orbit.target, camera.position)
+    let nuevaDist = offset.length() * (signo > 0 ? 1.2 : 0.8);
 
-      .normalize();
+    // Respetar los límites min/max del OrbitControls
+    nuevaDist = THREE.MathUtils.clamp(
+      nuevaDist,
+      orbit.minDistance || 20,
+      orbit.maxDistance || 3000,
+    );
 
-    camera.position.addScaledVector(dir, -factor);
+    offset.setLength(nuevaDist);
+
+    camera.position.copy(orbit.target).add(offset);
 
     orbit.update();
   }
 
   if (btnIn) {
-    btnIn.addEventListener("click", () => dolly(-30));
+    btnIn.addEventListener("click", () => dolly(-1));
   }
 
   if (btnOut) {
-    btnOut.addEventListener("click", () => dolly(30));
+    btnOut.addEventListener("click", () => dolly(1));
   }
 
   if (btnFit) {

@@ -129,15 +129,39 @@ export class RobotVirtual {
        Internos
        --------------------------------------------------------- */
 
-  aplicar() {
+    aplicar() {
     if (this.rigAPI) {
       this.rigAPI.aplicarAngulos(this.pos);
     }
+
+    // PUBLICAR AL PUENTE FUSION 360:
+    // envía los ángulos al servidor local, que los expone para el
+    // add-in ReceptorFusion (o los escribe en comandos-robot.json).
+    this.publicarAlPuente();
 
     // Avisar a la UI (y al iframe del visor, vía matlab-app) de la nueva pose
     if (this.onPose) {
       this.onPose(this.pos);
     }
+  }
+
+  publicarAlPuente() {
+    // Mapear articulaciones del brazo a j1..j5 (orden de la cadena)
+    const comandos = {
+      j1: this.pos.base || 0,
+      j2: this.pos.hombro || 0,
+      j3: this.pos.codo || 0,
+      j4: this.pos.muneca || 0,
+      j5: this.pos.garra || 0,
+    };
+
+    fetch("http://localhost:3000/api/comandos-robot", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(comandos),
+    }).catch(() => {
+      // Sin servidor local: modo nube, no pasa nada
+    });
   }
 
   registrarTraza(x, y, z) {

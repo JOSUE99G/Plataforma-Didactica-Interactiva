@@ -148,6 +148,38 @@ const servidorAPI = http.createServer(async (req, res) => {
   if (url.pathname === "/api/ping")
     return json(res, 200, { ok: true, modo: "local" });
 
+  /* --- PUENTE FUSION 360 ---
+     POST /api/comandos-robot  { base, hombro, codo, ... }
+     GET  /api/comandos-robot  → último comando publicado
+     El add-in ReceptorFusion lee aquí y mueve los joints del
+     ensamblaje. Si Fusion prefiere archivo, puede también leer
+     comandos-robot.json del disco (mismo contenido). */
+
+  if (url.pathname === "/api/comandos-robot") {
+    if (req.method === "POST") {
+      const cuerpo = await leerCuerpo(req);
+
+      datos.comandosRobot = { ...cuerpo, recibidoEn: Date.now() };
+
+      guardarDatos();
+
+      // Escribir también el archivo puente para el add-in de Fusion
+      const rutaPuente = path.join(__dirname, "comandos-robot.json");
+
+      try {
+        fs.writeFileSync(rutaPuente, JSON.stringify(datos.comandosRobot, null, 2));
+      } catch (e) {
+        console.error("No se pudo escribir comandos-robot.json:", e.message);
+      }
+
+      return json(res, 200, { ok: true });
+    }
+
+    if (req.method === "GET") {
+      return json(res, 200, datos.comandosRobot || {});
+    }
+  }
+
   /* --- Login / Registro --- */
 
   if (url.pathname === "/api/login" && req.method === "POST") {

@@ -1,48 +1,81 @@
 {
-  "_ayuda": "Configuración del BRAZO ROBÓTICO de GrabCAD (5 piezas SLDPRT convertidas a STL). Ajusta los valores 'origen' (mm) con las medidas reales del ensamblaje SolidWorks.",
-
+  "_ayuda": "Generado por ExportarJoints.py (Fusion 360) + ajuste manual: muneca renombrada (sin ñ) y griper añadido manualmente (no tiene joint de revolución).",
   "efector": "muneca",
-
   "eslabones": [
     {
       "id": "base",
       "stl": "assets/models/piezas/base.stl",
       "padre": null,
       "eje": "y",
-      "rango": [-180, 180],
-      "origen": { "x": 0, "y": 0, "z": 0 }
+      "rango": [
+        -180,
+        180
+      ],
+      "origen": {
+        "x": -140.5,
+        "y": -64.9,
+        "z": 597.0
+      }
     },
     {
       "id": "hombro",
       "stl": "assets/models/piezas/hombro.stl",
       "padre": "base",
-      "eje": "z",
-      "rango": [-30, 90],
-      "origen": { "x": 0, "y": 60, "z": 0 }
+      "eje": "y",
+      "rango": [
+        -180,
+        180
+      ],
+      "origen": {
+        "x": -103.5,
+        "y": -147.0,
+        "z": 813.0
+      }
     },
     {
       "id": "codo",
       "stl": "assets/models/piezas/codo.stl",
       "padre": "hombro",
-      "eje": "z",
-      "rango": [-120, 30],
-      "origen": { "x": 90, "y": 40, "z": 0 }
+      "eje": "y",
+      "rango": [
+        -180,
+        180
+      ],
+      "origen": {
+        "x": -498.4,
+        "y": -324.6,
+        "z": 563.0
+      }
     },
     {
       "id": "muneca",
       "stl": "assets/models/piezas/muneca.stl",
       "padre": "codo",
-      "eje": "z",
-      "rango": [-90, 90],
-      "origen": { "x": 80, "y": 30, "z": 0 }
+      "eje": "y",
+      "rango": [
+        -180,
+        180
+      ],
+      "origen": {
+        "x": -912.0,
+        "y": -477.7,
+        "z": 663.9
+      }
     },
     {
       "id": "griper",
       "stl": "assets/models/piezas/griper.stl",
       "padre": "muneca",
-      "eje": "z",
-      "rango": [0, 100],
-      "origen": { "x": 35, "y": 0, "z": 0 }
+      "eje": "y",
+      "rango": [
+        0,
+        100
+      ],
+      "origen": {
+        "x": -498.4,
+        "y": -324.6,
+        "z": 563.0
+      }
     }
   ]
 }

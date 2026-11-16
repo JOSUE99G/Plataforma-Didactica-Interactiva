@@ -8,6 +8,10 @@ import "./lights.js";
 
 import "./controls.js";
 
+// La cinemática articulada se ejecuta en Fusion 360 (CAD con joints
+// reales, controlado desde el laboratorio MATLAB vía puente local).
+// El visor web queda como explorador del modelo + STL del estudiante.
+
 // loader.js ya NO se importa aquí: carga el STL por defecto al inicio y
 // causaba que los robots se superpusieran al cambiar con el selector.
 // La carga la hace ahora cargarRobot() según el robot elegido.
@@ -24,9 +28,11 @@ import { iniciarSlidersArt, conectarRigAlModelo } from "./panel-articulaciones.j
 
 import { cargarSTLLocal, quitarSTLLocal, mostrarInfoArticulacion } from "./stl-estudiante.js";
 
-import { cargarRobot } from "./rig-multi.js";
+import { construirRobotProcedural, aplicarAngulosProcedural, obtenerPoseProcedural } from "./robot-procedural.js";
 
 import { generarSlidersDesdeConfig } from "./panel-articulaciones.js";
+
+import { scene } from "./scene.js";
 
 import { buildPlate, axes } from "./scene.js";
 
@@ -155,6 +161,37 @@ iniciarSlidersArt();
 })();
 
 /* ============================================================
+   SELECTOR DE ACCESORIO DEL EFECTOR FINAL
+   ============================================================ */
+
+(function iniciarAccesorios() {
+
+    const botones = document.querySelectorAll(".acc-btn");
+
+    if (!botones.length) return;
+
+    botones.forEach(btn => {
+
+        btn.addEventListener("click", () => {
+
+            // Resaltar el activo
+            botones.forEach(b => b.classList.remove("activo"));
+
+            btn.classList.add("activo");
+
+            import("./robot-procedural.js").then(m => {
+
+                m.aplicarAccesorio(btn.dataset.acc);
+
+            });
+
+        });
+
+    });
+
+})();
+
+/* ============================================================
    FICHA EDUCATIVA: al mover un slider, mostrar qué articulación es
    ============================================================ */
 
@@ -175,38 +212,23 @@ iniciarSlidersArt();
 })();
 
 // ============================================================
-// CARGA DEL ROBOT ÚNICO (Brazo Robótico del laboratorio)
-// Al terminar, genera los sliders desde su configuración
+// ROBOT PROCEDURAL: carga instantánea, cinemática por construcción
 // ============================================================
 
 (async () => {
 
-    const resultado = await cargarRobot("rig-brazo.json");
-
     const badge = document.getElementById("rigModoBadge");
+
+    construirRobotProcedural();
+
+    // Sliders de articulación (rangos datasheet Magician Lite)
+    generarSlidersDesdeConfig();
 
     if (badge) {
 
-        if (resultado.ok && resultado.modo === "multi") {
+        badge.textContent = "Magician Lite · modelo cinemático";
 
-            badge.textContent = "cinemática real · 5 piezas";
-
-            badge.className = "badge dificultad-baja";
-
-        } else {
-
-            badge.textContent = "⚠ sin modelo";
-
-            badge.className = "badge dificultad-alta";
-
-        }
-
-    }
-
-    if (resultado.ok && resultado.modo === "multi") {
-
-        // Sliders con los rangos reales de este robot
-        generarSlidersDesdeConfig(resultado.config);
+        badge.className = "badge dificultad-baja";
 
     }
 

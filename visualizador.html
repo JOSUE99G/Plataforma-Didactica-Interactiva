@@ -160,7 +160,7 @@ Manipule el modelo CAD del brazo robótico directamente desde la plataforma.
 
 <p id="poseEfector" class="info-dims">
 
-    —
+    Se calcula en el laboratorio MATLAB (con el CAD de Fusion 360)
 
 </p>
 
@@ -196,17 +196,48 @@ Manipule el modelo CAD del brazo robótico directamente desde la plataforma.
 
 <hr>
 
+<h4>Efector final</h4>
+
+<div class="accesorios">
+
+    <button class="acc-btn activo" data-acc="marcador" title="Marcador para dibujar">
+        <i class="fa-solid fa-pen"></i> Marcador
+    </button>
+
+    <button class="acc-btn" data-acc="ventosa" title="Ventosa para objetos pequeños">
+        <i class="fa-solid fa-circle"></i> Ventosa
+    </button>
+
+    <button class="acc-btn" data-acc="garra" title="Garra de tentáculos">
+        <i class="fa-solid fa-spider"></i> Garra
+    </button>
+
+</div>
+
+<hr>
+
 <h4>Articulaciones del brazo</h4>
 
 <p class="stl-hint">
-Toca un slider para ver qué articulación estás moviendo:
+La animación articulada del brazo se ejecuta en el laboratorio MATLAB
+(usando el CAD con joints en Fusion 360). Aquí puedes:
 </p>
 
-<div id="infoArticulacion" class="info-articulacion">
+<ul class="stl-hint" style="padding-left:16px">
 
-    <p class="stl-hint" style="margin:0">← Mueve un slider para ver su explicación</p>
+    <li>Explorar el modelo montado con órbita y zoom</li>
 
-</div>
+    <li>Escalar el modelo (slider) para comparar tamaños</li>
+
+    <li>Subir tu propio .STL y comparar con el robot</li>
+
+</ul>
+
+<a class="mod-btn" href="matlab.html" style="margin:10px 0;display:block;text-align:center">
+
+    <i class="fa-solid fa-terminal"></i> Abrir simulación MATLAB
+
+</a>
 
 <hr>
 

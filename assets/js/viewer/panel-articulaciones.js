@@ -1,72 +1,59 @@
 /* ============================================================
-   UI: sliders de articulaciones + pose del efector
-   Los sliders se generan desde la CONFIGURACIÓN del rig activo
-   (rig-brazo.json), así se adaptan al robot cargado.
+   UI: sliders de articulaciones del ROBOT PROCEDURAL
+   Rangos según datasheet del Dobot Magician Lite.
    ============================================================ */
 
-import { aplicarAngulosMulti, obtenerPoseEfectorMulti } from "./rig-multi.js";
+import {
+  aplicarAngulosProcedural,
+  obtenerPoseProcedural,
+  construirRobotProcedural,
+} from "./robot-procedural.js";
 
 import { mostrarInfoArticulacion } from "./stl-estudiante.js";
 
-/* Nombres didácticos por id de eslabón */
-const NOMBRES = {
-  base: "Base (J1)",
-  hombro: "Hombro (J2)",
-  codo: "Codo (J3)",
-  brazo1: "Brazo A",
-  brazo2: "Brazo B",
-  muneca: "Muñeca (J4)",
-  griper: "Efector",
-  garra: "Garra",
-  efector: "Efector final",
-};
+const DEFINICION = [
+  { id: "base", nombre: "Base (J1)", min: -135, max: 135, def: 0 },
+  { id: "hombro", nombre: "Hombro (J2)", min: -40, max: 85, def: 20 },
+  { id: "codo", nombre: "Codo (J3)", min: -20, max: 90, def: 30 },
+  { id: "muneca", nombre: "Muñeca (J4)", min: -90, max: 90, def: 0 },
+  { id: "garra", nombre: "Garra", min: 0, max: 100, def: 50 },
+];
 
 const valoresActuales = {};
 
-let configRig = null;
-
 /**
- * Genera los sliders a partir de la configuración del robot.
- * @param {Object} config - { eslabones: [{id, rango, ...}] }
+ * Genera los sliders de articulación.
  */
-export function generarSlidersDesdeConfig(config) {
-  configRig = config;
-
+export function generarSlidersDesdeConfig() {
   const cont = document.getElementById("slidersArt");
 
-  if (!cont || !config || !config.eslabones) return;
+  if (!cont) return;
 
   cont.innerHTML = "";
 
-  config.eslabones.forEach((esl) => {
-    const [min, max] = esl.rango || [-180, 180];
-
-    const def = Math.max(min, Math.min(max, 0));
-
-    valoresActuales[esl.id] = def;
-
-    const nombre = NOMBRES[esl.id] || esl.id;
+  DEFINICION.forEach((a) => {
+    valoresActuales[a.id] = a.def;
 
     const fila = document.createElement("div");
 
     fila.className = "art-slider";
 
     fila.innerHTML = `
-      <label>${nombre}</label>
-      <input type="range" min="${min}" max="${max}" value="${def}" step="1" data-art="${esl.id}">
-      <span class="art-value">${def}°</span>
+      <label>${a.nombre}</label>
+      <input type="range" min="${a.min}" max="${a.max}" value="${a.def}" step="1" data-art="${a.id}">
+      <span class="art-value">${a.def}°</span>
     `;
 
     cont.appendChild(fila);
   });
 
-  aplicarAngulosMulti(valoresActuales);
+  aplicarAngulosProcedural(valoresActuales);
 
   actualizarPose();
 }
 
 /**
- * Listener de sliders: mueve el rig MULTI activo.
+ * Listener delegado de los sliders.
  */
 export function iniciarSlidersArt() {
   const cont = document.getElementById("slidersArt");
@@ -88,10 +75,8 @@ export function iniciarSlidersArt() {
 
     if (salida) salida.textContent = v + "°";
 
-    // Rig multi (piezas STL separadas)
-    aplicarAngulosMulti(valoresActuales);
+    aplicarAngulosProcedural(valoresActuales);
 
-    // Ficha educativa de la articulación movida
     mostrarInfoArticulacion(id);
 
     actualizarPose();
@@ -99,14 +84,14 @@ export function iniciarSlidersArt() {
 }
 
 /**
- * Pose del efector final según el rig activo.
+ * Pose del efector final (FK del robot procedural).
  */
 export function actualizarPose() {
   const el = document.getElementById("poseEfector");
 
   if (!el) return;
 
-  const pose = obtenerPoseEfectorMulti();
+  const pose = obtenerPoseProcedural();
 
   if (!pose) {
     el.textContent = "—";
@@ -118,9 +103,7 @@ export function actualizarPose() {
 }
 
 /**
- * Compatibilidad con llamadas antiguas (robotCargado).
- * Con el rig multi, los sliders ya se generan desde el JSON;
- * esta función solo refresca la pose.
+ * Compatibilidad: eventos robotCargado.
  */
 export function conectarRigAlModelo() {
   actualizarPose();

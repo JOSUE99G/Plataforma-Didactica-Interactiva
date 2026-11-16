@@ -460,3 +460,144 @@ html.embebido #viewer3D{
     border-color:#3f8cff;
     box-shadow:0 0 0 3px rgba(63,140,255,0.15);
 }
+
+/* ==========================================
+   PANEL DE CALIBRACIÓN
+   ========================================== */
+
+#panelCalibracion{
+    position:fixed;
+    top:70px;
+    right:20px;
+    width:300px;
+    max-height:calc(100vh - 100px);
+    overflow-y:auto;
+    background:white;
+    border-radius:14px;
+    box-shadow:0 12px 40px rgba(0,0,0,0.25);
+    padding:16px;
+    z-index:100;
+    font-family:inherit;
+}
+
+.cal-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:8px;
+}
+
+.cal-header strong{
+    color:#0c2d69;
+    font-size:14px;
+}
+
+.cal-header button{
+    background:none;
+    border:none;
+    font-size:16px;
+    cursor:pointer;
+    color:#7a8aa5;
+}
+
+.cal-ayuda{
+    font-size:11.5px;
+    color:#7a8aa5;
+    margin-bottom:12px;
+    line-height:1.4;
+}
+
+.cal-eslabon{
+    border:1px solid #e5e9f2;
+    border-radius:10px;
+    padding:10px;
+    margin-bottom:10px;
+}
+
+.cal-eslabon h5{
+    color:#0c2d69;
+    margin-bottom:8px;
+    font-size:13px;
+}
+
+.cal-fila{
+    display:flex;
+    align-items:center;
+    gap:8px;
+    margin-bottom:6px;
+}
+
+.cal-fila label{
+    font-size:11.5px;
+    color:#555;
+    min-width:70px;
+}
+
+.cal-fila select,
+.cal-fila input{
+    flex:1;
+    padding:5px 8px;
+    border:1px solid #d5dbe7;
+    border-radius:6px;
+    font-size:12px;
+}
+
+.cal-acciones{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.cal-acciones .mod-btn{
+    flex:1;
+    font-size:12.5px;
+    padding:9px 8px;
+}
+
+
+/* ==========================================
+   SELECTOR DE ACCESORIOS
+   ========================================== */
+
+.accesorios{
+    display:flex;
+    flex-direction:column;
+    gap:8px;
+    margin:10px 0;
+}
+
+.acc-btn{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:10px 14px;
+    border:1px solid #d5dbe7;
+    border-radius:10px;
+    background:white;
+    color:#0c2d69;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+    transition:all 0.2s ease;
+    text-align:left;
+}
+
+.acc-btn i{
+    color:#3f8cff;
+    width:18px;
+}
+
+.acc-btn:hover{
+    border-color:#3f8cff;
+    background:#f4f8ff;
+}
+
+.acc-btn.activo{
+    background:linear-gradient(135deg,#0c2d69,#173f8a);
+    color:white;
+    border-color:#0c2d69;
+}
+
+.acc-btn.activo i{
+    color:#ffc20e;
+}
