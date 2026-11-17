@@ -24,11 +24,25 @@ import { animate } from "./animation.js";
 
 import { iniciarCheckboxes, iniciarSliderEscala, iniciarZoomCamara, actualizarInfoModelo } from "./tools.js";
 
-import { iniciarSlidersArt, conectarRigAlModelo } from "./panel-articulaciones.js";
+import { iniciarSlidersArt } from "./panel-articulaciones.js";
 
 import { cargarSTLLocal, quitarSTLLocal, mostrarInfoArticulacion } from "./stl-estudiante.js";
 
-import { construirRobotProcedural, aplicarAngulosProcedural, obtenerPoseProcedural } from "./robot-procedural.js";
+import {
+  generarCubitos,
+  crearTenazas,
+  animarTenazas,
+  agarrar,
+  soltar,
+  tieneCubo,
+} from "./entorno-fisico.js";
+
+import {
+  montarDobot,
+  aplicarAngulos as aplicarAngulosDobot,
+  moverACoordenadas,
+  obtenerPose as obtenerPoseDobot,
+} from "./dobot-magician.js";
 
 import { generarSlidersDesdeConfig } from "./panel-articulaciones.js";
 
@@ -161,10 +175,201 @@ iniciarSlidersArt();
 })();
 
 /* ============================================================
+   PANEL DE HERRAMIENTA (estilo DobotLab):
+   Activar (ventosa/bomba) · Abrir · Cerrar (pinzas)
+   Con estados visuales y log en la interfaz.
+   ============================================================ */
+
+(function iniciarPanelHerramienta() {
+
+    const logEl = document.getElementById("toolLog");
+
+    const botones = {
+        activar: document.getElementById("toolActivar"),
+        abrir: document.getElementById("toolAbrir"),
+        cerrar: document.getElementById("toolCerrar"),
+    };
+
+    let modo = "marcador";      // marcador | ventosa | garra
+
+    let succionActiva = false;
+
+    window.addEventListener("accesorioCambiado", (e) => {
+
+        modo = e.detail.tipo;
+
+        if (modo !== "ventosa" && succionActiva) {
+
+            succionActiva = false;
+
+            log("⚠ Ventosa desmontada: succión apagada.");
+
+        }
+
+    });
+
+    function log(mensaje) {
+
+        if (logEl) logEl.textContent = "> " + mensaje;
+
+        console.log("[Herramienta] " + mensaje);
+
+    }
+
+    function resetEstados() {
+
+        Object.values(botones).forEach(b => b && b.classList.remove("activo"));
+
+    }
+
+    function activar(boton, nombre) {
+
+        if (!boton) return;
+
+        resetEstados();
+
+        boton.classList.add("activo");
+
+        log(nombre);
+
+    }
+
+    function obtenerEfector() {
+
+        const robot = scene.getObjectByName("dobotMagicianLite");
+
+        return robot && robot.getObjectByName("pivotJ4");
+
+    }
+
+    // ACTIVAR: succión (ventosa) o cierre de garra con agarre
+    if (botones.activar) {
+
+        botones.activar.addEventListener("click", () => {
+
+            const efector = obtenerEfector();
+
+            if (!efector) {
+
+                log("⚠ Efector no disponible.");
+
+                return;
+
+            }
+
+            if (modo === "ventosa") {
+
+                succionActiva = !succionActiva;
+
+                if (succionActiva) {
+
+                    const agarro = agarrar(efector);
+
+                    activar(botones.activar,
+                        agarro ? "🧊 Succión ON · cubo sujetado"
+                               : "💨 Succión ON · sin cubo en contacto");
+
+                } else {
+
+                    if (tieneCubo()) {
+
+                        soltar(efector);
+
+                    }
+
+                    activar(botones.activar, "💨 Succión OFF · cubo liberado");
+
+                }
+
+                return;
+
+            }
+
+            // Garra: cerrar = agarrar
+            animarTenazas(0);
+
+            const agarro = agarrar(efector);
+
+            activar(botones.activar,
+                agarro ? "🧊 Cubo AGARRADO" : "⚠ Nada al alcance de la garra");
+
+        });
+
+    }
+
+    // ABRIR: soltar cubo + abrir tenazas (garra) o apagar succión
+    if (botones.abrir) {
+
+        botones.abrir.addEventListener("click", () => {
+
+            animarTenazas(1);
+
+            const efector = obtenerEfector();
+
+            if (modo === "ventosa" && succionActiva) {
+
+                succionActiva = false;
+
+                if (efector && tieneCubo()) soltar(efector);
+
+                activar(botones.abrir, "💨 Succión APAGADA · cubo liberado");
+
+                return;
+
+            }
+
+            if (efector && tieneCubo()) {
+
+                soltar(efector);
+
+                activar(botones.abrir, "Cubo SOLTADO · Pinzas ABIERTAS");
+
+            } else {
+
+                activar(botones.abrir, "Pinzas ABIERTAS");
+
+            }
+
+        });
+
+    }
+
+    // CERRAR: cerrar tenazas e intentar agarre
+    if (botones.cerrar) {
+
+        botones.cerrar.addEventListener("click", () => {
+
+            animarTenazas(0);
+
+            const efector = obtenerEfector();
+
+            if (efector) {
+
+                const agarro = agarrar(efector);
+
+                activar(botones.cerrar,
+                    agarro ? "🧊 Cubo AGARRADO · Pinzas CERRADAS"
+                           : "Pinzas CERRADAS");
+
+            } else {
+
+                activar(botones.cerrar, "Pinzas CERRADAS");
+
+            }
+
+        });
+
+    }
+
+})();
+
+/* ============================================================
    SELECTOR DE ACCESORIO DEL EFECTOR FINAL
    ============================================================ */
 
 (function iniciarAccesorios() {
+
+    let accesorioActivo = "marcador";
 
     const botones = document.querySelectorAll(".acc-btn");
 
@@ -179,15 +384,24 @@ iniciarSlidersArt();
 
             btn.classList.add("activo");
 
+            accesorioActivo = btn.dataset.acc;
+
             import("./robot-procedural.js").then(m => {
 
-                m.aplicarAccesorio(btn.dataset.acc);
+                m.aplicarAccesorio(accesorioActivo);
 
             });
+
+            // Notificar al panel de herramienta qué modo está activo
+            window.dispatchEvent(new CustomEvent("accesorioCambiado", {
+                detail: { tipo: accesorioActivo },
+            }));
 
         });
 
     });
+
+    window.accesorioActivo = () => accesorioActivo;
 
 })();
 
@@ -219,14 +433,29 @@ iniciarSlidersArt();
 
     const badge = document.getElementById("rigModoBadge");
 
-    construirRobotProcedural();
+    // Robot instantáneo: sin dependencias externas ni esperas
+    const dobot = montarDobot();
 
-    // Sliders de articulación (rangos datasheet Magician Lite)
+    // Sliders activos al momento
     generarSlidersDesdeConfig();
+
+    // Cubitos físicos sobre la mesa
+    generarCubitos(5);
+
+    // Tenazas dentro del bloque de la muñeca (J4)
+    const bloque = dobot.grupo.getObjectByName("bloqueMuneca");
+
+    if (bloque) {
+
+        crearTenazas(bloque);
+
+        animarTenazas(1);   // abiertas al inicio
+
+    }
 
     if (badge) {
 
-        badge.textContent = "Magician Lite · modelo cinemático";
+        badge.textContent = "Magician Lite · listo";
 
         badge.className = "badge dificultad-baja";
 

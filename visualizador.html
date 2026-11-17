@@ -196,7 +196,9 @@ Manipule el modelo CAD del brazo robótico directamente desde la plataforma.
 
 <hr>
 
-<h4>Efector final</h4>
+<h4>Herramienta del efector final</h4>
+
+<p class="stl-hint">Selecciona el accesorio y controla su acción:</p>
 
 <div class="accesorios">
 
@@ -211,6 +213,28 @@ Manipule el modelo CAD del brazo robótico directamente desde la plataforma.
     <button class="acc-btn" data-acc="garra" title="Garra de tentáculos">
         <i class="fa-solid fa-spider"></i> Garra
     </button>
+
+</div>
+
+<div class="tool-actions">
+
+    <button id="toolActivar" class="tool-btn tool-activar">
+        <i class="fa-solid fa-power-off"></i> Activar
+    </button>
+
+    <button id="toolAbrir" class="tool-btn tool-abrir">
+        <i class="fa-solid fa-arrows-left-right"></i> Abrir
+    </button>
+
+    <button id="toolCerrar" class="tool-btn tool-cerrar">
+        <i class="fa-solid fa-compress"></i> Cerrar
+    </button>
+
+</div>
+
+<div id="toolLog" class="tool-log">
+
+    Herramienta lista.
 
 </div>
 

@@ -601,3 +601,61 @@ html.embebido #viewer3D{
 .acc-btn.activo i{
     color:#ffc20e;
 }
+
+
+/* ==========================================
+   BOTONES DE HERRAMIENTA (estilo DobotLab)
+   ========================================== */
+
+.tool-actions{
+    display:flex;
+    gap:8px;
+    margin:10px 0;
+}
+
+.tool-btn{
+    flex:1;
+    padding:10px 6px;
+    border:none;
+    border-radius:8px;
+    font-size:12.5px;
+    font-weight:700;
+    cursor:pointer;
+    color:white;
+    transition:all 0.2s ease;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:5px;
+}
+
+.tool-btn i{
+    font-size:14px;
+}
+
+/* Estados según acción: verde = activar, amarillo = abrir, rojo = cerrar */
+.tool-activar{ background:#43a047; }
+.tool-abrir{ background:#f9a825; }
+.tool-cerrar{ background:#e53935; }
+
+.tool-btn:hover{
+    filter:brightness(1.1);
+    transform:translateY(-2px);
+}
+
+.tool-btn.activo{
+    outline:3px solid rgba(12,45,105,0.35);
+    box-shadow:0 4px 14px rgba(0,0,0,0.25);
+    filter:brightness(1.05);
+}
+
+.tool-log{
+    background:#1e1e2e;
+    color:#a6e3a1;
+    font-family:Consolas, monospace;
+    font-size:11.5px;
+    padding:8px 10px;
+    border-radius:8px;
+    margin-bottom:12px;
+    min-height:20px;
+}

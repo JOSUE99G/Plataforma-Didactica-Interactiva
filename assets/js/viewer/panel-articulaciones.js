@@ -1,28 +1,26 @@
 /* ============================================================
-   UI: sliders de articulaciones del ROBOT PROCEDURAL
-   Rangos según datasheet del Dobot Magician Lite.
+   UI: sliders J1-J4 (instantáneos, sin esperar modelo externo)
+   + Pose del efector por Cinemática Directa en tiempo real.
    ============================================================ */
 
 import {
-  aplicarAngulosProcedural,
-  obtenerPoseProcedural,
-  construirRobotProcedural,
-} from "./robot-procedural.js";
+  aplicarAngulos as aplicarAngulosDobot,
+  obtenerPose as obtenerPoseDobot,
+} from "./dobot-magician.js";
 
 import { mostrarInfoArticulacion } from "./stl-estudiante.js";
 
 const DEFINICION = [
-  { id: "base", nombre: "Base (J1)", min: -135, max: 135, def: 0 },
-  { id: "hombro", nombre: "Hombro (J2)", min: -40, max: 85, def: 20 },
-  { id: "codo", nombre: "Codo (J3)", min: -20, max: 90, def: 30 },
-  { id: "muneca", nombre: "Muñeca (J4)", min: -90, max: 90, def: 0 },
-  { id: "garra", nombre: "Garra", min: 0, max: 100, def: 50 },
+  { id: "base", nombre: "J1 · Base", min: -180, max: 180, def: 0, step: 1 },
+  { id: "hombro", nombre: "J2 · Hombro", min: -80, max: 110, def: -40, step: 1 },
+  { id: "codo", nombre: "J3 · Codo", min: -100, max: 110, def: 45, step: 1 },
+  { id: "muneca", nombre: "J4 · Efector", min: -180, max: 180, def: 0, step: 1 },
 ];
 
 const valoresActuales = {};
 
 /**
- * Genera los sliders de articulación.
+ * Genera e inyecta los 4 sliders al instante.
  */
 export function generarSlidersDesdeConfig() {
   const cont = document.getElementById("slidersArt");
@@ -40,20 +38,20 @@ export function generarSlidersDesdeConfig() {
 
     fila.innerHTML = `
       <label>${a.nombre}</label>
-      <input type="range" min="${a.min}" max="${a.max}" value="${a.def}" step="1" data-art="${a.id}">
+      <input type="range" min="${a.min}" max="${a.max}" value="${a.def}" step="${a.step}" data-art="${a.id}">
       <span class="art-value">${a.def}°</span>
     `;
 
     cont.appendChild(fila);
   });
 
-  aplicarAngulosProcedural(valoresActuales);
+  aplicarAngulosDobot(valoresActuales);
 
   actualizarPose();
 }
 
 /**
- * Listener delegado de los sliders.
+ * Listener delegado: mueve el robot y actualiza la pose (CD).
  */
 export function iniciarSlidersArt() {
   const cont = document.getElementById("slidersArt");
@@ -75,7 +73,7 @@ export function iniciarSlidersArt() {
 
     if (salida) salida.textContent = v + "°";
 
-    aplicarAngulosProcedural(valoresActuales);
+    aplicarAngulosDobot(valoresActuales);
 
     mostrarInfoArticulacion(id);
 
@@ -84,14 +82,14 @@ export function iniciarSlidersArt() {
 }
 
 /**
- * Pose del efector final (FK del robot procedural).
+ * Pose del efector final por Cinemática Directa (mundo).
  */
 export function actualizarPose() {
   const el = document.getElementById("poseEfector");
 
   if (!el) return;
 
-  const pose = obtenerPoseProcedural();
+  const pose = obtenerPoseDobot();
 
   if (!pose) {
     el.textContent = "—";
@@ -103,7 +101,7 @@ export function actualizarPose() {
 }
 
 /**
- * Compatibilidad: eventos robotCargado.
+ * Compatibilidad con eventos robotCargado.
  */
 export function conectarRigAlModelo() {
   actualizarPose();
