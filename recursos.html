@@ -182,35 +182,53 @@
 
                 <div class="card guia-card">
 
-                    <h4>¿Cómo hacer homing?</h4>
+                    <h4>📐 Chuleta de Cinemática (M3)</h4>
 
                     <p>
-                        1. Conecta el robot · 2. Limpia el área ·
-                        3. Ejecuta <code>magician.home()</code> ·
-                        4. Verifica la pose inicial.
+                        Todas las fórmulas del Magician Lite en una página:
+                        θ1 = atan2(Y,X), ley de cosenos para θ3, θ2 = φ + β.
+                        Con L1 = L2 = 150 mm y hombro a 107 mm.
                     </p>
+
+                    <a class="mod-btn" href="leccion-cinematica.html">Ver lección completa</a>
 
                 </div>
 
                 <div class="card guia-card">
 
-                    <h4>¿Cómo leer las coordenadas?</h4>
+                    <h4>🧭 Sistema de coordenadas</h4>
 
                     <p>
-                        El origen (0,0,0) está en la base del brazo.
-                        X apunta al frente, Y a la izquierda y Z hacia arriba.
+                        Origen en la base del brazo. X = frente, Y = izquierda,
+                        Z = altura. Origen (0,0,0) = eje de rotación del pedestal.
                     </p>
+
+                    <a class="mod-btn secundario" href="visualizador.html">Ver ejes en 3D</a>
 
                 </div>
 
                 <div class="card guia-card">
 
-                    <h4>Seguridad primero</h4>
+                    <h4>⚠️ Seguridad primero</h4>
 
                     <p>
                         Nunca introduzcas las manos en el radio de acción
-                        mientras el robot ejecuta un programa.
+                        mientras el robot ejecuta un programa. Radio máximo: 340 mm.
                     </p>
+
+                </div>
+
+                <div class="card guia-card">
+
+                    <h4>💻 Comandos DobotEDU</h4>
+
+                    <p>
+                        <code>home()</code> · <code>ptp(mode, x, y, z, r)</code> ·
+                        <code>gripper(%)</code> — sintaxis y ejemplos para el
+                        laboratorio MATLAB y el robot físico.
+                    </p>
+
+                    <a class="mod-btn" href="matlab.html">Practicar comandos</a>
 
                 </div>
 

@@ -106,26 +106,26 @@
 
             <div class="question">
 
-                <h3>2. ¿Qué software utilizaremos para realizar simulaciones?</h3>
+                <h3>2. ¿Cuál es el rango de rotación de la base (J1) del Magician Lite?</h3>
 
                 <label>
                     <input type="radio" name="q2" value="0">
-                    Photoshop
+                    ±90°
                 </label>
 
                 <label>
                     <input type="radio" name="q2" value="1">
-                    MATLAB
+                    ±135°
                 </label>
 
                 <label>
                     <input type="radio" name="q2" value="0">
-                    Excel
+                    ±180°
                 </label>
 
                 <label>
                     <input type="radio" name="q2" value="0">
-                    Word
+                    360° continuos
                 </label>
 
             </div>
@@ -134,33 +134,225 @@
 
             <div class="question">
 
-                <h3>3. ¿Qué permite la cinemática directa?</h3>
+                <h3>3. ¿Cuáles son las longitudes de los eslabones del brazo (J2→J3 y J3→efector)?</h3>
+
+                <label>
+                    <input type="radio" name="q3" value="0">
+                    100 mm y 100 mm
+                </label>
 
                 <label>
                     <input type="radio" name="q3" value="1">
-                    Obtener la posición del efector final a partir de los ángulos articulares.
+                    150 mm y 150 mm
                 </label>
 
                 <label>
                     <input type="radio" name="q3" value="0">
-                    Obtener los ángulos a partir de la posición.
-
+                    135 mm y 85 mm
                 </label>
 
                 <label>
                     <input type="radio" name="q3" value="0">
-                    Controlar la velocidad.
-
-                </label>
-
-                <label>
-                    <input type="radio" name="q3" value="0">
-                    Calcular corriente.
-
+                    200 mm y 200 mm
                 </label>
 
             </div>
 
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>4. ¿Cuántos efector final intercambiables tiene el Magician Lite según la plataforma?</h3>
+
+                <label>
+                    <input type="radio" name="q4" value="0">
+                    1 (solo pinza)
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="0">
+                    2 (pinza y ventosa)
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="1">
+                    3 (marcador, ventosa y garra)
+                </label>
+
+                <label>
+                    <input type="radio" name="q4" value="0">
+                    5
+                </label>
+
+            </div>
+
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>5. ¿Qué comando se ejecuta ANTES de empezar a mover el robot, y para qué sirve?</h3>
+
+                <label>
+                    <input type="radio" name="q5" value="0">
+                    ptp() — para calibrar los motores
+                </label>
+
+                <label>
+                    <input type="radio" name="q5" value="1">
+                    home() — lleva el brazo a su posición de referencia conocida
+                </label>
+
+                <label>
+                    <input type="radio" name="q5" value="0">
+                    gripper(50) — para probar la garra
+                </label>
+
+                <label>
+                    <input type="radio" name="q5" value="0">
+                    init() — para conectarse a internet
+                </label>
+
+            </div>
+
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>6. ¿Qué acción de seguridad es OBLIGATORIA antes de ejecutar un programa en el robot físico?</h3>
+
+                <label>
+                    <input type="radio" name="q6" value="0">
+                    Aumentar la velocidad al máximo
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="0">
+                    Desconectar la garra
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="1">
+                    Verificar que nadie esté dentro del radio de acción del brazo
+                </label>
+
+                <label>
+                    <input type="radio" name="q6" value="0">
+                    Apagar la ventilación del laboratorio
+                </label>
+
+            </div>
+
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>7. La altura del eje del hombro (J2) desde la base del Magician Lite es:</h3>
+
+                <label>
+                    <input type="radio" name="q7" value="0">
+                    50 mm
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="1">
+                    107 mm
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="0">
+                    150 mm
+                </label>
+
+                <label>
+                    <input type="radio" name="q7" value="0">
+                    250 mm
+                </label>
+
+            </div>
+
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>8. ¿Cuál es el radio máximo del espacio de trabajo (Rmax) del Magician Lite?</h3>
+
+                <label>
+                    <input type="radio" name="q8" value="0">
+                    150 mm
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="0">
+                    250 mm
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="1">
+                    340 mm
+                </label>
+
+                <label>
+                    <input type="radio" name="q8" value="0">
+                    430 mm
+                </label>
+
+            </div>
+
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>9. ¿Qué herramienta usarías para DIBUJAR una figura sobre una hoja de papel?</h3>
+
+                <label>
+                    <input type="radio" name="q9" value="1">
+                    El marcador (efector de dibujo)
+                </label>
+
+                <label>
+                    <input type="radio" name="q9" value="0">
+                    La ventosa
+                </label>
+
+                <label>
+                    <input type="radio" name="q9" value="0">
+                    La garra de tentáculos
+                </label>
+
+                <label>
+                    <input type="radio" name="q9" value="0">
+                    Ninguna, el robot no puede dibujar
+                </label>
+
+            </div>
+
+            <!-- ========================= -->
+
+            <div class="question">
+
+                <h3>10. ¿Para qué tipo de objetos es más adecuada la VENTOSA?</h3>
+
+                <label>
+                    <input type="radio" name="q10" value="0">
+                    Piezas metálicas pesadas de 500 g
+                </label>
+
+                <label>
+                    <input type="radio" name="q10" value="0">
+                    Objetos con forma irregular y rugosa
+                </label>
+
+                <label>
+                    <input type="radio" name="q10" value="1">
+                    Objetos pequeños, lisos y no porosos (papeles, plásticos planos)
+                </label>
+
+                <label>
+                    <input type="radio" name="q10" value="0">
+                    Objetos a muy alta temperatura
+                </label>
+
+            </div>
 
             <button type="submit" class="quiz-button">
 
@@ -177,7 +369,6 @@
 
 </main>
 
-    </main>
    <!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
 
@@ -192,7 +383,5 @@
 <!-- Quiz -->
 <script src="assets/js/quiz1.js"></script>
 
-</body>
-</html>
 </body>
 </html>

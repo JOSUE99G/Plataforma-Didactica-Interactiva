@@ -6,14 +6,14 @@ firebase.auth().onAuthStateChanged(async (user) => {
     }
 
     // ==========================
-    // Mostrar datos del usuario
-    // ==========================
+    // Mostrar datos del usuario (perfil compacto; null-safe)
+    const elNombre = document.getElementById("nombreAlumnoTexto");
 
-    document.getElementById("nombreAlumno").textContent =
-        user.displayName || "Estudiante";
+    if (elNombre) elNombre.textContent = user.displayName || "Estudiante";
 
-    document.getElementById("correoAlumno").textContent =
-        user.email;
+    const elCorreo = document.getElementById("correoAlumno");
+
+    if (elCorreo) elCorreo.textContent = user.email || "";
 
     // ==========================
     // Leer evaluaciones

@@ -114,17 +114,22 @@
 
                     <div class="hero-stat">
                         <span class="hero-stat-num" id="statModulos">6</span>
-                        <span class="hero-stat-label">Módulos</span>
+                        <span class="hero-stat-label"><i class="fa-solid fa-book-open"></i> Módulos</span>
                     </div>
 
                     <div class="hero-stat">
                         <span class="hero-stat-num" id="statPracticas">4</span>
-                        <span class="hero-stat-label">Prácticas</span>
+                        <span class="hero-stat-label"><i class="fa-solid fa-flask"></i> Prácticas</span>
+                    </div>
+
+                    <div class="hero-stat">
+                        <span class="hero-stat-num" id="statInsigniasHero">0/5</span>
+                        <span class="hero-stat-label"><i class="fa-solid fa-medal"></i> Logros</span>
                     </div>
 
                     <div class="hero-stat">
                         <span class="hero-stat-num" id="statProgreso">0%</span>
-                        <span class="hero-stat-label">Mi avance</span>
+                        <span class="hero-stat-label"><i class="fa-solid fa-chart-line"></i> Mi avance</span>
                     </div>
 
                 </div>
@@ -173,14 +178,16 @@
 
                 <div class="card dash-card">
 
-                    <div class="mod-icon"><i class="fa-solid fa-book-open"></i></div>
+                    <div class="mod-icon" style="background:linear-gradient(135deg,#0c2d69,#3f8cff)"><i class="fa-solid fa-book-open"></i></div>
 
                     <h3>MÓDULOS</h3>
 
                     <p>
-                        Aprende fundamentos de robótica,
-                        control y cinemática.
+                        6 lecciones guiadas: anatomía, seguridad,
+                        cinemática y programación del brazo.
                     </p>
+
+                    <span class="dash-tag"><i class="fa-solid fa-arrow-right"></i> Continuar</span>
 
                 </div>
 
@@ -190,13 +197,16 @@
 
                 <div class="card dash-card">
 
-                    <div class="mod-icon"><i class="fa-solid fa-flask"></i></div>
+                    <div class="mod-icon" style="background:linear-gradient(135deg,#1b5e20,#43a047)"><i class="fa-solid fa-flask"></i></div>
 
                     <h3>PRÁCTICAS</h3>
 
                     <p>
-                        Actividades guiadas con el brazo manipulador.
+                        4 actividades guiadas: calibración, XYZ,
+                        trayectorias y pick &amp; place.
                     </p>
+
+                    <span class="dash-tag"><i class="fa-solid fa-arrow-right"></i> Practicar</span>
 
                 </div>
 
@@ -206,13 +216,16 @@
 
                 <div class="card dash-card">
 
-                    <div class="mod-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <div class="mod-icon" style="background:linear-gradient(135deg,#4a148c,#8e24aa)"><i class="fa-solid fa-folder-open"></i></div>
 
                     <h3>RECURSOS</h3>
 
                     <p>
-                        Guías, manuales y documentación.
+                        Manual oficial, chuleta de cinemática
+                        y guías rápidas del laboratorio.
                     </p>
+
+                    <span class="dash-tag"><i class="fa-solid fa-arrow-right"></i> Consultar</span>
 
                 </div>
 
@@ -222,17 +235,62 @@
 
                 <div class="card dash-card">
 
-                    <div class="mod-icon"><i class="fa-solid fa-clipboard-check"></i></div>
+                    <div class="mod-icon" style="background:linear-gradient(135deg,#b71c1c,#e53935)"><i class="fa-solid fa-clipboard-check"></i></div>
 
                     <h3>EVALUACIONES</h3>
 
                     <p>
-                        Pon a prueba tus conocimientos.
+                        4 quizzes alineados a los módulos +
+                        evaluación final integradora.
                     </p>
+
+                    <span class="dash-tag"><i class="fa-solid fa-arrow-right"></i> Evaluar</span>
 
                 </div>
 
             </a>
+
+        </section>
+
+        <!-- ⚡ CENTRO DE ACTIVIDAD: continuar + próximos pasos -->
+        <section class="actividad-grid">
+
+            <div class="progress-card actividad-card">
+
+                <h2><i class="fa-solid fa-location-arrow"></i> Continúa donde quedaste</h2>
+
+                <div id="continuarRuta">
+
+                    <p class="stl-hint">Cargando tu avance...</p>
+
+                </div>
+
+            </div>
+
+            <div class="progress-card actividad-card">
+
+                <h2><i class="fa-solid fa-bolt"></i> Accesos del laboratorio</h2>
+
+                <div class="lab-acciones">
+
+                    <a class="lab-accion" href="visualizador.html">
+                        <i class="fa-solid fa-cube"></i>
+                        <span><strong>Modelo 3D</strong><small>Explora y escala el brazo</small></span>
+                    </a>
+
+                    <a class="lab-accion" href="matlab.html">
+                        <i class="fa-solid fa-terminal"></i>
+                        <span><strong>Laboratorio MATLAB</strong><small>Programa con comandos reales</small></span>
+                    </a>
+
+                    <a class="lab-accion" href="progreso.html">
+                        <i class="fa-solid fa-medal"></i>
+                        <span><strong>Mis logros</strong><small>Insignias y estadísticas</small></span>
+                    </a>
+
+                </div>
+
+            </div>
 
         </section>
 
@@ -260,9 +318,104 @@
             } else {
                 document.getElementById("userName").textContent =
                     "Bienvenido: " + (user.displayName || "Estudiante");
+
+                // Cargar "Continúa donde quedaste" desde Firestore
+                cargarContinuar(user.uid);
             }
 
         });
+
+        async function cargarContinuar(uid) {
+
+            const cont = document.getElementById("continuarRuta");
+
+            if (!cont) return;
+
+            try {
+
+                const snap = await db.collection("usuarios")
+                    .doc(uid)
+                    .collection("evaluaciones")
+                    .get();
+
+                const realizadas = {};
+
+                snap.forEach(d => realizadas[d.id] = d.data());
+
+                // Primera etapa NO aprobada = siguiente paso
+                const cadena = [
+                    { id: "quiz1", nombre: "Módulo 1 · Fundamentos", href: "modulos.html" },
+                    { id: "quiz2", nombre: "Módulo 3 · Cinemática", href: "leccion-cinematica.html" },
+                    { id: "quiz3", nombre: "Módulo 4 · Programación", href: "matlab.html" },
+                    { id: "final", nombre: "Evaluación Final", href: "evaluacion-final.html" },
+                ];
+
+                let siguiente = null;
+
+                let aprobadas = 0;
+
+                for (const paso of cadena) {
+
+                    const nota = realizadas[paso.id] ? realizadas[paso.id].nota : null;
+
+                    if (nota != null && nota >= 70) {
+
+                        aprobadas++;
+
+                    } else {
+
+                        siguiente = paso;
+
+                        break;
+
+                    }
+
+                }
+
+                if (!siguiente) {
+
+                    cont.innerHTML = `
+                        <div class="continuar-item aprobado">
+                            <i class="fa-solid fa-trophy"></i>
+                            <span><strong>¡Curso completado!</strong>
+                            <small>Aprobaste las 4 evaluaciones. Presenta tu proyecto físico.</small></span>
+                        </div>
+                    `;
+
+                    return;
+
+                }
+
+                const teniaIntento = realizadas[siguiente.id] != null;
+
+                cont.innerHTML = `
+                    <div class="continuar-item">
+                        <i class="fa-solid ${teniaIntento ? "fa-rotate-right" : "fa-play"}"></i>
+                        <span>
+                            <strong>${siguiente.nombre}</strong>
+                            <small>${teniaIntento ? "Reintenta: aún no apruebas (nota ≥ 70)" : "Tu siguiente etapa está desbloqueada"}</small>
+                        </span>
+                    </div>
+                    <a class="mod-btn" href="${siguiente.href}" style="width:100%;text-align:center;margin-top:12px">
+                        ${teniaIntento ? "Volver a intentar" : "Continuar ahora"}
+                    </a>
+                `;
+
+                // Logros en el hero
+                const elLogros = document.getElementById("statInsigniasHero");
+
+                if (elLogros) elLogros.textContent = aprobadas + "/4";
+
+            } catch (error) {
+
+                console.warn("No se pudo cargar el avance:", error);
+
+                const cont2 = document.getElementById("continuarRuta");
+
+                if (cont2) cont2.innerHTML = '<p class="stl-hint">Inicia sesión para ver tu avance.</p>';
+
+            }
+        }
     </script>
 
     <!-- 🔥 LOGOUT -->

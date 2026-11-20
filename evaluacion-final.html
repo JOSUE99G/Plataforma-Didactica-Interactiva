@@ -1,0 +1,453 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Evaluación Final — Plataforma Didáctica</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>PLATAFORMA DIDÁCTICA</h2>
+        <p>Laboratorio de Robótica</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li>
+            <a href="dashboard.html"
+              ><i class="fa-solid fa-house"></i> Inicio</a
+            >
+          </li>
+          <li>
+            <a href="modulos.html"
+              ><i class="fa-solid fa-book-open"></i> Módulos</a
+            >
+          </li>
+          <li>
+            <a href="practicas.html"
+              ><i class="fa-solid fa-flask"></i> Prácticas</a
+            >
+          </li>
+          <li>
+            <a href="recursos.html"
+              ><i class="fa-solid fa-folder-open"></i> Recursos</a
+            >
+          </li>
+          <li>
+            <a href="evaluaciones.html"
+              ><i class="fa-solid fa-clipboard-check"></i> Evaluaciones</a
+            >
+          </li>
+          <li>
+            <a href="visualizador.html"
+              ><i class="fa-solid fa-cube"></i> Modelo 3D</a
+            >
+          </li>
+          <li>
+            <a href="matlab.html"
+              ><i class="fa-solid fa-terminal"></i> Simulación MATLAB</a
+            >
+          </li>
+          <li>
+            <a href="progreso.html"
+              ><i class="fa-solid fa-chart-line"></i> Mi progreso</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div style="padding: 20px">
+        <button id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div class="user-info">
+          <span class="user-icon">👤</span>
+          <span id="userName">Usuario</span>
+          <button id="logoutSidebar" class="logout-btn">Salir</button>
+        </div>
+      </div>
+
+      <section class="page-header">
+        <h1><i class="fa-solid fa-trophy"></i> Evaluación Final</h1>
+
+        <p>
+          Caso integrador: cinemática, programación y transferencia al robot
+          físico. Todo el curso en un escenario.
+        </p>
+      </section>
+
+      <section class="quiz-container">
+        <div class="leccion-nota" style="margin-bottom: 20px">
+          <i class="fa-solid fa-bullseye"></i>
+          <span>
+            <strong>Escenario:</strong> el laboratorio recibió una orden real —
+            transportar pastillas desde una banda hasta una caja clasificadora
+            usando el Magician Lite con ventosa. Responde como si fueras el
+            ingeniero a cargo.
+          </span>
+        </div>
+
+        <form id="quizForm">
+          <!-- P1 -->
+          <div class="question">
+            <h3>
+              1. Las pastillas están a 250 mm al frente y 30 mm de altura. La
+              banda, a 150 mm al frente-izquierda. ¿Qué ángulo de base (θ1)
+              lleva del punto A al punto B?
+            </h3>
+            <label
+              ><input type="radio" name="q1" value="0" />θ1 = 0° en ambos (la
+              base no se mueve).</label
+            >
+            <label
+              ><input type="radio" name="q1" value="1" />A: atan2(0, 250) = 0° ·
+              B: atan2(150, 106) ≈ 54.7° — gira ~55° a la izquierda.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="0" />θ1 = 250/150 = 1.67° —
+              un giro mínimo.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="0" />No se puede calcular
+              sin el manual de motores.</label
+            >
+          </div>
+
+          <!-- P2 -->
+          <div class="question">
+            <h3>
+              2. La pastilla más lejana está a X=280, Y=0, Z=20. Con L1=L2=150 y
+              hombro a 107mm, ¿es alcanzable?
+            </h3>
+            <label
+              ><input type="radio" name="q2" value="0" />No: 280 &gt; 250 mm de
+              altura máxima.</label
+            >
+            <label
+              ><input type="radio" name="q2" value="1" />Sí: r=280 y dz=-87,
+              d=√(280²+87²)=293 mm &lt; 300 mm (L1+L2).</label
+            >
+            <label
+              ><input type="radio" name="q2" value="0" />No: Z=20 es demasiado
+              bajo para el robot.</label
+            >
+            <label
+              ><input type="radio" name="q2" value="0" />Depende del color de la
+              pastilla.</label
+            >
+          </div>
+
+          <!-- P3 -->
+          <div class="question">
+            <h3>
+              3. ¿Por qué usar la VENTOSA y no la garra para las pastillas?
+            </h3>
+            <label
+              ><input type="radio" name="q3" value="0" />La garra es más
+              rápida.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="0" />La ventosa usa menos
+              electricidad.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="1" />Las pastillas son
+              pequeñas, lisas y ligeras: la succión las sujeta sin deformarlas y
+              sin necesidad de cerrar exacto.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="0" />La garra no funciona en
+              este robot.</label
+            >
+          </div>
+
+          <!-- P4 -->
+          <div class="question">
+            <h3>
+              4. Ordena el ciclo pick &amp; place correcto para una pastilla:
+            </h3>
+            <label
+              ><input type="radio" name="q4" value="1" />1) Z seguro sobre
+              pastilla → 2) bajar a Z=15 → 3) succión ON → 4) subir a Z seguro →
+              5) mover sobre la caja → 6) bajar → 7) succión OFF → 8) subir a Z
+              seguro.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="0" />1) succión ON en el
+              aire → 2) bajar a buscar la pastilla → 3) mover directo a la
+              caja.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="0" />1) mover lateral a ras
+              de mesa → 2) succión ON → 3) subir → 4) soltar en el
+              trayecto.</label
+            >
+            <label
+              ><input type="radio" name="q4" value="0" />El orden es irrelevante
+              si la velocidad es baja.</label
+            >
+          </div>
+
+          <!-- P5 -->
+          <div class="question">
+            <h3>
+              5. Este es el borrador del script. ¿Qué error crítico tiene?
+            </h3>
+            <pre
+              style="
+                background: #1e1e2e;
+                color: #cdd6f4;
+                padding: 12px;
+                border-radius: 8px;
+                font-family: Consolas, monospace;
+                font-size: 12.5px;
+              "
+            >
+magician.init()
+magician.gripper(0)          % activar succión
+magician.ptp(mode=0, x=250, y=0,  z=15,  r=0)   % bajar a pastilla
+magician.ptp(mode=0, x=106, y=150, z=15,  r=0)   % mover a caja (¡ras de mesa!)
+magician.gripper(100)        % soltar
+magician.home()</pre
+            >
+            <label
+              ><input type="radio" name="q5" value="0" />Falta el comando
+              magician.gripper(0) al inicio.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="1" />Se mueve lateralmente a
+              Z=15 (ras de mesa): golpearía todo lo que haya en el camino. Falta
+              subir a Z seguro antes de desplazarse.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="0" />El gripper(100) abre la
+              ventosa y eso es incorrecto.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="0" />No hay error: el script
+              está listo para producción.</label
+            >
+          </div>
+
+          <!-- P6 -->
+          <div class="question">
+            <h3>
+              6. ¿Cuántos ciclos completos hace este bucle de producción y qué
+              imprime la consola?
+            </h3>
+            <pre
+              style="
+                background: #1e1e2e;
+                color: #cdd6f4;
+                padding: 12px;
+                border-radius: 8px;
+                font-family: Consolas, monospace;
+                font-size: 12.5px;
+              "
+            >
+for i = 1:3
+    disp("Ciclo " + i)
+    magician.ptp(mode=0, x=250, y=0, z=15, r=0)
+    magician.gripper(0)
+    magician.ptp(mode=0, x=106, y=150, z=30, r=0)
+    magician.gripper(100)
+end</pre
+            >
+            <label
+              ><input type="radio" name="q6" value="0" />2 ciclos, imprime
+              "Ciclo 1" y "Ciclo 2".</label
+            >
+            <label
+              ><input type="radio" name="q6" value="1" />3 ciclos, imprime
+              "Ciclo 1", "Ciclo 2" y "Ciclo 3".</label
+            >
+            <label
+              ><input type="radio" name="q6" value="0" />4 ciclos, imprime
+              "Ciclo 0" a "Ciclo 3".</label
+            >
+            <label
+              ><input type="radio" name="q6" value="0" />1 ciclo: el bucle se
+              detiene en el primer error.</label
+            >
+          </div>
+
+          <!-- P7 -->
+          <div class="question">
+            <h3>
+              7. El docente pide validar el espacio de trabajo ANTES de ejecutar
+              en el robot físico. ¿Qué verificas?
+            </h3>
+            <label
+              ><input type="radio" name="q7" value="0" />Que el robot tenga
+              internet.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="1" />Que todas las
+              coordenadas del script estén dentro de Rmax=340mm y de los límites
+              verticales (+250/-150), y que la zona física esté
+              despejada.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="0" />Que la plataforma tenga
+              las insignias desbloqueadas.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="0" />Que el color de los
+              cubitos coincida con el script.</label
+            >
+          </div>
+
+          <!-- P8 -->
+          <div class="question">
+            <h3>
+              8. En el simulador el movimiento fue fluido, pero en el robot
+              físico la pastilla se desliza y se cae en el trayecto. ¿Causa más
+              probable?
+            </h3>
+            <label
+              ><input type="radio" name="q8" value="0" />El simulador tiene un
+              error de cálculo.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="0" />El robot físico está
+              descompuesto.</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="q8"
+                value="1"
+              />Aceleración/desaceleración real: el simulador no modela inercia;
+              hay que reducir velocidad o asegurar mejor la succión en los
+              cambios de dirección.</label
+            >
+            <label
+              ><input type="radio" name="q8" value="0" />El color del cubo en la
+              simulación no coincide.</label
+            >
+          </div>
+
+          <!-- P9 -->
+          <div class="question">
+            <h3>
+              9. La bandeja de pastillas se cambió de posición: ahora está en
+              X=100, Y=-180 (derecha del robot). ¿Qué comando lleva la base
+              allí?
+            </h3>
+            <label
+              ><input type="radio" name="q9" value="0" />magician.ptp(mode=0,
+              x=180, y=100, z=30, r=0) — intercambiando ejes.</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="q9"
+                value="0"
+              />magician.base(180)</label
+            >
+            <label
+              ><input type="radio" name="q9" value="1" />magician.ptp(mode=0,
+              x=100, y=-180, z=30, r=0) — las coordenadas ya incluyen el signo
+              de Y.</label
+            >
+            <label
+              ><input type="radio" name="q9" value="0" />No se puede: el robot
+              solo trabaja hacia el frente.</label
+            >
+          </div>
+
+          <!-- P10 -->
+          <div class="question">
+            <h3>
+              10. Cierre del ciclo de aprendizaje: ¿qué rol cumplió el simulador
+              antes de tocar el robot físico?
+            </h3>
+            <label
+              ><input type="radio" name="q10" value="0" />Ninguno: son dos
+              sistemas independientes.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="1" />Validar lógica,
+              coordenadas y secuencia sin riesgo: llegué al laboratorio sabiendo
+              exactamente qué ejecutar y qué esperar, porque virtual y físico
+              comparten dimensiones, rangos y comandos.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="0" />Solo entretener
+              mientras se espera el turno del robot.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="0" />Sustituir por completo
+              al robot físico.</label
+            >
+          </div>
+
+          <button type="submit" class="quiz-button">
+            Enviar evaluación final
+          </button>
+        </form>
+
+        <div id="resultado"></div>
+      </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script src="assets/js/firebase-config.js"></script>
+
+    <script src="assets/js/quiz-comun.js"></script>
+
+    <script>
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = "index.html";
+        } else {
+          document.getElementById("userName").textContent =
+            "Bienvenido: " + (user.displayName || "Estudiante");
+        }
+      });
+
+      // Guardar como "final" en la misma colección que los quizzes
+      document
+        .getElementById("quizForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const datos = leerRespuestasQuiz(this);
+
+          if (datos.respondidas < datos.totalPreguntas) {
+            alert("⚠ Debes responder todas las preguntas.");
+            return;
+          }
+
+          const nota = calcularNota(datos.correctas, datos.totalPreguntas);
+
+          try {
+            await guardarResultadoQuiz("final", {
+              correctas: datos.correctas,
+              total: datos.totalPreguntas,
+            });
+          } catch (error) {
+            alert(
+              "Error al guardar:\n\n" + error.code + "\n\n" + error.message,
+            );
+          }
+
+          mostrarResultadoQuiz(nota);
+        });
+    </script>
+  </body>
+</html>

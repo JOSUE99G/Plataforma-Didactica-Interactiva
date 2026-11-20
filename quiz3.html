@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Quiz 3 · Programación — Plataforma Didáctica</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>PLATAFORMA DIDÁCTICA</h2>
+        <p>Laboratorio de Robótica</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li>
+            <a href="dashboard.html"
+              ><i class="fa-solid fa-house"></i> Inicio</a
+            >
+          </li>
+          <li>
+            <a href="modulos.html"
+              ><i class="fa-solid fa-book-open"></i> Módulos</a
+            >
+          </li>
+          <li>
+            <a href="practicas.html"
+              ><i class="fa-solid fa-flask"></i> Prácticas</a
+            >
+          </li>
+          <li>
+            <a href="recursos.html"
+              ><i class="fa-solid fa-folder-open"></i> Recursos</a
+            >
+          </li>
+          <li>
+            <a href="evaluaciones.html"
+              ><i class="fa-solid fa-clipboard-check"></i> Evaluaciones</a
+            >
+          </li>
+          <li>
+            <a href="visualizador.html"
+              ><i class="fa-solid fa-cube"></i> Modelo 3D</a
+            >
+          </li>
+          <li>
+            <a href="matlab.html"
+              ><i class="fa-solid fa-terminal"></i> Simulación MATLAB</a
+            >
+          </li>
+          <li>
+            <a href="progreso.html"
+              ><i class="fa-solid fa-chart-line"></i> Mi progreso</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div style="padding: 20px">
+        <button id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <div class="topbar">
+        <div class="user-info">
+          <span class="user-icon">👤</span>
+          <span id="userName">Usuario</span>
+          <button id="logoutSidebar" class="logout-btn">Salir</button>
+        </div>
+      </div>
+
+      <section class="page-header">
+        <h1>Quiz 3 · Programación del robot</h1>
+
+        <p>
+          Leer código, predecir movimientos y detectar errores — basado en el
+          módulo 4 y el laboratorio MATLAB.
+        </p>
+      </section>
+
+      <section class="quiz-container">
+        <form id="quizForm">
+          <!-- P1 -->
+          <div class="question">
+            <h3>1. ¿Qué hace el comando magician.home()?</h3>
+            <label
+              ><input type="radio" name="q1" value="0" />Apaga el robot de forma
+              segura.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="1" />Lleva el brazo a su
+              posición de referencia conocida.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="0" />Abre la garra al
+              100%.</label
+            >
+            <label
+              ><input type="radio" name="q1" value="0" />Calibra la velocidad de
+              los motores.</label
+            >
+          </div>
+
+          <!-- P2 -->
+          <div class="question">
+            <h3>
+              2. En magician.ptp(mode=0, x, y, z, r), ¿qué significa mode=0?
+            </h3>
+            <label
+              ><input type="radio" name="q2" value="1" />Movimiento punto a
+              punto (el efector viaja en línea entre puntos).</label
+            >
+            <label
+              ><input type="radio" name="q2" value="0" />Modo de mantenimiento
+              (el robot no se mueve).</label
+            >
+            <label
+              ><input type="radio" name="q2" value="0" />Rotación continua de la
+              base.</label
+            >
+            <label
+              ><input type="radio" name="q2" value="0" />Modo de aprendizaje
+              manual.</label
+            >
+          </div>
+
+          <!-- P3: predecir movimiento -->
+          <div class="question">
+            <h3>
+              3. Analiza este script. ¿Dónde queda el efector al finalizar?
+            </h3>
+            <pre
+              style="
+                background: #1e1e2e;
+                color: #cdd6f4;
+                padding: 12px;
+                border-radius: 8px;
+                font-family: Consolas, monospace;
+                font-size: 12.5px;
+              "
+            >
+magician.ptp(mode=0, x=200, y=0, z=150, r=0)
+magician.ptp(mode=0, x=200, y=0, z=80,  r=0)
+magician.ptp(mode=0, x=100, y=100, z=80, r=0)</pre
+            >
+            <label
+              ><input type="radio" name="q3" value="1" />Baja hacia la mesa,
+              luego se mueve al frente-izquierda manteniendo la altura.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="0" />Sube, luego baja hasta
+              tocar la mesa.</label
+            >
+            <label
+              ><input type="radio" name="q3" value="0" />Vuelve a la posición
+              inicial (home).</label
+            >
+            <label
+              ><input type="radio" name="q3" value="0" />Gira la base 100° a la
+              izquierda.</label
+            >
+          </div>
+
+          <!-- P4: bucle -->
+          <div class="question">
+            <h3>4. ¿Cuántas veces ejecuta magician.ptp() este bucle?</h3>
+            <pre
+              style="
+                background: #1e1e2e;
+                color: #cdd6f4;
+                padding: 12px;
+                border-radius: 8px;
+                font-family: Consolas, monospace;
+                font-size: 12.5px;
+              "
+            >
+for i = 1:4
+    magician.ptp(mode=0, x=i*50, y=0, z=50, r=0)
+end</pre
+            >
+            <label
+              ><input type="radio" name="q4" value="0" />3 veces (i = 1, 2,
+              3)</label
+            >
+            <label
+              ><input type="radio" name="q4" value="1" />4 veces, con X = 50,
+              100, 150 y 200 mm</label
+            >
+            <label
+              ><input type="radio" name="q4" value="0" />5 veces (i = 0 a
+              4)</label
+            >
+            <label
+              ><input type="radio" name="q4" value="0" />Infinitas veces (no hay
+              fin)</label
+            >
+          </div>
+
+          <!-- P5: error típico -->
+          <div class="question">
+            <h3>
+              5. Este script quiere dibujar un cuadrado pero tiene un ERROR.
+              ¿Cuál?
+            </h3>
+            <pre
+              style="
+                background: #1e1e2e;
+                color: #cdd6f4;
+                padding: 12px;
+                border-radius: 8px;
+                font-family: Consolas, monospace;
+                font-size: 12.5px;
+              "
+            >
+for i = 1:4
+    magician.ptp(mode=0, x=100, y=100, z=30, r=0)
+end</pre
+            >
+            <label
+              ><input type="radio" name="q5" value="0" />Falta el comando
+              magician.init() dentro del bucle.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="1" />El punto (x, y) nunca
+              cambia: el robot repite el mismo lugar 4 veces.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="0" />El z=30 es demasiado
+              alto para el robot.</label
+            >
+            <label
+              ><input type="radio" name="q5" value="0" />El bucle for no existe
+              en el lenguaje del robot.</label
+            >
+          </div>
+
+          <!-- P6: orden seguro -->
+          <div class="question">
+            <h3>
+              6. Para un pick &amp; place SEGURO, ¿en qué orden deben ir los
+              comandos?
+            </h3>
+            <label
+              ><input type="radio" name="q6" value="0" />Bajar → moverse
+              lateralmente → subir → agarrar.</label
+            >
+            <label
+              ><input type="radio" name="q6" value="1" />Moverse arriba del
+              objeto (Z seguro) → bajar → agarrar → subir → mover → bajar →
+              soltar.</label
+            >
+            <label
+              ><input type="radio" name="q6" value="0" />Agarrar primero en el
+              aire, luego bajar a buscar.</label
+            >
+            <label
+              ><input type="radio" name="q6" value="0" />El orden no importa: el
+              robot evita obstáculos solo.</label
+            >
+          </div>
+
+          <!-- P7: depuración -->
+          <div class="question">
+            <h3>
+              7. Ejecutas un script y la consola muestra: "fuera de alcance".
+              ¿Qué significa?
+            </h3>
+            <label
+              ><input type="radio" name="q7" value="0" />El robot necesita
+              recalibración.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="1" />El punto pedido está
+              más lejos que L1+L2 (300 mm del hombro): es inalcanzable.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="0" />La garra no está
+              conectada.</label
+            >
+            <label
+              ><input type="radio" name="q7" value="0" />Falta internet en el
+              laboratorio.</label
+            >
+          </div>
+
+          <!-- P8: gripper -->
+          <div class="question">
+            <h3>8. ¿Qué comando cierra completamente la garra?</h3>
+            <label
+              ><input
+                type="radio"
+                name="q8"
+                value="1"
+              />magician.gripper(0)</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="q8"
+                value="0"
+              />magician.gripper(100)</label
+            >
+            <label
+              ><input
+                type="radio"
+                name="q8"
+                value="0"
+              />magician.gripper(close)</label
+            >
+            <label
+              ><input type="radio" name="q8" value="0" />magician.close()</label
+            >
+          </div>
+
+          <!-- P9: workspace -->
+          <div class="question">
+            <h3>
+              9. ¿Cuál de estos puntos NO puede alcanzar el Magician Lite?
+            </h3>
+            <label
+              ><input type="radio" name="q9" value="0" />X=100, Y=0, Z=50</label
+            >
+            <label
+              ><input type="radio" name="q9" value="0" />X=200, Y=100,
+              Z=150</label
+            >
+            <label
+              ><input type="radio" name="q9" value="1" />X=400, Y=250,
+              Z=100</label
+            >
+            <label
+              ><input type="radio" name="q9" value="0" />X=150, Y=-80,
+              Z=0</label
+            >
+          </div>
+
+          <!-- P10: transferencia -->
+          <div class="question">
+            <h3>
+              10. Probaste tu script en el simulador y funcionó perfecto. ¿Qué
+              debes hacer ANTES de correrlo en el robot físico del laboratorio?
+            </h3>
+            <label
+              ><input type="radio" name="q10" value="0" />Nada: si funciona en
+              simulación, funciona igual en el robot.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="0" />Aumentar las
+              velocidades para que la demo sea más impresionante.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="1" />Validar con el docente
+              que la zona esté despejada y verificar que las coordenadas estén
+              dentro del espacio de trabajo real.</label
+            >
+            <label
+              ><input type="radio" name="q10" value="0" />Cambiar los números al
+              azar para "probar suerte".</label
+            >
+          </div>
+
+          <button type="submit" class="quiz-button">Enviar evaluación</button>
+        </form>
+
+        <div id="resultado"></div>
+      </section>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-firestore.js"></script>
+
+    <script src="assets/js/firebase-config.js"></script>
+
+    <script src="assets/js/quiz-comun.js"></script>
+
+    <script src="assets/js/quiz3.js"></script>
+  </body>
+</html>

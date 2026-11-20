@@ -109,17 +109,18 @@ Tu camino de aprendizaje: avances, notas y logros en la plataforma.
 
 </div>
 
-<div class="progress-card">
-
-<h2 id="nombreAlumno" style="display:flex;align-items:center;gap:10px">
+<!-- PERFIL COMPACTO: fusiona la tarjeta de datos del alumno -->
+<div class="perfil-alumno">
 
     <span class="hero-stat-avatar"><i class="fa-solid fa-user-graduate"></i></span>
 
-    <span id="nombreAlumnoTexto">Cargando...</span>
+    <div class="perfil-datos">
 
-</h2>
+        <strong id="nombreAlumnoTexto">Cargando...</strong>
 
-<p id="correoAlumno"></p>
+        <span id="correoAlumno"></span>
+
+    </div>
 
 </div>
 
@@ -141,71 +142,68 @@ Avanza en orden: cada etapa se desbloquea al aprobar la anterior (nota ≥ 70).
 
 </div>
 
+<!-- 📈 GRILLA ESTADÍSTICA 2×2: barras + gráfico juntos -->
+<div class="stats-grid">
 
-<div class="progress-card">
+    <div class="progress-card stat-card">
 
-<h2>Evaluaciones</h2>
+        <h3><i class="fa-solid fa-bullseye"></i> Promedio General</h3>
 
-<table class="tablaNotas">
+        <div class="stat-valor" id="promedio">0%</div>
 
-<thead>
+        <div class="barra">
 
-<tr>
+            <div id="barraProgreso"></div>
 
-<th>Evaluación</th>
-
-<th>Nota</th>
-
-<th>Estado</th>
-
-<th>Intentos</th>
-
-</tr>
-
-</thead>
-
-<tbody id="tablaResultados">
-
-</tbody>
-
-</table>
-
-</div>
-
-
-<div class="progress-card">
-
-<h2>Promedio General</h2>
-
-<div class="barra">
-
-<div id="barraProgreso"></div>
-
-</div>
-
-<h1 id="promedio">0%</h1>
-
-</div>
-
-<div class="progress-card">
-
-    <h2>Avance del Curso</h2>
-
-    <div class="barra">
-
-        <div id="barraCurso"></div>
+        </div>
 
     </div>
 
-    <h1 id="avanceCurso">0%</h1>
+    <div class="progress-card stat-card">
 
-</div>
+        <h3><i class="fa-solid fa-diagram-project"></i> Avance del Curso</h3>
 
-<div class="progress-card">
+        <div class="stat-valor" id="avanceCurso">0%</div>
 
-    <h2>Rendimiento Académico</h2>
+        <div class="barra">
 
-    <canvas id="graficoNotas"></canvas>
+            <div id="barraCurso"></div>
+
+        </div>
+
+    </div>
+
+    <div class="progress-card stat-card stat-grafico">
+
+        <h3><i class="fa-solid fa-chart-column"></i> Rendimiento</h3>
+
+        <canvas id="graficoNotas"></canvas>
+
+    </div>
+
+    <div class="progress-card stat-card">
+
+        <h3><i class="fa-solid fa-list-check"></i> Evaluaciones</h3>
+
+        <table class="tablaNotas">
+
+            <thead>
+
+                <tr>
+                    <th>Evaluación</th>
+                    <th>Nota</th>
+                    <th>Estado</th>
+                    <th>Intentos</th>
+                </tr>
+            </thead>
+
+            <tbody id="tablaResultados">
+
+            </tbody>
+
+        </table>
+
+    </div>
 
 </div>
 

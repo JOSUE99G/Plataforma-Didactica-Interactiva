@@ -47,7 +47,7 @@
 
 <h1>Quiz 2</h1>
 
-<p>Cinemática del Dobot Magician Lite</p>
+<p>Cinemática del Dobot Magician Lite — cálculos con L1=L2=150 mm, hombro a 107 mm</p>
 
 </section>
 
@@ -59,15 +59,15 @@
 
 <div class="question">
 
-<h3>1. ¿Qué estudia la cinemática?</h3>
+<h3>1. El origen (0, 0, 0) del Magician Lite está ubicado en:</h3>
 
-<label><input type="radio" name="q1" value="1">El movimiento sin considerar fuerzas.</label>
+<label><input type="radio" name="q1" value="1">La base del brazo, en el eje de rotación del pedestal.</label>
 
-<label><input type="radio" name="q1" value="0">Las corrientes eléctricas.</label>
+<label><input type="radio" name="q1" value="0">La punta del efector final.</label>
 
-<label><input type="radio" name="q1" value="0">Los materiales.</label>
+<label><input type="radio" name="q1" value="0">El centro de la mesa de trabajo.</label>
 
-<label><input type="radio" name="q1" value="0">La programación.</label>
+<label><input type="radio" name="q1" value="0">El eje del codo.</label>
 
 </div>
 
@@ -75,15 +75,15 @@
 
 <div class="question">
 
-<h3>2. ¿Cuántos grados de libertad tiene el Dobot Magician Lite?</h3>
+<h3>2. En el sistema de coordenadas del robot, el eje Z representa:</h3>
 
-<label><input type="radio" name="q2" value="0">3</label>
+<label><input type="radio" name="q2" value="0">La distancia lateral (izquierda).</label>
 
-<label><input type="radio" name="q2" value="1">4</label>
+<label><input type="radio" name="q2" value="0">La distancia frontal.</label>
 
-<label><input type="radio" name="q2" value="0">5</label>
+<label><input type="radio" name="q2" value="1">La altura sobre la mesa.</label>
 
-<label><input type="radio" name="q2" value="0">6</label>
+<label><input type="radio" name="q2" value="0">La velocidad de rotación.</label>
 
 </div>
 
@@ -91,15 +91,15 @@
 
 <div class="question">
 
-<h3>3. ¿Qué calcula la cinemática directa?</h3>
+<h3>3. Cinemática DIRECTA es:</h3>
 
-<label><input type="radio" name="q3" value="1">La posición del efector final.</label>
+<label><input type="radio" name="q3" value="0">Dada una posición, calcular los ángulos.</label>
 
-<label><input type="radio" name="q3" value="0">Los motores.</label>
+<label><input type="radio" name="q3" value="1">Dados los ángulos, calcular la posición del efector.</label>
 
-<label><input type="radio" name="q3" value="0">La corriente.</label>
+<label><input type="radio" name="q3" value="0">Calcular la fuerza de cada motor.</label>
 
-<label><input type="radio" name="q3" value="0">El peso.</label>
+<label><input type="radio" name="q3" value="0">Dibujar el robot en 3D.</label>
 
 </div>
 
@@ -107,15 +107,15 @@
 
 <div class="question">
 
-<h3>4. ¿Qué calcula la cinemática inversa?</h3>
+<h3>4. Cinemática INVERSA es:</h3>
 
-<label><input type="radio" name="q4" value="0">La velocidad.</label>
+<label><input type="radio" name="q4" value="1">Dada una posición (X, Y, Z), calcular los ángulos de las articulaciones.</label>
 
-<label><input type="radio" name="q4" value="1">Los ángulos articulares.</label>
+<label><input type="radio" name="q4" value="0">Dados los ángulos, calcular la posición.</label>
 
-<label><input type="radio" name="q4" value="0">La masa.</label>
+<label><input type="radio" name="q4" value="0">Invertir el sentido de giro de los motores.</label>
 
-<label><input type="radio" name="q4" value="0">El torque.</label>
+<label><input type="radio" name="q4" value="0">Cambiar el efector final.</label>
 
 </div>
 
@@ -123,15 +123,15 @@
 
 <div class="question">
 
-<h3>5. ¿Cuál es el efector final?</h3>
+<h3>5. Para calcular θ1 (rotación de la base) hacia un objetivo en X=150, Y=150, se usa:</h3>
 
-<label><input type="radio" name="q5" value="1">La herramienta ubicada al final del brazo.</label>
+<label><input type="radio" name="q5" value="0">θ1 = X + Y</label>
 
-<label><input type="radio" name="q5" value="0">La base.</label>
+<label><input type="radio" name="q5" value="1">θ1 = atan2(Y, X)</label>
 
-<label><input type="radio" name="q5" value="0">El motor.</label>
+<label><input type="radio" name="q5" value="0">θ1 = √(X² + Y²)</label>
 
-<label><input type="radio" name="q5" value="0">La fuente.</label>
+<label><input type="radio" name="q5" value="0">θ1 = cos(Y) · X</label>
 
 </div>
 
@@ -139,15 +139,15 @@
 
 <div class="question">
 
-<h3>6. MATLAB permite:</h3>
+<h3>6. La altura RELATIVA al hombro (dz) para un objetivo en Z=150 se calcula como:</h3>
 
-<label><input type="radio" name="q6" value="1">Simular el robot.</label>
+<label><input type="radio" name="q6" value="0">dz = Z + 107</label>
 
-<label><input type="radio" name="q6" value="0">Editar imágenes.</label>
+<label><input type="radio" name="q6" value="0">dz = 107 − Z</label>
 
-<label><input type="radio" name="q6" value="0">Diseñar páginas web.</label>
+<label><input type="radio" name="q6" value="1">dz = Z − 107</label>
 
-<label><input type="radio" name="q6" value="0">Crear bases de datos.</label>
+<label><input type="radio" name="q6" value="0">dz = Z · 107</label>
 
 </div>
 
@@ -155,15 +155,15 @@
 
 <div class="question">
 
-<h3>7. El sistema de coordenadas del robot sirve para:</h3>
+<h3>7. Con L1 = L2 = 150 mm y un objetivo a d = 204.6 mm del hombro, el cos(θ3_int) es:</h3>
 
-<label><input type="radio" name="q7" value="1">Definir posiciones.</label>
+<label><input type="radio" name="q7" value="0">(L1 + L2 − d) / 2 = 47.7</label>
 
-<label><input type="radio" name="q7" value="0">Medir temperatura.</label>
+<label><input type="radio" name="q7" value="1">(L1² + L2² − d²) / (2·L1·L2) = 0.0709</label>
 
-<label><input type="radio" name="q7" value="0">Medir corriente.</label>
+<label><input type="radio" name="q7" value="0">d² / (L1 · L2) = 1.86</label>
 
-<label><input type="radio" name="q7" value="0">Configurar Windows.</label>
+<label><input type="radio" name="q7" value="0">No se puede calcular.</label>
 
 </div>
 
@@ -171,15 +171,15 @@
 
 <div class="question">
 
-<h3>8. El eje Z representa:</h3>
+<h3>8. Si d = 320 mm con L1 = L2 = 150 mm, el objetivo está:</h3>
 
-<label><input type="radio" name="q8" value="1">Altura.</label>
+<label><input type="radio" name="q8" value="1">Fuera de alcance: 320 &gt; 300 (L1+L2), no existe triángulo.</label>
 
-<label><input type="radio" name="q8" value="0">Longitud.</label>
+<label><input type="radio" name="q8" value="0">Alcanzable con el codo a 45°.</label>
 
-<label><input type="radio" name="q8" value="0">Ancho.</label>
+<label><input type="radio" name="q8" value="0">Alcanzable solo si la base gira 90°.</label>
 
-<label><input type="radio" name="q8" value="0">Velocidad.</label>
+<label><input type="radio" name="q8" value="0">Alcanzable aumentando la velocidad.</label>
 
 </div>
 
@@ -187,15 +187,15 @@
 
 <div class="question">
 
-<h3>9. ¿Qué software usa esta plataforma para simulación?</h3>
+<h3>9. En la configuración "codo abajo", el ángulo del hombro se calcula:</h3>
 
-<label><input type="radio" name="q9" value="1">MATLAB.</label>
+<label><input type="radio" name="q9" value="0">θ2 = φ − β</label>
 
-<label><input type="radio" name="q9" value="0">Paint.</label>
+<label><input type="radio" name="q9" value="1">θ2 = φ + β</label>
 
-<label><input type="radio" name="q9" value="0">Word.</label>
+<label><input type="radio" name="q9" value="0">θ2 = β − φ</label>
 
-<label><input type="radio" name="q9" value="0">PowerPoint.</label>
+<label><input type="radio" name="q9" value="0">θ2 = φ · β</label>
 
 </div>
 
@@ -203,15 +203,15 @@
 
 <div class="question">
 
-<h3>10. El Dobot Magician Lite es un:</h3>
+<h3>10. Un brazo de 2 eslabones iguales puede llegar al MISMO punto con el codo hacia arriba o hacia abajo. Elegir una de las dos se llama:</h3>
 
-<label><input type="radio" name="q10" value="1">Brazo robótico educativo.</label>
+<label><input type="radio" name="q10" value="0">Trayectoria del efector.</label>
 
-<label><input type="radio" name="q10" value="0">PLC.</label>
+<label><input type="radio" name="q10" value="0">Límite articular.</label>
 
-<label><input type="radio" name="q10" value="0">Sensor.</label>
+<label><input type="radio" name="q10" value="1">Configuración del brazo.</label>
 
-<label><input type="radio" name="q10" value="0">Motor.</label>
+<label><input type="radio" name="q10" value="0">Homogeneidad de la matriz.</label>
 
 </div>
 

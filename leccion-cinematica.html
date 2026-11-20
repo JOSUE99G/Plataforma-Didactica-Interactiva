@@ -1,0 +1,466 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Módulo 3 · Cinemática — Plataforma Didáctica</title>
+
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+    />
+    <link rel="stylesheet" href="assets/css/styles.css" />
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="logo">
+        <h2>PLATAFORMA DIDÁCTICA</h2>
+        <p>Laboratorio de Robótica</p>
+      </div>
+
+      <nav>
+        <ul>
+          <li>
+            <a href="dashboard.html"
+              ><i class="fa-solid fa-house"></i> Inicio</a
+            >
+          </li>
+          <li class="active">
+            <a href="modulos.html"
+              ><i class="fa-solid fa-book-open"></i> Módulos</a
+            >
+          </li>
+          <li>
+            <a href="practicas.html"
+              ><i class="fa-solid fa-flask"></i> Prácticas</a
+            >
+          </li>
+          <li>
+            <a href="recursos.html"
+              ><i class="fa-solid fa-folder-open"></i> Recursos</a
+            >
+          </li>
+          <li>
+            <a href="evaluaciones.html"
+              ><i class="fa-solid fa-clipboard-check"></i> Evaluaciones</a
+            >
+          </li>
+          <li>
+            <a href="visualizador.html"
+              ><i class="fa-solid fa-cube"></i> Modelo 3D</a
+            >
+          </li>
+          <li>
+            <a href="matlab.html"
+              ><i class="fa-solid fa-terminal"></i> Simulación MATLAB</a
+            >
+          </li>
+          <li>
+            <a href="progreso.html"
+              ><i class="fa-solid fa-chart-line"></i> Mi progreso</a
+            >
+          </li>
+        </ul>
+      </nav>
+
+      <div style="padding: 20px">
+        <button id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </aside>
+
+    <!-- CONTENIDO -->
+    <main class="main-content">
+      <div class="topbar">
+        <div class="user-info">
+          <span class="user-icon">👤</span>
+          <span id="userName">Usuario</span>
+          <button id="logoutSidebar" class="logout-btn">Salir</button>
+        </div>
+      </div>
+
+      <section class="page-header">
+        <h1>
+          <i class="fa-solid fa-arrows-up-down-left-right"></i> Módulo 3 ·
+          Cinemática del brazo
+        </h1>
+
+        <p>
+          Del espacio cartesiano (X, Y, Z) a los ángulos de las articulaciones:
+          la matemática que hace que el robot llegue donde le indicas.
+        </p>
+      </section>
+
+      <!-- BARRA DE PROGRESO DEL MÓDULO -->
+      <div class="docente-stats">
+        <div class="doc-stat">
+          <span class="doc-num">3</span>
+          <span class="doc-label">Lecciones</span>
+        </div>
+
+        <div class="doc-stat">
+          <span class="doc-num">90 min</span>
+          <span class="doc-label">Duración</span>
+        </div>
+
+        <div class="doc-stat">
+          <span class="doc-num">2</span>
+          <span class="doc-label">Prácticas 3D</span>
+        </div>
+
+        <div class="doc-stat">
+          <span class="doc-num">1</span>
+          <span class="doc-label">Quiz final</span>
+        </div>
+      </div>
+
+      <!-- ================= LECCIÓN 1 ================= -->
+      <div class="progress-card leccion">
+        <button class="leccion-header" onclick="toggleLeccion(this)">
+          <span class="leccion-num">1</span>
+
+          <span class="leccion-titulo">
+            <h3>El origen del robot: dónde está (0, 0, 0)</h3>
+            <small>15 min · Conceptual</small>
+          </span>
+
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="leccion-cuerpo">
+          <p>
+            Antes de mover nada, necesitas entender
+            <strong>dónde vive el robot</strong>. Todo movimiento que le ordenes
+            se mide desde un punto fijo llamado <strong>origen</strong>, con
+            coordenadas (0, 0, 0).
+          </p>
+
+          <h4>¿Dónde está el origen en el Magician Lite?</h4>
+
+          <p>
+            En la <strong>base del brazo</strong>: el punto donde arranca la
+            rotación del pedestal. Desde ahí se definen tres ejes:
+          </p>
+
+          <ul class="practica-objetivos">
+            <li>
+              <i class="fa-solid fa-circle" style="color: #e53935"></i>
+              <strong>X</strong> — apunta <em>hacia el frente</em> del robot
+              (donde él "mira" al encenderse)
+            </li>
+            <li>
+              <i class="fa-solid fa-circle" style="color: #43a047"></i>
+              <strong>Y</strong> — apunta hacia la <em>izquierda</em> del robot
+            </li>
+            <li>
+              <i class="fa-solid fa-circle" style="color: #1976d2"></i>
+              <strong>Z</strong> — apunta <em>hacia arriba</em>, perpendicular a
+              la mesa
+            </li>
+          </ul>
+
+          <div class="leccion-nota">
+            <i class="fa-solid fa-lightbulb"></i>
+            <strong>Por qué importa:</strong> cuando ordenes
+            <code>ptp(x=200, y=0, z=100)</code>, el robot entenderá "200 mm al
+            frente, 0 a los lados, 100 mm de altura". Si confundes los ejes, el
+            brazo irá al lugar equivocado — o intentará atravesar la mesa.
+          </div>
+
+          <h4>Regla mnemotécnica</h4>
+
+          <p>
+            Piensa en un misterio de detective: el robot siempre
+            <strong
+              >"mira al frente (+X), escucha a su izquierda (+Y) y salta hacia
+              arriba (+Z)"</strong
+            >.
+          </p>
+
+          <div class="leccion-accion">
+            <a class="mod-btn" href="visualizador.html">
+              <i class="fa-solid fa-cube"></i> Verlo en el modelo 3D
+            </a>
+            <span class="stl-hint"
+              >Abre el visor y observa los ejes de colores sobre la base</span
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= LECCIÓN 2 ================= -->
+      <div class="progress-card leccion">
+        <button class="leccion-header" onclick="toggleLeccion(this)">
+          <span class="leccion-num">2</span>
+
+          <span class="leccion-titulo">
+            <h3>Dos lenguajes: articulares vs cartesianos</h3>
+            <small>25 min · Conceptual + práctica 3D</small>
+          </span>
+
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="leccion-cuerpo">
+          <p>
+            El mismo movimiento del brazo puede describirse de dos formas.
+            Dominar ambas es la diferencia entre <em>operar</em> un robot y
+            <em>programarlo</em>.
+          </p>
+
+          <h4>Lenguaje articular (J1, J2, J3, J4)</h4>
+
+          <p>
+            Habla de <strong>ángulos de cada articulación</strong>. Es como
+            darle instrucciones a tu propio brazo: "sube el hombro 30°, dobla el
+            codo 45°".
+          </p>
+
+          <pre class="codigo-ejemplo">
+J1 (base)   = 45°     → giró 45° hacia la derecha
+J2 (hombro) = 30°     → elevó el brazo
+J3 (codo)   = -45°    → dobló el antebrazo
+J4 (muñeca) = 0°      → herramienta recta</pre
+          >
+
+          <h4>Lenguaje cartesiano (X, Y, Z)</h4>
+
+          <p>
+            Habla de <strong>una posición en el espacio</strong>. Es como
+            pedirle "pon la punta en este punto exacto". El robot calcula solo
+            los ángulos.
+          </p>
+
+          <pre class="codigo-ejemplo">
+X = 200 mm   → 200 mm al frente
+Y = 0 mm     → centrado
+Z = 150 mm   → 150 mm sobre la mesa</pre
+          >
+
+          <h4>Las dos direcciones de la cinemática</h4>
+
+          <table class="tablaNotas" style="width: 100%">
+            <thead>
+              <tr>
+                <th>Dirección</th>
+                <th>Entrada → Salida</th>
+                <th>¿Quién lo hace?</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>Cinemática directa (CD)</strong></td>
+                <td>Ángulos → Posición</td>
+                <td>
+                  El <a href="visualizador.html">visor 3D</a>: mueves los
+                  sliders y el panel muestra X, Y, Z
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Cinemática inversa (CI)</strong></td>
+                <td>Posición → Ángulos</td>
+                <td>
+                  El <a href="matlab.html">laboratorio MATLAB</a>: escribes
+                  ptp(x, y, z) y el robot llega
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="leccion-nota">
+            <i class="fa-solid fa-lightbulb"></i>
+            <strong>Dato de ingeniería:</strong> la CI no tiene siempre una
+            única solución — un brazo de 2 eslabones iguales (L1 = L2 = 150 mm)
+            puede llegar al mismo punto con el codo "hacia arriba" o "hacia
+            abajo". Elegir una se llama <em>configuración del brazo</em>.
+          </div>
+
+          <div class="leccion-accion">
+            <a class="mod-btn" href="visualizador.html">
+              <i class="fa-solid fa-sliders"></i> Practicar CD con sliders
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- ================= LECCIÓN 3 ================= -->
+      <div class="progress-card leccion">
+        <button class="leccion-header" onclick="toggleLeccion(this)">
+          <span class="leccion-num">3</span>
+
+          <span class="leccion-titulo">
+            <h3>Cinemática inversa con ley de cosenos</h3>
+            <small>50 min · Cálculo + práctica MATLAB</small>
+          </span>
+
+          <i class="fa-solid fa-chevron-down"></i>
+        </button>
+
+        <div class="leccion-cuerpo">
+          <p>
+            Aquí está la matemática real que ejecuta tu plataforma cuando
+            escribes <code>ptp(x, y, z)</code>. Es la misma fórmula programada
+            en el código del simulador —
+            <strong>no es magia, es trigonometría</strong>.
+          </p>
+
+          <h4>Paso 1 · Simplificar el problema</h4>
+
+          <p>
+            La rotación de la base (J1) es independiente: solo depende de a qué
+            lado apuntar. Los otros dos ángulos (hombro y codo) se resuelven en
+            el <strong>plano vertical</strong> que contiene al brazo:
+          </p>
+
+          <pre class="codigo-ejemplo">
+θ1 (base)  = atan2(Y, X)
+     → ángulo hacia el objetivo en el plano del piso
+
+r = √(X² + Y²)        → distancia horizontal al objetivo
+dz = Z - 107          → altura RELATIVA al hombro
+     (el hombro está a 107 mm del suelo)</pre
+          >
+
+          <h4>Paso 2 · El triángulo del brazo</h4>
+
+          <p>El hombro, el codo y el objetivo forman un triángulo donde:</p>
+
+          <ul class="practica-objetivos">
+            <li>
+              <i class="fa-solid fa-ruler-horizontal"></i> Lado a = L2 = 150 mm
+              (antebrazo)
+            </li>
+            <li>
+              <i class="fa-solid fa-ruler-horizontal"></i> Lado b = L1 = 150 mm
+              (brazo)
+            </li>
+            <li>
+              <i class="fa-solid fa-ruler-horizontal"></i> Lado c = d =
+              distancia al objetivo
+            </li>
+          </ul>
+
+          <p>
+            Con la <strong>ley de cosenos</strong> despejamos el ángulo del
+            codo:
+          </p>
+
+          <pre class="codigo-ejemplo">
+cos(θ3_int) = (L1² + L2² − d²) / (2 · L1 · L2)
+
+θ3_int = acos( cos(θ3_int) )     → ángulo interior del codo</pre
+          >
+
+          <h4>Paso 3 · El ángulo del hombro</h4>
+
+          <pre class="codigo-ejemplo">
+φ   = atan2(dz, r)                        → inclinación del objetivo
+β   = acos( (L1² + d² − L2²) / (2 · L1 · d) )
+
+θ2   = φ + β          → configuración "codo abajo"</pre
+          >
+
+          <h4>Ejemplo numérico completo</h4>
+
+          <p>Lleva el efector a <strong>X=200, Y=0, Z=150</strong>:</p>
+
+          <pre class="codigo-ejemplo">
+r   = √(200² + 0²)              = 200 mm
+dz  = 150 − 107                 = 43 mm
+d   = √(200² + 43²)             = 204.6 mm
+
+θ1  = atan2(0, 200)             = 0°
+
+cos(θ3) = (150² + 150² − 204.6²) / (2·150·150)
+        = (22500 + 22500 − 41861) / 45000
+        = 0.0709...              → θ3_int = 85.9°
+
+φ   = atan2(43, 200)            = 12.1°
+β   = acos((150² + 204.6² − 150²)/(2·150·204.6)) = 61.8°
+
+θ2  = 12.1 + 61.8               = 73.9°
+
+✅ Resultado: J1=0°, J2=73.9°, J3=−85.9°</pre
+          >
+
+          <div class="leccion-nota">
+            <i class="fa-solid fa-flask"></i>
+            <strong>Verifícalo tú mismo:</strong> abre el
+            <a href="visualizador.html">visor 3D</a>, coloca los sliders en
+            J2=73.9° y J3=−85.9° y observa que la punta apunta cerca de X=200,
+            Z=150. Si coincide — acabas de validar la cinemática del robot real
+            con papel y lápiz.
+          </div>
+
+          <h4>¿Y si el objetivo está fuera de alcance?</h4>
+
+          <p>
+            Si <code>d &gt; L1 + L2</code> (aquí 300 mm), el punto es
+            <strong>inalcanzable</strong>: no existe triángulo. El simulador te
+            lo avisa — en el robot físico, el brazo se estiraría forzando los
+            motores. Por eso
+            <strong
+              >siempre se valida el espacio de trabajo antes de ejecutar</strong
+            >.
+          </p>
+
+          <div class="leccion-accion">
+            <a class="mod-btn" href="matlab.html">
+              <i class="fa-solid fa-terminal"></i> Probar en MATLAB: ptp(200, 0,
+              150, 0)
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <!-- CIERRE DEL MÓDULO -->
+      <div class="progress-card">
+        <h2>
+          <i class="fa-solid fa-clipboard-check"></i> Evaluación del módulo
+        </h2>
+
+        <p>
+          Cuando completes las 3 lecciones y las prácticas del visor, presenta
+          el Quiz 2: incluye cálculos de cinemática igual al ejemplo anterior.
+        </p>
+
+        <div class="mod-acciones" style="margin-top: 14px">
+          <a class="mod-btn" href="quiz2.html">
+            <i class="fa-solid fa-play"></i> Presentar Quiz 2
+          </a>
+          <a class="mod-btn secundario" href="recursos.html">
+            <i class="fa-solid fa-paperclip"></i> Hoja de fórmulas
+          </a>
+        </div>
+      </div>
+    </main>
+
+    <!-- FIREBASE -->
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="assets/js/firebase-config.js"></script>
+    <script src="assets/js/logout.js"></script>
+
+    <script>
+      firebase.auth().onAuthStateChanged((user) => {
+        if (!user) {
+          window.location.href = "index.html";
+        } else {
+          document.getElementById("userName").textContent =
+            "Bienvenido: " + (user.displayName || "Estudiante");
+        }
+      });
+
+      /* Acordeón de lecciones */
+      function toggleLeccion(header) {
+        const cuerpo = header.nextElementSibling;
+
+        cuerpo.style.display =
+          cuerpo.style.display === "block" ? "none" : "block";
+
+        header.querySelector("i").style.transform =
+          cuerpo.style.display === "block" ? "rotate(180deg)" : "";
+      }
+    </script>
+  </body>
+</html>
