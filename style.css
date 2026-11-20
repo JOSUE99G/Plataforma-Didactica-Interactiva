@@ -116,10 +116,59 @@ body {
 
 /* Estilos para el formulario de registro */
 .sign-up {
-    left: 0; /* Posiciona el formulario de registro a la izquierda */
-    width: 50%; /* Establece que ocupe el 50% del contenedor */
-    opacity: 0; /* Hace el formulario invisible inicialmente */
-    z-index: 1; /* Establece un valor de z-index para que esté detrás del formulario de inicio de sesión */
+    left: 0;
+    width: 50%;
+    opacity: 0;
+    z-index: 1;
+}
+
+/* ============================================================
+   RESPONSIVE — LOGIN EN CELULARES
+   En pantallas menores a 768px el toggle lateral no funciona
+   (no hay espacio para dos paneles de 50%). Se apilan vertical:
+   registro arriba, sesión abajo, sin animación de translateX.
+   ============================================================ */
+
+@media (max-width: 768px) {
+
+    .container {
+        width: 92%;
+        min-height: 640px;
+        height: auto;
+    }
+
+    .form-container {
+        position: relative;
+        width: 100%;
+        height: auto;
+        padding: 30px 22px;
+        transform: none !important;
+        transition: none !important;
+        animation: none !important;
+    }
+
+    .sign-up {
+        opacity: 1;
+        display: block;
+        border-bottom: 1px solid #e0e4ec;
+    }
+
+    .sign-in {
+        display: block;
+    }
+
+    .toggle-container {
+        display: none;   /* el toggle lateral no aplica en móvil */
+    }
+
+    .social-icons,
+    .btn-google {
+        width: 100%;
+    }
+
+    input {
+        margin: 8px 0;
+    }
 }
 
 /* Cuando la clase 'active' se aplica al contenedor, el formulario de registro se mueve y se hace visible */

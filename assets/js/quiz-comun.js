@@ -1,6 +1,11 @@
 /* ============================================================
    Módulo compartido para los quizzes de la plataforma.
    Requiere: firebase-config.js (Firebase v8) cargado antes.
+
+   COMPATIBILIDAD DUAL:
+   - Como <script> normal en las páginas: expone window.QuizComun
+   - Como módulo ES (en tests con node --experimental-vm-modules
+     o Vitest): exporta calcularNota y leerRespuestasQuiz
    ============================================================ */
 
 /**
@@ -96,4 +101,23 @@ function mostrarResultadoQuiz(nota, aprobadoDesde = 70) {
 
         <h1>${nota}/100</h1>
     `;
+}
+
+/* ============================================================
+   EXPORTACIÓN DUAL: navegador (window.QuizComun) y módulo ES
+   ============================================================ */
+
+const API = { calcularNota, leerRespuestasQuiz, guardarResultadoQuiz, mostrarResultadoQuiz };
+
+if (typeof window !== "undefined") {
+
+    window.QuizComun = API;
+
+}
+
+// Test runners CommonJS (node + ts-node/vitest con cjs)
+if (typeof module !== "undefined" && module.exports) {
+
+    module.exports = API;
+
 }
